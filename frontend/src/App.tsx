@@ -92,88 +92,90 @@ const App: React.FC = () => {
     )
   }, [expandedRowIndex]);
 
-  const expandedChordRow = (expandedRowIndex > -1) && chordRowObjects[expandedRowIndex];
+  // const expandedChordRow = (expandedRowIndex > -1) && chordRowObjects[expandedRowIndex];
 
-  const [rgbValues, setRgbValues] = useState([50, 241, 255]);
+  // const [rgbValues, setRgbValues] = useState([50, 241, 255]);
 
-  const [redRgbValue, greenRgbValue, blueRgbValue] = rgbValues;
+  // const [redRgbValue, greenRgbValue, blueRgbValue] = rgbValues;
 
-  const [monochromaticSchemes, setMonochromaticSchemes] = useState<{ [key in MonochromaticPossibleRootScale]: string }[]>(
-    regenerateMonochromaticSchemes(redRgbValue, greenRgbValue, blueRgbValue)
-  );
+  // const [monochromaticSchemes, setMonochromaticSchemes] = useState<{ [key in MonochromaticPossibleRootScale]: string }[]>(
+  //   regenerateMonochromaticSchemes(redRgbValue, greenRgbValue, blueRgbValue)
+  // );
 
-  const [globalKeyNote, setGlobalKeyNote] = useState('');
-  const [globalKeyScale, setGlobalKeyScale] = useState('');
+  // const [globalKeyNote, setGlobalKeyNote] = useState('');
+  // const [globalKeyScale, setGlobalKeyScale] = useState('');
 
-  const applyGlobalKey = () => {
-    if (globalKeyNote === '' || globalKeyScale === '') return;
-    if (CHROMATIC_NOTES.find(chromaticNoteArray => chromaticNoteArray.includes(globalKeyNote)) == undefined) return;
-    if (!((Object.keys(PossibleRootScale) as [keyof typeof PossibleRootScale]).find(key => PossibleRootScale[key] === globalKeyScale))) return;
+  const [numToDivide, setNumToDivide] = useState(2.0);
 
-    let newChordRows = chordRowObjects.slice();
-    newChordRows.forEach((chordRowObject) => {
-      if (!chordRowObject.selectedScale && !chordRowObject.selectedScaleRoot) {
-        const matchingScale = scalesForChordRowObject(chordRowObject)
-          .find(({ rootScale, rootScaleNote }) => rootScale === globalKeyScale && rootScaleNote === globalKeyNote);
+  // const applyGlobalKey = () => {
+  //   if (globalKeyNote === '' || globalKeyScale === '') return;
+  //   if (CHROMATIC_NOTES.find(chromaticNoteArray => chromaticNoteArray.includes(globalKeyNote)) == undefined) return;
+  //   if (!((Object.keys(PossibleRootScale) as [keyof typeof PossibleRootScale]).find(key => PossibleRootScale[key] === globalKeyScale))) return;
 
-        if (matchingScale != undefined) {
-          chordRowObject.selectedScaleRoot = matchingScale.scaleNotes[0];
-          chordRowObject.selectedScale = matchingScale.scaleName;
-        }
-      }
+  //   let newChordRows = chordRowObjects.slice();
+  //   newChordRows.forEach((chordRowObject) => {
+  //     if (!chordRowObject.selectedScale && !chordRowObject.selectedScaleRoot) {
+  //       const matchingScale = scalesForChordRowObject(chordRowObject)
+  //         .find(({ rootScale, rootScaleNote }) => rootScale === globalKeyScale && rootScaleNote === globalKeyNote);
 
-      return chordRowObject;
-    });
+  //       if (matchingScale != undefined) {
+  //         chordRowObject.selectedScaleRoot = matchingScale.scaleNotes[0];
+  //         chordRowObject.selectedScale = matchingScale.scaleName;
+  //       }
+  //     }
 
-    setChordRowObjects(newChordRows);
-  };
+  //     return chordRowObject;
+  //   });
 
-  useEffect(() => {
-    setMonochromaticSchemes(regenerateMonochromaticSchemes(redRgbValue, greenRgbValue, blueRgbValue));
-  }, rgbValues);
+  //   setChordRowObjects(newChordRows);
+  // };
 
-  const handleRowChange = (rowIndex: number, newValue: string, key: keyof ChordRowObject): void => {
-    let newChordRows = chordRowObjects.slice()
-    newChordRows[rowIndex][key] = newValue
-    setChordRowObjects(newChordRows)
-  }
+  // useEffect(() => {
+  //   setMonochromaticSchemes(regenerateMonochromaticSchemes(redRgbValue, greenRgbValue, blueRgbValue));
+  // }, rgbValues);
 
-  const handleFiles = (event: ChangeEvent<HTMLInputElement>) => {
-    Array.from((event.target as HTMLInputElement).files as FileList).forEach((file: File) => {
-      var reader = new FileReader();
-      reader.readAsText(file, "UTF-8");
-      reader.onload = (evt: ProgressEvent<FileReader>) => {
-        if (!evt.target?.result) {
-          return alert('error reading file: no result')
-        }
-        const playlist = iRealReader(evt.target?.result);
+  // const handleRowChange = (rowIndex: number, newValue: string, key: keyof ChordRowObject): void => {
+  //   let newChordRows = chordRowObjects.slice()
+  //   newChordRows[rowIndex][key] = newValue
+  //   setChordRowObjects(newChordRows)
+  // }
 
-        const newSong: Song = playlist.songs[0];
-        if (newSong) {
-          setSong(newSong);
-          const newChordRows = newSong.music.measures.flatMap((measures) => {
-            return measures.map((measure) => {
-              const parsedChordString = parseChordString(measure);
+  // const handleFiles = (event: ChangeEvent<HTMLInputElement>) => {
+  //   Array.from((event.target as HTMLInputElement).files as FileList).forEach((file: File) => {
+  //     var reader = new FileReader();
+  //     reader.readAsText(file, "UTF-8");
+  //     reader.onload = (evt: ProgressEvent<FileReader>) => {
+  //       if (!evt.target?.result) {
+  //         return alert('error reading file: no result')
+  //       }
+  //       const playlist = iRealReader(evt.target?.result);
 
-              return {
-                chordNote: parsedChordString[0],
-                chordQuality: parsedChordString[1],
-                bassNote: parsedChordString[2],
-                selectedScale: '',
-                selectedScaleRoot: '',
-                availableTensions: '',
-              }
+  //       const newSong: Song = playlist.songs[0];
+  //       if (newSong) {
+  //         setSong(newSong);
+  //         const newChordRows = newSong.music.measures.flatMap((measures) => {
+  //           return measures.map((measure) => {
+  //             const parsedChordString = parseChordString(measure);
 
-            });
-          })
-          setChordRowObjects(newChordRows)
-        } else alert('no song found');
-      }
-      reader.onerror = () => {
-        alert('error reading file');
-      }
-    })
-  }
+  //             return {
+  //               chordNote: parsedChordString[0],
+  //               chordQuality: parsedChordString[1],
+  //               bassNote: parsedChordString[2],
+  //               selectedScale: '',
+  //               selectedScaleRoot: '',
+  //               availableTensions: '',
+  //             }
+
+  //           });
+  //         })
+  //         setChordRowObjects(newChordRows)
+  //       } else alert('no song found');
+  //     }
+  //     reader.onerror = () => {
+  //       alert('error reading file');
+  //     }
+  //   })
+  // }
   return (
     <div className="App">
       <header className="App-header flex-row justify-content-between">
@@ -194,7 +196,16 @@ const App: React.FC = () => {
             document.body.removeChild(el);
         }}>Copy Share link to clipboard</Button>
       </header>
-      {
+      <Input
+        type="number"
+        name="numToDivide"
+        value={numToDivide}
+        onChange={e => setNumToDivide(parseFloat(e.target.value))}
+        className='w-25 mx-2'
+        inline
+      />
+      <p>{numToDivide / 2}</p>
+      {/* {
         expandedChordRow ? (
           <ChordCarousel
             expandedRowIndex={expandedRowIndex}
@@ -291,7 +302,7 @@ const App: React.FC = () => {
           </Row>
         </Container>
         )
-      }
+      } */}
     </div>
   );
 }
