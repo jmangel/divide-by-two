@@ -31,6 +31,10 @@ module.exports = {
         test: /\.(wav|gif|jpg|png|mp3|aac|ogg)$/,
         loader: 'file-loader'
       },
+      {
+        test: /\.worker\.js$/,
+        use: { loader: "worker-loader" },
+      },
     ],
   },
   resolve: {

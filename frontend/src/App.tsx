@@ -32,6 +32,10 @@ import PlayAlong from './Steps/PlayAlong';
 import PlaybackControls from './PlayAlong/PlaybackControls';
 import { myRealReader } from './RawParser';
 
+import Worker from "worker-loader!./MetronomeWebWorker.js";
+
+const metronomeTicker = new Worker();
+
 const HighClickFile = 'static/AudioClips/high_click.mp3';
 const LowClickFile = 'static/AudioClips/low_click.mp3';
 
@@ -271,14 +275,17 @@ const App: React.FC = () => {
     })
   }
 
+  metronomeTicker.onmessage = () => {incrementMetronomeCount()};
+
   const startPlayback = () => {
     setIsPlaying(true);
     setMetronomeCountIn(measureInfos[0].beatsPerMeasure || 4);
-    const newInterval = setInterval(incrementMetronomeCount, (60 / bpm) * 1000);
-    setMetronomeInterval(newInterval);
+    metronomeTicker.postMessage({ message: 'start', milliseconds: (60 / bpm) * 1000 });
+
     playLowClick();
   }
   const pausePlayback = () => {
+    metronomeTicker.postMessage({ message: 'stop' });
     setIsPlaying(false);
     if (metronomeInterval) clearInterval(metronomeInterval);
   }
@@ -286,8 +293,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (metronomeInterval) clearInterval(metronomeInterval);
     if (isPlaying) {
-      const newInterval = setInterval(incrementMetronomeCount, (60 / bpm) * 1000);
-      setMetronomeInterval(newInterval);
+      metronomeTicker.postMessage({ message: 'start', milliseconds: (60 / bpm) * 1000 });
     }
     setQuery({
       b: bpm
