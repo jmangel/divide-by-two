@@ -111,6 +111,10 @@ const beatIsOnNewMeasure = (measureInfos: MeasureInfo[], beatIndex: number): boo
 }
 
 const App: React.FC = () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('src/service_workers/ServiceWorker.js');
+  }
+
   const [query, setQuery] = useQueryParams({
     a: withDefault(ArrayParam, undefined),
     c: withDefault(StringParam, csvifyChordRowObjects([createChordRowObject()])),
