@@ -11,7 +11,8 @@
       "sizes": "512x512"
     }
   ],
-  // "start_url": "",
+  "start_url": "..",
+  "scope": "..",
   "shortcuts": [
     {
       "name": "INEMM",
