@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --mode production",
-    "deploy": "gh-pages -d dist",
+    "deploy": "webpack --mode production && gh-pages -d dist",
     "dev": "webpack-dev-server",
     "test": "jest",
     "typecheck": "tsc -p . --noEmit"
