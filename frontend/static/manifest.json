@@ -3,21 +3,24 @@
   "short_name": "Scalify",
   "icons": [
     {
-      "src": "img/saxophonist_logo.svg",
-      "sizes": "192x192"
+      "src": "img/maskable_icon.png",
+      "type": "image/png",
+      "sizes": "1024x1024",
+      "purpose": "maskable"
     },
     {
-      "src": "img/saxophonist_logo.svg",
-      "sizes": "512x512"
+      "src": "img/maskable_icon_x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     },
     {
       "src": "img/icon-512px.png",
+      "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "img/maskable_icon.png",
-      "type": "image/png",
-      "purpose": "maskable"
+      "src": "img/saxophonist_logo.svg"
     }
   ],
   "start_url": "..",
