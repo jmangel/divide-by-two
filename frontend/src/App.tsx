@@ -112,7 +112,7 @@ const beatIsOnNewMeasure = (measureInfos: MeasureInfo[], beatIndex: number): boo
 
 const App: React.FC = () => {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('src/service_workers/ServiceWorker.js', { scope: "/" });
+    navigator.serviceWorker.register('ServiceWorker.js', { scope: "/scalify/" });
   }
 
   const [query, setQuery] = useQueryParams({

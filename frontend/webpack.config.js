@@ -61,7 +61,7 @@ module.exports = {
           // }
         },
         {
-          from: "./src/service_workers/**/*",
+          from: "./ServiceWorker.js",
           to:   "./",
           // transform (content, _) {
           //     return modify(content)
