@@ -26,6 +26,15 @@ self.addEventListener("install", (event) => {
       // response isn't fulfilled from the HTTP cache; i.e., it will be from
       // the network.
       await cache.add(new Request(OFFLINE_URL, { cache: "reload" }));
+
+      await cache.addAll(
+        [
+          './',
+          './main.js',
+          './static/img/icon-192px.png',
+          './static/img/maskable_icon_x512.png'
+        ]
+      );
     })()
   );
   // Force the waiting service worker to become the active service worker.
@@ -50,7 +59,10 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   // We only want to call event.respondWith() if this is a navigation request
   // for an HTML page.
-  if (event.request.mode === "navigate") {
+  // UPDATE: if we only call event.respondWith for navigation, we don't
+  // act on the asset requests: js files, images, etc.
+
+  // if (event.request.mode === "navigate") {
     event.respondWith(
       (async () => {
         try {
@@ -71,12 +83,12 @@ self.addEventListener("fetch", (event) => {
           console.log("Fetch failed; returning offline page instead.", error);
 
           const cache = await caches.open(CACHE_NAME);
-          const cachedResponse = await cache.match(OFFLINE_URL);
+          const cachedResponse = await cache.match(event.request.url.split("?")[0]);
           return cachedResponse;
         }
       })()
     );
-  }
+  // }
 
   // If our if() condition is false, then this fetch handler won't intercept the
   // request. If there are any other fetch handlers registered, they will get a
