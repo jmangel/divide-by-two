@@ -112,7 +112,11 @@ const beatIsOnNewMeasure = (measureInfos: MeasureInfo[], beatIndex: number): boo
 
 const App: React.FC = () => {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('ServiceWorker.js?v=1', { scope: "/scalify/" });
+    navigator.serviceWorker.register('service-worker.js').then(registration => {
+      console.log('SW registered: ', registration);
+    }).catch(registrationError => {
+      console.log('SW registration failed: ', registrationError);
+    });
   }
 
   const [query, setQuery] = useQueryParams({
