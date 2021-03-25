@@ -33,6 +33,7 @@ import PlaybackControls from './PlayAlong/PlaybackControls';
 import { myRealReader } from './RawParser';
 
 import Worker from "worker-loader!./MetronomeWebWorker.js";
+import { csvifyMeasureInfos, parseCsvifiedMeasureInfos, createMeasureInfo } from './MeasureCondenser';
 
 const metronomeTicker = new Worker();
 
@@ -73,25 +74,6 @@ export interface MeasureInfo {
   chordCount: number;
 }
 
-const mapMemoizedMeasuresToMeasureInfos = (memoizedMeasures: number[]): MeasureInfo[] => {
-  return memoizedMeasures.map((memoizedMeasure) => {
-    if (memoizedMeasure < 10) return {
-      chordCount: memoizedMeasure,
-      beatsPerMeasure: 4,
-      subdivisions: 4
-    }; // backward compatibility
-    const memoizedMeasureString = memoizedMeasure.toString();
-    const chordCount = parseInt(memoizedMeasureString.slice(0, -2));
-    const memoizedTimeSignature = memoizedMeasureString.slice(-2);
-    const [beatsPerMeasure, subdivisions] = memoizedTimeSignature.startsWith('12') ? [12, 8] : [parseInt(memoizedTimeSignature[0]), parseInt(memoizedTimeSignature[1])];
-    return {
-      beatsPerMeasure,
-      subdivisions,
-      chordCount,
-    };
-  });
-}
-
 const beatIndexToMeasureIndex = (measureInfos: MeasureInfo[], beatIndex: number): number => {
   if (beatIndex < 0) return -1;
   let runningBeatIndex = 0;
@@ -125,7 +107,7 @@ const App: React.FC = () => {
     t: withDefault(StringParam, ''),
     i: withDefault(NumberParam, -1),
     s: withDefault(NumberParam, 0),
-    m: withDefault(StringParam, '0'),
+    m: withDefault(StringParam, csvifyMeasureInfos([createMeasureInfo()])),
     k: withDefault(StringParam, '0'),
     b: withDefault(NumberParam, defaultBpm),
   });
@@ -136,23 +118,20 @@ const App: React.FC = () => {
   if (a) setQuery({ a: undefined }, 'pushIn');
   if (c === '') setQuery({ c: csvifyChordRowObjects(chordRowObjects) }, 'pushIn');
 
-  const [measures, setMeasures] = useState(m.split('.').map((index: string) => parseInt(index)));
-  const [measureInfos, setMeasureInfos] = useState(mapMemoizedMeasuresToMeasureInfos(measures));
+  const [measures, setMeasures] = useState(parseCsvifiedMeasureInfos(m));
   let runningSum = 0;
-  measureInfos.forEach((measureInfo) => {
+  measures.forEach((measureInfo) => {
     runningSum += measureInfo.beatsPerMeasure;
   })
   const [totalSongBeatCount, setTotalSongBeatCount] = useState(runningSum);
   useEffect(() => {
-    const newMeasureInfos = mapMemoizedMeasuresToMeasureInfos(measures);
-    setMeasureInfos(newMeasureInfos);
     let runningSum = 0;
-    newMeasureInfos.forEach((measureInfo) => {
+    measures.forEach((measureInfo) => {
       runningSum += measureInfo.beatsPerMeasure;
     })
     setTotalSongBeatCount(runningSum);
     setQuery(
-      { m: measures.join('.') },
+      { m: csvifyMeasureInfos(measures) },
       'pushIn'
     )
   }, [measures]);
@@ -257,10 +236,10 @@ const App: React.FC = () => {
   const startingMetronomeBeat = -1
   const [metronomeBeatCount, setMetronomeBeatCount] = useState(startingMetronomeBeat);
 
-  const [metronomeMeasureCount, setMetronomeMeasureCount] = useState(beatIndexToMeasureIndex(measureInfos, metronomeBeatCount));
+  const [metronomeMeasureCount, setMetronomeMeasureCount] = useState(beatIndexToMeasureIndex(measures, metronomeBeatCount));
   useEffect(() => {
-    setMetronomeMeasureCount(beatIndexToMeasureIndex(measureInfos, metronomeBeatCount));
-  }, [metronomeBeatCount, measureInfos])
+    setMetronomeMeasureCount(beatIndexToMeasureIndex(measures, metronomeBeatCount));
+  }, [metronomeBeatCount, measures])
 
   const [metronomeCountIn, setMetronomeCountIn] = useState(0);
 
@@ -275,7 +254,7 @@ const App: React.FC = () => {
       } else {
         setMetronomeBeatCount((beat: number) => {
           const newBeat = (beat + 1) % totalSongBeatCount;
-          beatIsOnNewMeasure(measureInfos, newBeat) ? playHighClick() : playLowClick();
+          beatIsOnNewMeasure(measures, newBeat) ? playHighClick() : playLowClick();
           return newBeat;
         });
         return 0;
@@ -287,7 +266,7 @@ const App: React.FC = () => {
 
   const startPlayback = () => {
     setIsPlaying(true);
-    setMetronomeCountIn(measureInfos[0].beatsPerMeasure || 4);
+    setMetronomeCountIn(measures[0].beatsPerMeasure || 4);
     metronomeTicker.postMessage({ message: 'start', milliseconds: (60 / bpm) * 1000 });
 
     playLowClick();
@@ -412,7 +391,13 @@ const App: React.FC = () => {
             if (processedNewChordRows) newChordRows = processedNewChordRows;
           }
 
-          const newMeasures = myParsedSong.music.measures.map(({ chords, timeSignature }) => parseInt(`${chords.length}${timeSignature}`));
+          const newMeasures = myParsedSong.music.measures.map(({ chords, timeSignature }) => {
+            const [beatsPerMeasure, subdivisions] = timeSignature.startsWith('12') ? [12, 8] : [parseInt(timeSignature[0]), parseInt(timeSignature[1])];
+            const chordCount = chords.length;
+
+            return { beatsPerMeasure, subdivisions, chordCount } as MeasureInfo;
+
+          });
 
           clearTransposingKey();
           setMeasures(newMeasures);
@@ -433,7 +418,7 @@ const App: React.FC = () => {
 
   const startNewSong = () => {
     const newChordRows = [createChordRowObject()];
-    setMeasures([144]); // start with 1 chord per measure in 4/4 time
+    setMeasures([{ beatsPerMeasure: 4, subdivisions: 4, chordCount: 1 }]);
     clearTransposingKey();
     setBpm(defaultBpm);
     setChordRowObjects(newChordRows);
@@ -480,7 +465,7 @@ const App: React.FC = () => {
         return (
           <PlayAlong
             chordRowObjects={chordRowObjects}
-            measureInfos={measureInfos}
+            measureInfos={measures}
             monochromaticSchemes={monochromaticSchemes}
             measurePlaybackIndex={metronomeMeasureCount}
             metronomeCountIn={metronomeCountIn}
