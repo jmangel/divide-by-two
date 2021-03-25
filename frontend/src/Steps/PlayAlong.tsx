@@ -89,7 +89,7 @@ let copiedChordRows = chordRowObjects.slice();
                   // use uniformColumnSize if present, otherwise calculate against beatsPerMeasure
                   // TODO: the expression `(parsedNumSpaces * (12 / beatsPerMeasure))` doesn't work as
                   // expected because a 12-beat measure might still only have 4 chords in iReal Pro
-                  const colWidthInGridCols = parsedNumSpaces * (12 / totalBeatsInMeasure);
+                  const colWidthInGridCols = parsedNumSpaces ? parsedNumSpaces * (12 / totalBeatsInMeasure) : (12 / measureChords.length);
                   const colProps = { xs: colWidthInGridCols };
 
                   const colWidthInPercentOfChartWidth = colWidthInGridCols / (12 * 4);
