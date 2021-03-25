@@ -74,11 +74,11 @@ export interface MeasureInfo {
   chordCount: number;
 }
 
-const beatIndexToMeasureIndex = (measureInfos: MeasureInfo[], beatIndex: number): number => {
+export const beatIndexToMeasureIndex = (measureInfos: MeasureInfo[], beatIndex: number): number => {
   if (beatIndex < 0) return -1;
   let runningBeatIndex = 0;
   return measureInfos.findIndex((measureInfo: MeasureInfo) => {
-    runningBeatIndex += measureInfo.beatsPerMeasure;
+    runningBeatIndex += measureInfo.beatsPerMeasure * (4 / measureInfo.subdivisions);
     return beatIndex < runningBeatIndex;
   })
 }
