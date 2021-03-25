@@ -29,6 +29,7 @@ let copiedChordRows = chordRowObjects.slice();
       className="d-flex flex-grow-1 align-items-center"
     >
       <Row
+        className="pr-1"
         style={{minWidth: '100%'}} // unclear why this is needed Play-Along step on desktop, it's a lazy hack
       >
         {
@@ -64,7 +65,7 @@ let copiedChordRows = chordRowObjects.slice();
 
             return (
               <Col xs={3}>
-                <Row className="p-1 h-100">
+                <Row className="pl-1 pb-1 h-100">
                   {measureChords.map((chordRowObject: ChordRowObject) => {
                     const { chordNote, chordQuality, bassNote, selectedScale, selectedScaleRoot, beats } = chordRowObject;
                     const scales = scalesForChordRowObject(chordRowObject);
