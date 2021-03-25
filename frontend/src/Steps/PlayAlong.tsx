@@ -94,18 +94,18 @@ let copiedChordRows = chordRowObjects.slice();
                     const colProps = { xs: (parsedNumSpaces * (12 / totalBeatsInMeasure)) }
 
                     return (
-                      <Col className="play-along--chord" style={{...style, ...activeMeasureStyle }} {...colProps}>
-                        <Row className="d-flex flex-row-reverse" style={{ fontSize: '1em', lineHeight: 1 }}>
+                      <Col className="play-along--chord px-0" style={{...style, ...activeMeasureStyle }} {...colProps}>
+                        <Row className="d-flex flex-row-reverse mx-0" style={{ fontSize: '1em', lineHeight: 1 }}>
                           <div className="pr-1">
                             {chordQuality || (<br />)}
                           </div>
                         </Row>
-                        <Row className="d-flex justify-content-center py-0" style={{ fontSize: '1.5em', lineHeight: 1 }}>
+                        <Row className="d-flex justify-content-center py-0 mx-0" style={{ fontSize: '1.5em', lineHeight: 1 }}>
                           {/* <div> */}
                             {chordNote}
                           {/* </div> */}
                         </Row>
-                        <Row className="d-flex flex-row-reverse" style={{ fontSize: '1em', lineHeight: 1 }}>
+                        <Row className="d-flex flex-row-reverse mx-0" style={{ fontSize: '1em', lineHeight: 1 }}>
                           <div className="pr-1">
                             {bassNote || (<br />) }
                           </div>
