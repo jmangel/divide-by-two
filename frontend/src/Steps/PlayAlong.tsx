@@ -105,6 +105,8 @@ let copiedChordRows = chordRowObjects.slice();
 
                   const chordQualityFontSize = dynamicFontSize(chordQuality.length, '1em');
 
+                  const chordNoteFontSize = dynamicFontSize(chordNote.length, '1.5em');
+
                   return (
                     <Col className="play-along--chord px-0" style={{...style, ...activeMeasureStyle }} {...colProps}>
                       <Row className="d-flex flex-row-reverse mx-0" style={{ fontSize: chordQualityFontSize, lineHeight: 1, height: '1rem' }}>
@@ -112,7 +114,7 @@ let copiedChordRows = chordRowObjects.slice();
                           {chordQuality || (<br />)}
                         </div>
                       </Row>
-                      <Row className="d-flex justify-content-center py-0 mx-0" style={{ fontSize: '1.5em', lineHeight: 1 }}>
+                      <Row className="d-flex justify-content-center py-0 mx-0" style={{ fontSize: chordNoteFontSize, lineHeight: '1.5rem' }}>
                         {/* <div> */}
                           {chordNote}
                         {/* </div> */}
