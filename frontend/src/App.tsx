@@ -542,6 +542,7 @@ const App: React.FC = () => {
               setExpandedRowIndex={setExpandedRowIndex}
               onRowChange={handleRowChange}
               toggle={toggle}
+              fillWithKey={fillWithKey}
             />
           ) : renderStep(stepIndex)
         }

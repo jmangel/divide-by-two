@@ -6,6 +6,15 @@
     "jsx": "react",
     "strict": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": [
+      "node",
+      "jest",
+      "custom"
+    ],
+    "typeRoots": [
+      "node_modules/@types",
+      "./typings"
+    ]
   }
 }

@@ -18,12 +18,14 @@ const ChordCarousel: React.FC<{
   setExpandedRowIndex: (value: number) => void,
   onRowChange: (rowIndex: number, newValue: string, key: ChordRowObjectRequiredKeys) => void,
   toggle: (rowIndex: number) => void,
+  fillWithKey: (keyNote: string, keyScale: string) => void,
 }> = ({
   expandedRowIndex,
   chordRowObjects,
   monochromaticSchemes,
   setExpandedRowIndex,
   onRowChange,
+  fillWithKey,
 }) => {
 
   const [animating, setAnimating] = useState(false);
@@ -57,6 +59,7 @@ const ChordCarousel: React.FC<{
             chordRowObject={chordRowObject}
             onRowChange={(newValue: string, key: ChordRowObjectRequiredKeys) => onRowChange(expandedRowIndex, newValue, key)}
             monochromaticSchemes={monochromaticSchemes}
+            fillWithKey={fillWithKey}
           />
           <Button className="mt-2" color="info" onClick={() => setExpandedRowIndex(-1)}>Close</Button>
         </Container>
