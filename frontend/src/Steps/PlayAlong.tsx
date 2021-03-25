@@ -93,13 +93,17 @@ let copiedChordRows = chordRowObjects.slice();
                   const colProps = { xs: colWidthInGridCols };
 
                   const colWidthInPercentOfChartWidth = colWidthInGridCols / (12 * 4);
-                  const chordQualityFontWidthInPercentOfChartWidth = colWidthInPercentOfChartWidth / chordQuality.length;
-                  // font size determines the height of letters, but here we
-                  // need to base it on the width, which looks to be about 2/3,
-                  // so we multiply by approximateFontHeightToWidthRatio
-                  const chordQualityFontSizeInPercentOfChartWidth = chordQualityFontWidthInPercentOfChartWidth * approximateFontHeightToWidthRatio;
-                  const chordQualityFontSizeMax = `${chordQualityFontSizeInPercentOfChartWidth * 100}vw`;
-                  const chordQualityFontSize = `min(1em, ${chordQualityFontSizeMax})`;
+                  const dynamicFontSize = (textLength: number, defaultFontSize: string): string => {
+                    const fontWidthInPercentOfChartWidth = colWidthInPercentOfChartWidth / textLength;
+                    // font size determines the height of letters, but here we
+                    // need to base it on the width, which looks to be about 2/3,
+                    // so we multiply by approximateFontHeightToWidthRatio
+                    const fontSizeInPercentOfChartWidth = fontWidthInPercentOfChartWidth * approximateFontHeightToWidthRatio;
+                    const maxFontSize = `${fontSizeInPercentOfChartWidth * 100}vw`;
+                    return `min(${defaultFontSize}, ${maxFontSize})`;
+                  }
+
+                  const chordQualityFontSize = dynamicFontSize(chordQuality.length, '1em');
 
                   return (
                     <Col className="play-along--chord px-0" style={{...style, ...activeMeasureStyle }} {...colProps}>
