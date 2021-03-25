@@ -65,6 +65,60 @@ describe('beatIndexToMeasureIndex', () => {
     expect(beatIndexToMeasureIndex(threeTwoMeasures, 5)).toEqual(0);
     expect(beatIndexToMeasureIndex(threeTwoMeasures, 6)).toEqual(1);
   })
+
+  it('plays 6/4 as 6/4', () => {
+    const threeTwoMeasures: MeasureInfo[] = [
+      {
+        beatsPerMeasure: 6,
+        subdivisions: 4,
+        chordCount: 1
+      },
+      {
+        beatsPerMeasure: 6,
+        subdivisions: 4,
+        chordCount: 1
+      },
+    ];
+    expect(beatIndexToMeasureIndex(threeTwoMeasures, 0)).toEqual(0);
+    expect(beatIndexToMeasureIndex(threeTwoMeasures, 5)).toEqual(0);
+    expect(beatIndexToMeasureIndex(threeTwoMeasures, 6)).toEqual(1);
+  })
+
+  it('plays 5/4 as 5/4', () => {
+    const threeTwoMeasures: MeasureInfo[] = [
+      {
+        beatsPerMeasure: 5,
+        subdivisions: 4,
+        chordCount: 1
+      },
+      {
+        beatsPerMeasure: 5,
+        subdivisions: 4,
+        chordCount: 1
+      },
+    ];
+    expect(beatIndexToMeasureIndex(threeTwoMeasures, 0)).toEqual(0);
+    expect(beatIndexToMeasureIndex(threeTwoMeasures, 4)).toEqual(0);
+    expect(beatIndexToMeasureIndex(threeTwoMeasures, 5)).toEqual(1);
+  })
+
+  it('plays 7/4 as 7/4', () => {
+    const threeTwoMeasures: MeasureInfo[] = [
+      {
+        beatsPerMeasure: 7,
+        subdivisions: 4,
+        chordCount: 1
+      },
+      {
+        beatsPerMeasure: 7,
+        subdivisions: 4,
+        chordCount: 1
+      },
+    ];
+    expect(beatIndexToMeasureIndex(threeTwoMeasures, 0)).toEqual(0);
+    expect(beatIndexToMeasureIndex(threeTwoMeasures, 6)).toEqual(0);
+    expect(beatIndexToMeasureIndex(threeTwoMeasures, 7)).toEqual(1);
+  })
 })
 
 describe('beatIsOnNewMeasure', () => {
@@ -120,5 +174,59 @@ describe('beatIsOnNewMeasure', () => {
     expect(beatIsOnNewMeasure(threeTwoMeasures, 0)).toEqual(true);
     expect(beatIsOnNewMeasure(threeTwoMeasures, 5)).toEqual(false);
     expect(beatIsOnNewMeasure(threeTwoMeasures, 6)).toEqual(true);
+  })
+
+  it('plays 6/4 as 6/4', () => {
+    const threeTwoMeasures: MeasureInfo[] = [
+      {
+        beatsPerMeasure: 6,
+        subdivisions: 4,
+        chordCount: 1
+      },
+      {
+        beatsPerMeasure: 6,
+        subdivisions: 4,
+        chordCount: 1
+      },
+    ];
+    expect(beatIsOnNewMeasure(threeTwoMeasures, 0)).toEqual(true);
+    expect(beatIsOnNewMeasure(threeTwoMeasures, 5)).toEqual(false);
+    expect(beatIsOnNewMeasure(threeTwoMeasures, 6)).toEqual(true);
+  })
+
+  it('plays 5/4 as 5/4', () => {
+    const threeTwoMeasures: MeasureInfo[] = [
+      {
+        beatsPerMeasure: 5,
+        subdivisions: 4,
+        chordCount: 1
+      },
+      {
+        beatsPerMeasure: 5,
+        subdivisions: 4,
+        chordCount: 1
+      },
+    ];
+    expect(beatIsOnNewMeasure(threeTwoMeasures, 0)).toEqual(true);
+    expect(beatIsOnNewMeasure(threeTwoMeasures, 4)).toEqual(false);
+    expect(beatIsOnNewMeasure(threeTwoMeasures, 5)).toEqual(true);
+  })
+
+  it('plays 7/4 as 7/4', () => {
+    const threeTwoMeasures: MeasureInfo[] = [
+      {
+        beatsPerMeasure: 7,
+        subdivisions: 4,
+        chordCount: 1
+      },
+      {
+        beatsPerMeasure: 7,
+        subdivisions: 4,
+        chordCount: 1
+      },
+    ];
+    expect(beatIsOnNewMeasure(threeTwoMeasures, 0)).toEqual(true);
+    expect(beatIsOnNewMeasure(threeTwoMeasures, 6)).toEqual(false);
+    expect(beatIsOnNewMeasure(threeTwoMeasures, 7)).toEqual(true);
   })
 })
