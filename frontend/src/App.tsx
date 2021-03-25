@@ -74,11 +74,15 @@ export interface MeasureInfo {
   chordCount: number;
 }
 
+const beatsConsumedByMeasure = ({ beatsPerMeasure, subdivisions }: MeasureInfo): number => {
+  return beatsPerMeasure * (4 / subdivisions);
+}
+
 export const beatIndexToMeasureIndex = (measureInfos: MeasureInfo[], beatIndex: number): number => {
   if (beatIndex < 0) return -1;
   let runningBeatIndex = 0;
   return measureInfos.findIndex((measureInfo: MeasureInfo) => {
-    runningBeatIndex += measureInfo.beatsPerMeasure * (4 / measureInfo.subdivisions);
+    runningBeatIndex += beatsConsumedByMeasure(measureInfo);
     return beatIndex < runningBeatIndex;
   })
 }
@@ -87,7 +91,7 @@ export const beatIsOnNewMeasure = (measureInfos: MeasureInfo[], beatIndex: numbe
   if (beatIndex === 0) return true;
   let runningBeatIndex = 0;
   return measureInfos.some((measureInfo: MeasureInfo) => {
-    runningBeatIndex += measureInfo.beatsPerMeasure * (4 / measureInfo.subdivisions);
+    runningBeatIndex += beatsConsumedByMeasure(measureInfo);
     return beatIndex === runningBeatIndex;
   })
 }
