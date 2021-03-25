@@ -109,7 +109,7 @@ let copiedChordRows = chordRowObjects.slice();
 
                   return (
                     <Col className="play-along--chord px-0" style={{...style, ...activeMeasureStyle }} {...colProps}>
-                      <Row className="d-flex flex-row-reverse mx-0" style={{ fontSize: chordQualityFontSize, lineHeight: 1, height: '1rem' }}>
+                      <Row className="d-flex flex-row-reverse mx-0" style={{ fontSize: chordQualityFontSize, lineHeight: '1rem' }}>
                         <div>
                           {chordQuality || (<br />)}
                         </div>
