@@ -6,6 +6,8 @@ import { NamedScale } from '../ChordMapper';
 import ChordRow, { ChordRowObject, scalesForChordRowObject } from '../ChordRow';
 import scaleToHexColor, { MonochromaticPossibleRootScale } from '../ScaleColorer';
 
+const approximateFontHeightToWidthRatio = 3 / 2;
+
 const PlayAlong: React.FC<{
   chordRowObjects: ChordRowObject[],
   measureInfos: MeasureInfo[],
@@ -87,11 +89,21 @@ let copiedChordRows = chordRowObjects.slice();
                   // use uniformColumnSize if present, otherwise calculate against beatsPerMeasure
                   // TODO: the expression `(parsedNumSpaces * (12 / beatsPerMeasure))` doesn't work as
                   // expected because a 12-beat measure might still only have 4 chords in iReal Pro
-                  const colProps = { xs: (parsedNumSpaces * (12 / totalBeatsInMeasure)) }
+                  const colWidthInGridCols = parsedNumSpaces * (12 / totalBeatsInMeasure);
+                  const colProps = { xs: colWidthInGridCols };
+
+                  const colWidthInPercentOfChartWidth = colWidthInGridCols / (12 * 4);
+                  const chordQualityFontWidthInPercentOfChartWidth = colWidthInPercentOfChartWidth / chordQuality.length;
+                  // font size determines the height of letters, but here we
+                  // need to base it on the width, which looks to be about 2/3,
+                  // so we multiply by approximateFontHeightToWidthRatio
+                  const chordQualityFontSizeInPercentOfChartWidth = chordQualityFontWidthInPercentOfChartWidth * approximateFontHeightToWidthRatio;
+                  const chordQualityFontSizeMax = `${chordQualityFontSizeInPercentOfChartWidth * 100}vw`;
+                  const chordQualityFontSize = `min(1em, ${chordQualityFontSizeMax})`;
 
                   return (
                     <Col className="play-along--chord px-0" style={{...style, ...activeMeasureStyle }} {...colProps}>
-                      <Row className="d-flex flex-row-reverse mx-0" style={{ fontSize: '1em', lineHeight: 1 }}>
+                      <Row className="d-flex flex-row-reverse mx-0" style={{ fontSize: chordQualityFontSize, lineHeight: 1, height: '1rem' }}>
                         <div>
                           {chordQuality || (<br />)}
                         </div>
