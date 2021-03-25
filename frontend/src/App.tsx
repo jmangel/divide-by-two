@@ -83,11 +83,11 @@ export const beatIndexToMeasureIndex = (measureInfos: MeasureInfo[], beatIndex: 
   })
 }
 
-const beatIsOnNewMeasure = (measureInfos: MeasureInfo[], beatIndex: number): boolean => {
+export const beatIsOnNewMeasure = (measureInfos: MeasureInfo[], beatIndex: number): boolean => {
   if (beatIndex === 0) return true;
   let runningBeatIndex = 0;
   return measureInfos.some((measureInfo: MeasureInfo) => {
-    runningBeatIndex += measureInfo.beatsPerMeasure;
+    runningBeatIndex += measureInfo.beatsPerMeasure * (4 / measureInfo.subdivisions);
     return beatIndex === runningBeatIndex;
   })
 }
