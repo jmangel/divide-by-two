@@ -131,7 +131,7 @@ const App: React.FC = () => {
   useEffect(() => {
     let runningSum = 0;
     measures.forEach((measureInfo) => {
-      runningSum += measureInfo.beatsPerMeasure;
+      runningSum += beatsConsumedByMeasure(measureInfo);
     })
     setTotalSongBeatCount(runningSum);
     setQuery(
