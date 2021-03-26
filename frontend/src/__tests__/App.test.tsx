@@ -119,6 +119,27 @@ describe('beatIndexToMeasureIndex', () => {
     expect(beatIndexToMeasureIndex(threeTwoMeasures, 6)).toEqual(0);
     expect(beatIndexToMeasureIndex(threeTwoMeasures, 7)).toEqual(1);
   })
+
+  describe('compound meters', () => {
+    it('plays 6/8 as 2/4', () => {
+      const sixEightMeasures: MeasureInfo[] = [
+        {
+          beatsPerMeasure: 6,
+          subdivisions: 8,
+          chordCount: 1
+        },
+        {
+          beatsPerMeasure: 6,
+          subdivisions: 8,
+          chordCount: 1
+        },
+      ];
+      expect(beatIndexToMeasureIndex(sixEightMeasures, 0)).toEqual(0);
+      expect(beatIndexToMeasureIndex(sixEightMeasures, 1)).toEqual(0);
+      expect(beatIndexToMeasureIndex(sixEightMeasures, 2)).toEqual(1);
+
+    })
+  })
 })
 
 describe('beatIsOnNewMeasure', () => {
@@ -228,5 +249,26 @@ describe('beatIsOnNewMeasure', () => {
     expect(beatIsOnNewMeasure(threeTwoMeasures, 0)).toEqual(true);
     expect(beatIsOnNewMeasure(threeTwoMeasures, 6)).toEqual(false);
     expect(beatIsOnNewMeasure(threeTwoMeasures, 7)).toEqual(true);
+  })
+
+  describe('compound meters', () => {
+    it('plays 6/8 as 2/4', () => {
+      const sixEightMeasures: MeasureInfo[] = [
+        {
+          beatsPerMeasure: 6,
+          subdivisions: 8,
+          chordCount: 1
+        },
+        {
+          beatsPerMeasure: 6,
+          subdivisions: 8,
+          chordCount: 1
+        },
+      ];
+      expect(beatIsOnNewMeasure(sixEightMeasures, 0)).toEqual(true);
+      expect(beatIsOnNewMeasure(sixEightMeasures, 1)).toEqual(false);
+      expect(beatIsOnNewMeasure(sixEightMeasures, 2)).toEqual(true);
+
+    })
   })
 })
