@@ -137,7 +137,24 @@ describe('beatIndexToMeasureIndex', () => {
       expect(beatIndexToMeasureIndex(sixEightMeasures, 0)).toEqual(0);
       expect(beatIndexToMeasureIndex(sixEightMeasures, 1)).toEqual(0);
       expect(beatIndexToMeasureIndex(sixEightMeasures, 2)).toEqual(1);
+    })
 
+    it('plays 9/8 as 3/4', () => {
+      const nineEightMeasures: MeasureInfo[] = [
+        {
+          beatsPerMeasure: 9,
+          subdivisions: 8,
+          chordCount: 1
+        },
+        {
+          beatsPerMeasure: 9,
+          subdivisions: 8,
+          chordCount: 1
+        },
+      ];
+      expect(beatIndexToMeasureIndex(nineEightMeasures, 0)).toEqual(0);
+      expect(beatIndexToMeasureIndex(nineEightMeasures, 2)).toEqual(0);
+      expect(beatIndexToMeasureIndex(nineEightMeasures, 3)).toEqual(1);
     })
   })
 })
@@ -268,7 +285,24 @@ describe('beatIsOnNewMeasure', () => {
       expect(beatIsOnNewMeasure(sixEightMeasures, 0)).toEqual(true);
       expect(beatIsOnNewMeasure(sixEightMeasures, 1)).toEqual(false);
       expect(beatIsOnNewMeasure(sixEightMeasures, 2)).toEqual(true);
+    })
 
+    it('plays 9/8 as 3/4', () => {
+      const nineEightMeasures: MeasureInfo[] = [
+        {
+          beatsPerMeasure: 9,
+          subdivisions: 8,
+          chordCount: 1
+        },
+        {
+          beatsPerMeasure: 9,
+          subdivisions: 8,
+          chordCount: 1
+        },
+      ];
+      expect(beatIsOnNewMeasure(nineEightMeasures, 0)).toEqual(true);
+      expect(beatIsOnNewMeasure(nineEightMeasures, 2)).toEqual(false);
+      expect(beatIsOnNewMeasure(nineEightMeasures, 3)).toEqual(true);
     })
   })
 })
