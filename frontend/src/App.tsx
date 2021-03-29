@@ -75,10 +75,10 @@ export interface MeasureInfo {
 }
 
 const beatsConsumedByMeasure = ({ beatsPerMeasure, subdivisions }: MeasureInfo): number => {
-  if (subdivisions === 8 && (beatsPerMeasure % 3) === 0) {
-    // compound meter
-    return (beatsPerMeasure / 3);
-  }
+  // if (subdivisions === 8 && (beatsPerMeasure % 3) === 0) {
+  //   // compound meter
+  //   return (beatsPerMeasure / 3);
+  // }
 
   return beatsPerMeasure * (4 / subdivisions);
 }
