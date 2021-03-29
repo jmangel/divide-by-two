@@ -115,9 +115,9 @@ const PlayAlong: React.FC<{
                       return `min(${defaultFontSize}, ${maxFontSize})`;
                     }
 
-                    const chordQualityFontSize = dynamicFontSize(chordQuality.length, '1em');
+                    const chordQualityFontSize = dynamicFontSize(chordQuality?.length || 0, '1em');
 
-                    const chordNoteFontSize = dynamicFontSize(chordNote.length, '1.5em');
+                    const chordNoteFontSize = dynamicFontSize(chordNote?.length || 0, '1.5em');
 
                     return (
                       <Col className="play-along--chord px-0" style={{...style, ...activeMeasureStyle }} {...colProps}>
