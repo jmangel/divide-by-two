@@ -440,7 +440,13 @@ const App: React.FC = () => {
       setChordRowObjects(chordRowObjects => chordRowObjects.slice(0,numNewChordRows))
     } else {
       const numNewChordRowsArray: Array<ChordRowObject> = [...Array(numNewChordRows)].map(() => createChordRowObject())
-      setChordRowObjects(chordRowObjects => [...chordRowObjects, ...numNewChordRowsArray])
+      setChordRowObjects(chordRowObjects => [...chordRowObjects, ...numNewChordRowsArray]);
+      setMeasures(oldMeasures => {
+        const newMeasureBeats = oldMeasures[oldMeasures.length - 1].beatsPerMeasure || 4;
+        const newMeasureSubdivision = oldMeasures[oldMeasures.length - 1].subdivisions || 4;
+        const newMeasure = { beatsPerMeasure: newMeasureBeats, subdivisions: newMeasureSubdivision, chordCount: 1 };
+        return [...oldMeasures, newMeasure];
+      })
     }
   }
 
