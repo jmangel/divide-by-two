@@ -74,13 +74,8 @@ export interface MeasureInfo {
   chordCount: number;
 }
 
-const beatsConsumedByMeasure = ({ beatsPerMeasure, subdivisions }: MeasureInfo): number => {
-  // if (subdivisions === 8 && (beatsPerMeasure % 3) === 0) {
-  //   // compound meter
-  //   return (beatsPerMeasure / 3);
-  // }
-
-  return beatsPerMeasure * (4 / subdivisions);
+const beatsConsumedByMeasure = ({ beatsPerMeasure }: MeasureInfo): number => {
+  return beatsPerMeasure;
 }
 
 export const beatIndexToMeasureIndex = (measureInfos: MeasureInfo[], beatIndex: number): number => {
@@ -290,8 +285,14 @@ const App: React.FC = () => {
 
   const startPlayback = () => {
     setIsPlaying(true);
-    setMetronomeCountIn(Math.ceil(beatsConsumedByMeasure(measures[0])) || 4);
-    metronomeTicker.postMessage({ message: 'start', milliseconds: (60 / bpm) * 1000, bpm: bpm, rotatedClickSubdivisions: rotatedClickSubdivisions() });
+    const countInClickSubdivisionsArray = countInClickSubdivisions();
+    setMetronomeCountIn(countInClickSubdivisionsArray.length);
+    metronomeTicker.postMessage({
+      message: 'start',
+      bpm,
+      rotatedClickSubdivisions: rotatedClickSubdivisions(),
+      countInClickSubdivisions: countInClickSubdivisionsArray
+    });
     playLowClick();
   }
   const pausePlayback = () => {
@@ -303,7 +304,10 @@ const App: React.FC = () => {
   useEffect(() => {
     if (metronomeInterval) clearInterval(metronomeInterval);
     if (isPlaying) {
-      metronomeTicker.postMessage({ message: 'start', milliseconds: (60 / bpm) * 1000, bpm: bpm, rotatedClickSubdivisions: rotatedClickSubdivisions() });
+      metronomeTicker.postMessage({
+        message: 'update',
+        bpm
+      });
     }
     setQuery({
       b: bpm
