@@ -22,6 +22,9 @@ const PlaybackControls: React.FC<{
   return (
     <Col className="pt-4">
       <Row className="playback-controls--row">
+          <div onClick={() => incrementBpm(-10)} >
+            <BiMinus />10
+          </div>
           <BiMinus onClick={() => incrementBpm(-1)} />
           <div className="align-items-center d-flex">
             <GiMetronome size="2em" />
@@ -30,6 +33,9 @@ const PlaybackControls: React.FC<{
             </span>
           </div>
           <BiPlus onClick={() => incrementBpm(1)} />
+          <div onClick={() => incrementBpm(10)} >
+            <BiPlus />10
+          </div>
       </Row>
       <Row className="playback-controls--row">
         <IoPlayBackSharp size="2em" onClick={() => restartMetronome()} />
