@@ -33,9 +33,9 @@ const PlayAlong: React.FC<{
   return (
     <Fragment>
       {
-        (measureInfos[0].beatsPerMeasure === 7 && measureInfos[0].subdivisions === 8) && (
+        (measureInfos[0].subdivisions === 8 && ([3,5,7].includes(measureInfos[0].beatsPerMeasure))) && (
           <Alert isOpen={alertVisible} toggle={onDismiss}>
-            7/8 time is not yet supported
+            {measureInfos[0].beatsPerMeasure}/8 time may not play correctly
           </Alert>
         )
       }
