@@ -275,7 +275,7 @@ const App: React.FC = () => {
 
   const startPlayback = () => {
     setIsPlaying(true);
-    setMetronomeCountIn(measures[0].beatsPerMeasure || 4);
+    setMetronomeCountIn(Math.ceil(beatsConsumedByMeasure(measures[0])) || 4);
     metronomeTicker.postMessage({ message: 'start', milliseconds: (60 / bpm) * 1000 });
 
     playLowClick();
