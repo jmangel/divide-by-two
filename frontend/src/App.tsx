@@ -27,7 +27,7 @@ import ChooseKey, { TransposingKeys } from './Steps/ChooseKey';
 import Edit from './Steps/Edit';
 import { parseStringifiedChordRowObject, csvifyChordRowObjects, parseCsvifiedChordRowObjects } from './JsonCondenser'
 import { MonochromaticPossibleRootScale, regenerateMonochromaticSchemes } from './ScaleColorer';
-import { CHROMATIC_NOTES, PossibleRootScale } from './ChordMapper';
+import { arrayRotate, CHROMATIC_NOTES, PossibleRootScale } from './ChordMapper';
 import PlayAlong from './Steps/PlayAlong';
 import PlaybackControls from './PlayAlong/PlaybackControls';
 import { myRealReader } from './RawParser';
@@ -273,11 +273,25 @@ const App: React.FC = () => {
 
   metronomeTicker.onmessage = () => {incrementMetronomeCount()};
 
+  const rotatedClickSubdivisions = () => {
+    const subdivisionsArray = measures.flatMap(({ beatsPerMeasure, subdivisions }) => {
+      return new Array(beatsPerMeasure).fill(subdivisions);
+    });
+    // if we're just starting, metronomeBeatCount is -1, and we want to rotate
+    // by 0, so we add one
+    return arrayRotate(subdivisionsArray, metronomeBeatCount + 1);
+  }
+
+  const countInClickSubdivisions = () => {
+    const currentMeasure = measures[Math.max(0, beatIndexToMeasureIndex(measures, metronomeBeatCount))];
+    const { beatsPerMeasure, subdivisions } = currentMeasure || { beatsPerMeasure: 4, subdivisions: 4 };
+    return new Array(beatsPerMeasure).fill(subdivisions);
+  }
+
   const startPlayback = () => {
     setIsPlaying(true);
     setMetronomeCountIn(Math.ceil(beatsConsumedByMeasure(measures[0])) || 4);
-    metronomeTicker.postMessage({ message: 'start', milliseconds: (60 / bpm) * 1000 });
-
+    metronomeTicker.postMessage({ message: 'start', milliseconds: (60 / bpm) * 1000, bpm: bpm, rotatedClickSubdivisions: rotatedClickSubdivisions() });
     playLowClick();
   }
   const pausePlayback = () => {
@@ -289,7 +303,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (metronomeInterval) clearInterval(metronomeInterval);
     if (isPlaying) {
-      metronomeTicker.postMessage({ message: 'start', milliseconds: (60 / bpm) * 1000 });
+      metronomeTicker.postMessage({ message: 'start', milliseconds: (60 / bpm) * 1000, bpm: bpm, rotatedClickSubdivisions: rotatedClickSubdivisions() });
     }
     setQuery({
       b: bpm
