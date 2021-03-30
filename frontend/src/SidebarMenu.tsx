@@ -1,9 +1,9 @@
 import React from 'react';
 import { slide as Menu } from 'react-burger-menu'
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 const styles = {
   bmBurgerButton: {
-    position: 'fixed',
     width: '36px',
     height: '30px',
     right: '36px',
@@ -24,6 +24,7 @@ const styles = {
   },
   bmMenuWrap: {
     position: 'fixed',
+    top: '0',
     height: '100%'
   },
   bmMenu: {
@@ -48,7 +49,7 @@ const styles = {
 
 const SidebarMenu: React.FC<{}> = ({}) => {
   return (
-    <Menu styles={styles} right>
+    <Menu styles={styles} customBurgerIcon={<GiHamburgerMenu />} right>
       <a id="home" className="menu-item" href="/">Home</a>
     </Menu>
   );
