@@ -42,7 +42,7 @@ const styles = {
     display: 'block',
     width: '100%',
     textAlign: 'left',
-    borderBottom: '0.01rem solid #6A8992',
+    borderBottom: '0.01rem solid var(--secondary-bg-color)',
     color: 'white',
     textDecoration: 'none',
   },

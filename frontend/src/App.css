@@ -89,7 +89,7 @@ hr {
 }
 
 .chord-row {
-  background-color: #6A8992;
+  background-color: var(--secondary-bg-color);
 }
 
 .color-coded--text {
