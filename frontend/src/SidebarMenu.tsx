@@ -27,7 +27,7 @@ const styles = {
   },
   bmMenu: {
     background: 'var(--main-bg-color)',
-    padding: '2.5em 1.5em 0',
+    paddingTop: '2.5em',
     fontSize: '0.875em'
   },
   bmMorphShape: {
@@ -62,7 +62,9 @@ const SidebarMenu: React.FC<{
       right
       isOpen={isOpen}
       onStateChange={(state) => setIsOpen(state.isOpen)}
-      itemClassName="pb-1"
+      menuClassName="px-3"
+      itemListClassName="px-1"
+      itemClassName="py-1 px-3"
     >
       <a id="home" className="menu-item" onClick={() => { goHome(); setIsOpen(false); } }>Home</a>
     </Menu>
