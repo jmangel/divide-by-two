@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { GiHamburgerMenu } from 'react-icons/gi';
+import { MdClose } from 'react-icons/md';
 
 const styles = {
   bmBurgerButton: {
@@ -18,9 +19,6 @@ const styles = {
   bmCrossButton: {
     height: '24px',
     width: '24px'
-  },
-  bmCross: {
-    background: '#bdc3c7'
   },
   bmMenuWrap: {
     position: 'fixed',
@@ -60,6 +58,7 @@ const SidebarMenu: React.FC<{
     <Menu
       styles={styles}
       customBurgerIcon={<GiHamburgerMenu onClick={() => setIsOpen(true)} />}
+      customCrossIcon={<MdClose style={{backgroundColor: 'transparent'}} />}
       right
       isOpen={isOpen}
       onStateChange={(state) => setIsOpen(state.isOpen)}
