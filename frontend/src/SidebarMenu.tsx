@@ -71,6 +71,19 @@ const SidebarMenu: React.FC<{
       itemClassName="py-1 px-3"
     >
       <a id="home" className="menu-item" onClick={() => { goHome(); setIsOpen(false); } }>Home</a>
+      <a
+        className="menu-item"
+        onClick={() => {
+          const el = document.createElement('textarea');
+          el.value = window.location.href;
+          document.body.appendChild(el);
+          el.select();
+          document.execCommand('copy');
+          document.body.removeChild(el);
+        }}
+      >
+        Copy current song link to share
+      </a>
       <a id="feedback" className="menu-item" href="mailto:songscaler+feedback@gmail.com">Send Feedback</a>
     </Menu>
   );
