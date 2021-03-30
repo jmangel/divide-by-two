@@ -458,6 +458,15 @@ const App: React.FC = () => {
   const addRows = (numNewChordRows: number) => {
     if (numNewChordRows < 0) {
       setChordRowObjects(chordRowObjects => chordRowObjects.slice(0,numNewChordRows))
+      setMeasures(oldMeasures => {
+        const lastMeasure = oldMeasures[oldMeasures.length - 1];
+        if (lastMeasure.chordCount > 1) {
+          lastMeasure.chordCount -= 1;
+          return [...oldMeasures.slice(0, -1), lastMeasure];
+        } else {
+          return oldMeasures.slice(0, -1);
+        }
+      });
     } else {
       const numNewChordRowsArray: Array<ChordRowObject> = [...Array(numNewChordRows)].map(() => createChordRowObject())
       setChordRowObjects(chordRowObjects => [...chordRowObjects, ...numNewChordRowsArray]);
