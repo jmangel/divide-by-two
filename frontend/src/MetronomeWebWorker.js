@@ -5,6 +5,7 @@ var runningClicksInSession = 0;
 var countInClickSubdivisions;
 var rotatedClickSubdivisions;
 var bpm;
+var interval;
 
 const millisecondsUntilNextClick = () => {
   const millisecondsPerBeat = (60 * 1000) / bpm;
@@ -27,13 +28,14 @@ const updateMetronome = () => {
       timeOfNextClick = timeOfNextClick + millisecondsUntilNextClick();
     }
 
-    requestAnimationFrame(() => updateMetronome());
+    interval = setTimeout(updateMetronome, timeOfNextClick - Date.now());
   }
 }
 
 self.addEventListener('message', function(e){
   switch (e.data.message) {
     case 'start':
+      if (interval) clearInterval(interval);
       isPlaying = true;
       bpm = e.data.bpm;
       rotatedClickSubdivisions = e.data.rotatedClickSubdivisions;
@@ -46,6 +48,7 @@ self.addEventListener('message', function(e){
       bpm = e.data.bpm;
       break;
     case 'stop':
+      if (interval) clearInterval(interval);
       isPlaying = false;
       runningClicksInSession = 0;
       break;
