@@ -28,19 +28,21 @@ const styles = {
     height: '100%'
   },
   bmMenu: {
-    background: '#373a47',
+    background: 'var(--main-bg-color)',
     padding: '2.5em 1.5em 0',
-    fontSize: '1.15em'
+    fontSize: '0.875em'
   },
   bmMorphShape: {
     fill: '#373a47'
   },
   bmItemList: {
-    color: '#b8b7ad',
     padding: '0.8em'
   },
   bmItem: {
-    display: 'block'
+    display: 'block',
+    width: '100%',
+    textAlign: 'left',
+    borderBottom: '0.01rem solid #6A8992',
   },
   bmOverlay: {
     background: 'rgba(0, 0, 0, 0.3)'
@@ -61,6 +63,7 @@ const SidebarMenu: React.FC<{
       right
       isOpen={isOpen}
       onStateChange={(state) => setIsOpen(state.isOpen)}
+      itemClassName="pb-1"
     >
       <a id="home" className="menu-item" onClick={() => { goHome(); setIsOpen(false); } }>Home</a>
     </Menu>
