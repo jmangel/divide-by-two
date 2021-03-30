@@ -136,3 +136,7 @@ hr {
 .play-along--chord + .play-along--chord {
   border-left: 1px solid white;
 }
+
+#react-burger-menu-btn {
+  display: none;
+}

@@ -57,7 +57,7 @@ const SidebarMenu: React.FC<{
   return (
     <Menu
       styles={styles}
-      customBurgerIcon={<GiHamburgerMenu />}
+      customBurgerIcon={<GiHamburgerMenu onClick={() => setIsOpen(true)} />}
       right
       isOpen={isOpen}
       onStateChange={(state) => setIsOpen(state.isOpen)}
