@@ -23,7 +23,9 @@ const styles = {
   bmMenuWrap: {
     position: 'fixed',
     top: '0',
-    height: '100%'
+    height: '100%',
+    maxWidth: '480px',
+    width: '100%',
   },
   bmMenu: {
     background: 'var(--main-bg-color)',
