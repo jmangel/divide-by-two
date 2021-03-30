@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
+import { Button, Toast, ToastBody } from 'reactstrap';
 
 const styles = {
   bmBurgerButton: {
@@ -57,6 +58,7 @@ const SidebarMenu: React.FC<{
   goHome,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [showCopyToast, setShowCopyToast] = useState(false);
 
   return (
     <Menu
@@ -80,11 +82,21 @@ const SidebarMenu: React.FC<{
           el.select();
           document.execCommand('copy');
           document.body.removeChild(el);
+          setShowCopyToast(true);
+          setTimeout(() => {setShowCopyToast(false)}, 3000);
         }}
       >
         Copy current song link to share
       </a>
       <a id="feedback" className="menu-item" href="mailto:songscaler+feedback@gmail.com">Send Feedback</a>
+      <Toast
+        style={{ bottom: '1rem', position: 'fixed', backgroundColor: 'var(--secondary-bg-color)' }}
+        isOpen={showCopyToast}
+      >
+        <ToastBody>
+          Link copied to clipboard
+        </ToastBody>
+      </Toast>
     </Menu>
   );
 }
