@@ -251,21 +251,20 @@ const App: React.FC = () => {
   const [playLowClick] = useSound(LowClickFile);
 
   const incrementMetronomeCount = () => {
-    if (metronomeCountIn > 1) {
-      setMetronomeCountIn((oldCountIn: number) => {
-        playLowClick();
-        return (oldCountIn - 1);
-      });
-    } else {
-      if (metronomeCountIn === 1) {
-        setMetronomeCountIn(0);
-      }
+    if (metronomeCountIn <= 1) {
       setMetronomeBeatCount((beat: number) => {
         const newBeat = (beat + 1) % totalSongBeatCount;
         beatIsOnNewMeasure(measures, newBeat) ? playHighClick() : playLowClick();
         return newBeat;
       });
     }
+    setMetronomeCountIn((oldCountIn: number) => {
+      if (oldCountIn > 1) {
+        playLowClick();
+        return (oldCountIn - 1);
+      }
+      return 0;
+    });
   }
 
   metronomeTicker.onmessage = () => {incrementMetronomeCount()};
