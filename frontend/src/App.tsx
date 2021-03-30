@@ -562,7 +562,7 @@ const App: React.FC = () => {
           <span className="mx-auto">
             {song.title || 'Untitled Song'}
           </span>
-          <SidebarMenu />
+          <SidebarMenu goHome={navigateToFirstStep} />
         </header>
         {
           expandedChordRow ? (

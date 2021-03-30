@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { GiHamburgerMenu } from 'react-icons/gi';
 
@@ -47,10 +47,22 @@ const styles = {
   }
 }
 
-const SidebarMenu: React.FC<{}> = ({}) => {
+const SidebarMenu: React.FC<{
+  goHome: () => void,
+}> = ({
+  goHome,
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
-    <Menu styles={styles} customBurgerIcon={<GiHamburgerMenu />} right>
-      <a id="home" className="menu-item" href="/">Home</a>
+    <Menu
+      styles={styles}
+      customBurgerIcon={<GiHamburgerMenu />}
+      right
+      isOpen={isOpen}
+      onStateChange={(state) => setIsOpen(state.isOpen)}
+    >
+      <a id="home" className="menu-item" onClick={() => { goHome(); setIsOpen(false); } }>Home</a>
     </Menu>
   );
 }
