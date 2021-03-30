@@ -43,6 +43,8 @@ const styles = {
     width: '100%',
     textAlign: 'left',
     borderBottom: '0.01rem solid #6A8992',
+    color: 'white',
+    textDecoration: 'none',
   },
   bmOverlay: {
     background: 'rgba(0, 0, 0, 0.3)'
@@ -69,6 +71,7 @@ const SidebarMenu: React.FC<{
       itemClassName="py-1 px-3"
     >
       <a id="home" className="menu-item" onClick={() => { goHome(); setIsOpen(false); } }>Home</a>
+      <a id="feedback" className="menu-item" href="mailto:songscaler+feedback@gmail.com">Send Feedback</a>
     </Menu>
   );
 }
