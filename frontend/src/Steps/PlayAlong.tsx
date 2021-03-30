@@ -30,17 +30,12 @@ const PlayAlong: React.FC<{
   const onDismiss = () => setAlertVisible(false);
 
   let copiedChordRows = chordRowObjects.slice();
-  const alertMessage = (measureInfos[0].subdivisions !== 4) && (
-    (measureInfos[0].subdivisions === 8 && [3,5,7].includes(measureInfos[0].beatsPerMeasure)) ?
-      `${measureInfos[0].beatsPerMeasure}/8 time may not play correctly` :
-      `Metronome will click on quarter notes, but time signature has ${measureInfos[0].subdivisions} subdivisions`
-  )
   return (
     <Fragment>
       {
-        alertMessage && (
+        (measureInfos[0].subdivisions === 8 && ([3,5,7].includes(measureInfos[0].beatsPerMeasure))) && (
           <Alert isOpen={alertVisible} toggle={onDismiss}>
-            {alertMessage}
+            {measureInfos[0].beatsPerMeasure}/8 time may not play correctly
           </Alert>
         )
       }
