@@ -34,6 +34,7 @@ import { myRealReader } from './RawParser';
 
 import Worker from "worker-loader!./MetronomeWebWorker.js";
 import { csvifyMeasureInfos, parseCsvifiedMeasureInfos, createMeasureInfo } from './MeasureCondenser';
+import SidebarMenu from './SidebarMenu';
 
 const metronomeTicker = new Worker();
 
@@ -561,11 +562,7 @@ const App: React.FC = () => {
           <span className="mx-auto">
             {song.title || 'Untitled Song'}
           </span>
-          {
-            stepIndex > 0 && (
-              <MdHome className="mx-2" onClick={() => navigateToFirstStep()} />
-            )
-          }
+          <SidebarMenu />
         </header>
         {
           expandedChordRow ? (
