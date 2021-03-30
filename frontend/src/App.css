@@ -66,6 +66,10 @@ hr {
   }
 }
 
+.bm-burger-button svg, .bm-menu-wrap svg {
+  display: flex;
+}
+
 .btn {
   text-transform: uppercase;
   font-weight: bold;
