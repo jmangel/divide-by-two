@@ -1,9 +1,8 @@
 import React from 'react';
-import { MdAddCircle, MdRemoveCircle } from 'react-icons/md';
 import { Col, Modal, ModalBody, Row } from "reactstrap";
 import { MeasureInfo } from '../App';
 import { NamedScale } from '../ChordMapper';
-import ChordRow, { ChordRowObject, scalesForChordRowObject } from '../ChordRow';
+import { ChordRowObject, scalesForChordRowObject } from '../ChordRow';
 import scaleToHexColor, { MonochromaticPossibleRootScale } from '../ScaleColorer';
 
 const approximateFontHeightToWidthRatio = 3 / 2;
