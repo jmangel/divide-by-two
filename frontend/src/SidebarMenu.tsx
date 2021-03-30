@@ -9,7 +9,8 @@ const styles = {
     width: '36px',
     height: '30px',
     right: '36px',
-    top: '36px'
+    top: '36px',
+    fontSize: '18px',
   },
   bmBurgerBars: {
     background: '#fff'
