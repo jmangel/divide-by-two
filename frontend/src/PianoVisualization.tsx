@@ -6,9 +6,13 @@ import scaleToHexColor, { MonochromaticPossibleRootScale } from './ScaleColorer'
 const ChordPianoVisualization: React.FC<{
   chordRowObject: ChordRowObject,
   monochromaticSchemes: { [key in MonochromaticPossibleRootScale]: string }[],
+  index: number,
+  scheduleUpdate?: () => void,
 }> = ({
   chordRowObject,
   monochromaticSchemes,
+  index,
+  scheduleUpdate,
 }) => {
   const { chordNote, selectedScaleObject } = chordRowObject;
 
@@ -42,7 +46,12 @@ const ChordPianoVisualization: React.FC<{
 
     pressedNotes.forEach((scaleNote) => {
       piano.keyDown(`${scaleNote}4`);
-    })
+    });
+
+    if (scheduleUpdate) {
+      console.warn('scheduling update');
+      scheduleUpdate()
+    };
   }
 
   useEffect(() => {
