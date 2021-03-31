@@ -153,16 +153,25 @@ const PlayAlong: React.FC<{
                     className="d-flex border-0"
                   >
                     <Col>
-                      {measureChords.map((measureChord, index) => (
-                        <Row className="justify-content-center">
-                          {measureChord.chordNote}
-                          {/* <ChordPianoVisualization
-                            chordRowObject={measureChord}
-                            monochromaticSchemes={monochromaticSchemes}
-                            index={index}
-                          /> */}
-                        </Row>
-                      ))}
+                      {measureChords.map((measureChord, index) => {
+                        const maxHeightPercentage = 25 / measureChords.length;
+                        const maxHeight = `${maxHeightPercentage}vh`;
+                        // const maxWidth = `${maxHeightPercentage * 2}vh`;
+
+                        const defaultHeight = '50vw';
+                        const defaultWidth = '100vw';
+                        return (
+                          <Row className="justify-content-center"
+                            style={{ width: defaultWidth, height: defaultHeight, maxHeight }}
+                          >
+                            <ChordPianoVisualization
+                              chordRowObject={measureChord}
+                              monochromaticSchemes={monochromaticSchemes}
+                              index={index}
+                            />
+                          </Row>
+                        )
+                      })}
                     </Col>
                   </PopoverBody>
                 </Popover>
