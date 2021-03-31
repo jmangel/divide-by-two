@@ -49,14 +49,14 @@ const ChordPianoVisualization: React.FC<{
   chordRowObject: ChordRowObject,
   monochromaticSchemes: { [key in MonochromaticPossibleRootScale]: string }[],
   index: number,
-  scheduleUpdate?: () => void,
 }> = ({
   chordRowObject,
   monochromaticSchemes,
   index,
-  scheduleUpdate,
 }) => {
   const { chordNote, selectedScaleObject } = chordRowObject;
+
+  const divId = `pianoContainer-${index}`
 
   const scaleNotes = selectedScaleObject?.scaleNotes || [];
   const lowerChordTones = [
