@@ -18,14 +18,24 @@ const ChordPianoVisualization: React.FC<{
 
     pianoContainer.innerHTML = '';
 
+    const scaleNotes = selectedScaleObject?.scaleNotes || [];
+
+    const lowerChordTones = [
+      scaleNotes[0],
+      scaleNotes[2],
+      scaleNotes[4],
+      scaleNotes[6] || scaleNotes[scaleNotes.length - 1],
+    ].filter((element) => !!element) as string[];
+
     const piano = new Instrument(pianoContainer, {
       startOctave: 4,
       endOctave: 4,
       endNote: 'B',
+      highlightedNotes: lowerChordTones,
     });
     piano.create();
 
-    selectedScaleObject?.scaleNotes?.forEach((scaleNote) => {
+    scaleNotes.forEach((scaleNote) => {
       piano.keyDown(`${scaleNote}4`);
     })
   }
