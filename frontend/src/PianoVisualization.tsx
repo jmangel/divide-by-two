@@ -18,20 +18,16 @@ const ChordPianoVisualization: React.FC<{
 
     pianoContainer.innerHTML = '';
 
-    const selectedScalePianoOptions = selectedScaleObject ? {
-      highlightedNotes: selectedScaleObject.scaleNotes,
-      highlightColor: scaleToHexColor(selectedScaleObject.rootScale, selectedScaleObject.rootScaleNote, monochromaticSchemes),
-    } : {}
-
     const piano = new Instrument(pianoContainer, {
       startOctave: 4,
       endOctave: 4,
       endNote: 'B',
-      ...selectedScalePianoOptions
     });
     piano.create();
 
-    piano.keyDown(`${chordNote}4`);
+    selectedScaleObject?.scaleNotes?.forEach((scaleNote) => {
+      piano.keyDown(`${scaleNote}4`);
+    })
   }
 
   useEffect(() => {
