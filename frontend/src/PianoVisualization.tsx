@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { ChordRowObject } from './ChordRow';
 import { Instrument } from "piano-chart";
+import scaleToHexColor, { MonochromaticPossibleRootScale } from './ScaleColorer';
 
 const ChordPianoVisualization: React.FC<{
   chordRowObject: ChordRowObject,
+  monochromaticSchemes: { [key in MonochromaticPossibleRootScale]: string }[],
 }> = ({
   chordRowObject,
+  monochromaticSchemes,
 }) => {
   const { chordNote, selectedScaleObject } = chordRowObject;
 
@@ -15,11 +18,16 @@ const ChordPianoVisualization: React.FC<{
 
     pianoContainer.innerHTML = '';
 
+    const selectedScalePianoOptions = selectedScaleObject ? {
+      highlightedNotes: selectedScaleObject.scaleNotes,
+      highlightColor: scaleToHexColor(selectedScaleObject.rootScale, selectedScaleObject.rootScaleNote, monochromaticSchemes),
+    } : {}
+
     const piano = new Instrument(pianoContainer, {
       startOctave: 4,
       endOctave: 4,
       endNote: 'B',
-      highlightedNotes: selectedScaleObject?.scaleNotes || [],
+      ...selectedScalePianoOptions
     });
     piano.create();
 
