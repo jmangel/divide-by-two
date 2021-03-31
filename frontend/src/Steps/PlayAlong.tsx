@@ -146,7 +146,7 @@ const PlayAlong: React.FC<{
                   boundariesElement={document.getElementById('play-along-grid') || 'scrollParent'}
                 >
                   <PopoverBody
-                    className="d-flex border-0"
+                    className="d-flex border-0 bg-light"
                   >
                     <Col>
                       {measureChords.map((measureChord, index) => {

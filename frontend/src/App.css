@@ -128,10 +128,7 @@ hr {
 }
 
 .piano-visualization-popover {
-  background: transparent;
-  width: 100vw;
   max-width: 100vw;
-  border: none;
 }
 
 .play-along--count-in-modal--backdrop {
