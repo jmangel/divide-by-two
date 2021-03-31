@@ -150,9 +150,9 @@ const PlayAlong: React.FC<{
                   boundariesElement={document.getElementById('play-along-grid') || 'scrollParent'}
                 >
                   <PopoverBody
-                    className="d-flex border-0 bg-light"
+                    className="d-flex border-0 bg-light justify-content-center"
                   >
-                    <Col>
+                    <div>
                       {measureChords.map((measureChord, index) => {
                         const maxHeightPercentage = 25 / measureChords.length;
                         const maxHeight = `${maxHeightPercentage}vh`;
@@ -161,7 +161,7 @@ const PlayAlong: React.FC<{
                         const defaultHeight = '50vw';
                         const defaultWidth = '100vw';
                         return (
-                          <Row className="justify-content-center"
+                          <div className="px-2"
                             style={{ width: defaultWidth, height: defaultHeight, maxHeight }}
                           >
                             <ChordPianoVisualization
@@ -169,10 +169,10 @@ const PlayAlong: React.FC<{
                               monochromaticSchemes={monochromaticSchemes}
                               index={index}
                             />
-                          </Row>
+                          </div>
                         )
                       })}
-                    </Col>
+                    </div>
                   </PopoverBody>
                 </Popover>
               )}
