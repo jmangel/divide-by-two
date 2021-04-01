@@ -173,7 +173,6 @@ const PlayAlong: React.FC<{
                           >
                             <ChordPianoVisualization
                               chordRowObject={measureChord}
-                              monochromaticSchemes={monochromaticSchemes}
                             />
                           </div>
                         )
