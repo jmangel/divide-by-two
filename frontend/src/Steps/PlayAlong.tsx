@@ -145,9 +145,20 @@ const PlayAlong: React.FC<{
                   isOpen
                   hideArrow
                   target={`measure-${index}`}
+                  offset="0,100vh"
                   style={{ width: '100%', background: 'transparent', left: 0 }}
                   popperClassName="piano-visualization-popover"
-                  boundariesElement={document.getElementById('play-along-grid') || 'scrollParent'}
+                  modifiers={{
+                    preventOverflow: {
+                      boundariesElement: document.getElementById('play-along-grid') || 'scrollParent',
+                      padding: {
+                        top: 0,
+                        bottom: 5,
+                        left: 0,
+                        right: 0,
+                      }
+                    }
+                  }}
                 >
                   <PopoverBody
                     className="d-flex border-0 bg-light justify-content-center"
