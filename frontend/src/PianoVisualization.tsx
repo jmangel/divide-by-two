@@ -1,6 +1,5 @@
 import React from 'react';
 import { ChordRowObject } from './ChordRow';
-import { MonochromaticPossibleRootScale } from './ScaleColorer';
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import './CustomPianoStyles.css'
@@ -47,16 +46,10 @@ const keyboardConfigForScaleNotes = (scaleNotes: string[]): KeyboardConfigEntry[
 
 const ChordPianoVisualization: React.FC<{
   chordRowObject: ChordRowObject,
-  monochromaticSchemes: { [key in MonochromaticPossibleRootScale]: string }[],
-  index: number,
 }> = ({
   chordRowObject,
-  monochromaticSchemes,
-  index,
 }) => {
-  const { chordNote, selectedScaleObject } = chordRowObject;
-
-  const divId = `pianoContainer-${index}`
+  const { selectedScaleObject } = chordRowObject;
 
   const scaleNotes = selectedScaleObject?.scaleNotes || [];
   const lowerChordTones = [

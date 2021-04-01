@@ -186,8 +186,6 @@ const ChordRow: React.FC<{
           <Row className={'expanded-chord-row py-3 justify-content-center border-top'}>
             <ChordPianoVisualization
               chordRowObject={chordRowObject}
-              monochromaticSchemes={monochromaticSchemes}
-              index={index}
             />
           </Row>
         )}
