@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
-import { Col, Modal, ModalBody, Row } from "reactstrap";
+import { Col, Modal, ModalBody, Popover, PopoverBody, Row } from "reactstrap";
 import { MeasureInfo } from '../App';
 import { NamedScale } from '../ChordMapper';
 import { ChordRowObject, scalesForChordRowObject } from '../ChordRow';
+import ChordPianoVisualization from '../PianoVisualization';
 import scaleToHexColor, { MonochromaticPossibleRootScale } from '../ScaleColorer';
 
 const approximateFontHeightToWidthRatio = 3 / 2;
@@ -25,9 +26,11 @@ const PlayAlong: React.FC<{
   pause,
 }) => {
   let copiedChordRows = chordRowObjects.slice();
+
   return (
     <Row
       className="d-flex flex-grow-1 align-items-center pr-1"
+      id="play-along-grid"
     >
       {
         (isPlaying && metronomeCountIn > 0) && (
@@ -60,10 +63,12 @@ const PlayAlong: React.FC<{
           let totalBeatsInMeasure = 0;
           measureChords.forEach((measureChord) => totalBeatsInMeasure += parseInt(measureChord.beats));
 
+          const isActive = measurePlaybackIndex === index;
+
           return (
             <Fragment>
               <Col xs={3}>
-                <Row className="pl-1 pb-1 h-100">
+                <Row className="pl-1 pb-1 h-100" id={`measure-${index}`}>
                   {measureChords.map((chordRowObject: ChordRowObject) => {
                     const { chordNote, chordQuality, bassNote, selectedScale, selectedScaleRoot, beats } = chordRowObject;
                     const scales = scalesForChordRowObject(chordRowObject);
@@ -79,7 +84,7 @@ const PlayAlong: React.FC<{
 
                     const style = borderColor ? { borderTop: `3px solid ${borderColor}` } : { borderTop: `3px solid transparent`};
 
-                    const activeMeasureStyle = measurePlaybackIndex === index ? {
+                    const activeMeasureStyle = isActive ? {
                       backgroundColor: 'white', color: 'black'
                     } : {
                       backgroundColor: 'rgb(255,255,255,0.2)'
@@ -129,6 +134,33 @@ const PlayAlong: React.FC<{
                   })}
                 </Row>
               </Col>
+              {isActive && (
+                <Popover
+                  placement="bottom"
+                  fade={false}
+                  isOpen
+                  hideArrow
+                  target={`measure-${index}`}
+                  style={{ width: '100%', background: 'transparent', left: 0 }}
+                  popperClassName="piano-visualization-popover"
+                  boundariesElement={document.getElementById('play-along-grid') || 'scrollParent'}
+                >
+                  <PopoverBody
+                    className="d-flex border-0"
+                  >
+                    <Col>
+                      {measureChords.map((measureChord, index) => (
+                        <Row className="justify-content-center">
+                          <ChordPianoVisualization
+                            chordRowObject={measureChord}
+                            monochromaticSchemes={monochromaticSchemes}
+                          />
+                        </Row>
+                      ))}
+                    </Col>
+                  </PopoverBody>
+                </Popover>
+              )}
             </Fragment>
           );
         })
