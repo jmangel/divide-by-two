@@ -39,6 +39,7 @@ const PlayAlong: React.FC<{
             isOpen
             fade={false}
             centered
+            zIndex={1061}
             backdropClassName="play-along--count-in-modal--backdrop"
             contentClassName="play-along--count-in-modal--content"
           >
