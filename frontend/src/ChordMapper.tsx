@@ -835,6 +835,17 @@ const countSharpsAndFlats = (chordNote: string): number => {
   return chordNote.split('#').length - chordNote.split('b').length;
 }
 
+const relativeNatural = (chordNote: string): string => {
+  return chordNote.split('#')[0].split('b')[0];
+}
+
+export const toChromaticNote = (note: string): string => {
+  const relativeNaturalIndex = CHROMATIC_NOTES.findIndex(enharmonics => enharmonics.includes(relativeNatural(note)));
+  const chromaticNoteIndex = (relativeNaturalIndex + countSharpsAndFlats(note)) % 12;
+  const chromaticNoteEnharmonics = CHROMATIC_NOTES[chromaticNoteIndex];
+  return chromaticNoteEnharmonics[0];
+}
+
 export const countSemitonesBetween = (rootNote: string, intervalNote: string): number => {
   const rootNoteIndex = NAMED_NOTES.findIndex((note) => rootNote.includes(note));
   const rotatedNamedNotes = arrayRotate(NAMED_NOTES, rootNoteIndex);
