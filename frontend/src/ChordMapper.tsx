@@ -827,6 +827,17 @@ export const lowerChordToneIntervalInSemitones = (chordQuality: string) => {
   ];
 }
 
+export const lowerChordTones = (chordNote: string, chordQuality: string) => {
+  const semitoneIntervals = lowerChordToneIntervalInSemitones(chordQuality);
+
+  const chromaticTonic = toChromaticNote(chordNote);
+  const chromaticTonicIndex = CHROMATIC_NOTES.findIndex(enharmonics => enharmonics.includes(chromaticTonic));
+
+  return semitoneIntervals.map((semitoneInterval) => {
+    return toChromaticNote(CHROMATIC_NOTES[(chromaticTonicIndex + semitoneInterval) % 12][0]);
+  })
+}
+
 export function arrayRotate<T>(arr: Array<T>, index: number): Array<T> {
   const emptyArray: Array<T> = [];
   const clone = emptyArray.concat(arr)

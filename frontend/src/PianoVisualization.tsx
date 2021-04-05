@@ -3,7 +3,7 @@ import { ChordRowObject } from './ChordRow';
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import './CustomPianoStyles.css'
-import { CHROMATIC_NOTES, lowerChordToneIntervalInSemitones, toChromaticNote } from './ChordMapper';
+import { CHROMATIC_NOTES, lowerChordToneIntervalInSemitones, lowerChordTones, toChromaticNote } from './ChordMapper';
 
 const REACT_PIANO_PITCH_INDEXES: Record<string, any> = {
   'C': 0,
@@ -93,15 +93,17 @@ const ChordPianoVisualization: React.FC<{
   const { selectedScaleObject, chordNote, chordQuality, bassNote } = chordRowObject;
   const numOctaves = 2;
 
-  // const readableBassNote = bassNote.replace(/\//g, '');
+  const readableBassNote = bassNote.replace(/\//g, '');
 
-  const scaleNotes = selectedScaleObject?.scaleNotes || []; // TODO: include chord tones and bass note if no scale selected
+  const scaleNotes = selectedScaleObject?.scaleNotes;
+  let chordTones = lowerChordTones(chordNote, chordQuality);
+  if (readableBassNote) chordTones = [toReactPianoPitchIndex(readableBassNote), ...chordTones];
 
   const firstNote = MidiNumbers.fromNote('c4');
   const lastNote = MidiNumbers.fromNote(`b${4 + numOctaves - 1}`);
 
   // customize indicators here
-  const labeledNotes: string[] = scaleNotes;
+  const labeledNotes: string[] = scaleNotes || chordTones;
   // TODO: include bass note as root, but what about widespread chords? 3 octaves?
   const activeNotes = lowerChordToneMidiNumbers(chordNote, chordQuality, lastNote);
 
