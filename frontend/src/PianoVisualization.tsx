@@ -85,25 +85,32 @@ const lowerChordToneMidiNumbers = (chordNote: string, chordQuality: string, uppe
   })
 }
 
+const chordTones = (chordRowObject: ChordRowObject) => {
+  const { chordNote, chordQuality, bassNote } = chordRowObject;
+
+  const readableBassNote = bassNote.replace(/\//g, '');
+
+  let chordTones = lowerChordTones(chordNote, chordQuality);
+  if (readableBassNote) chordTones = [toReactPianoPitchIndex(readableBassNote), ...chordTones];
+
+  return chordTones;
+}
+
 const ChordPianoVisualization: React.FC<{
   chordRowObject: ChordRowObject,
 }> = ({
   chordRowObject,
 }) => {
-  const { selectedScaleObject, chordNote, chordQuality, bassNote } = chordRowObject;
+  const { selectedScaleObject, chordNote, chordQuality } = chordRowObject;
   const numOctaves = 2;
 
-  const readableBassNote = bassNote.replace(/\//g, '');
-
   const scaleNotes = selectedScaleObject?.scaleNotes;
-  let chordTones = lowerChordTones(chordNote, chordQuality);
-  if (readableBassNote) chordTones = [toReactPianoPitchIndex(readableBassNote), ...chordTones];
 
   const firstNote = MidiNumbers.fromNote('c4');
   const lastNote = MidiNumbers.fromNote(`b${4 + numOctaves - 1}`);
 
   // customize indicators here
-  const labeledNotes: string[] = scaleNotes || chordTones;
+  const labeledNotes: string[] = scaleNotes || chordTones(chordRowObject);
   // TODO: include bass note as root, but what about widespread chords? 3 octaves?
   const activeNotes = lowerChordToneMidiNumbers(chordNote, chordQuality, lastNote);
 
