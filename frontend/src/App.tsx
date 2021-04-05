@@ -106,9 +106,7 @@ const selectedScaleObject = (chordRowObject: ChordRowObject) => {
 
 const App: React.FC = () => {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js').then(registration => {
-      console.log('SW registered: ', registration);
-    }).catch(registrationError => {
+    navigator.serviceWorker.register('service-worker.js').catch(registrationError => {
       console.log('SW registration failed: ', registrationError);
     });
   }
