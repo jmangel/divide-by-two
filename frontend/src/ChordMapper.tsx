@@ -814,6 +814,19 @@ const CHORD_MAPPINGS = [
   },
 ]
 
+export const lowerChordToneIntervalInSemitones = (chordQuality: string) => {
+  const thirdSemitones = (new RegExp(/-|o|h/)).test(chordQuality) ? 3 : 4;
+  const fifthSemitones = (new RegExp(/o|h|b5/)).test(chordQuality) ? 6 : (new RegExp(/#5|\+/)).test(chordQuality) ? 8 : 7;
+  const seventhSemitones = (new RegExp(/\^/)).test(chordQuality) ? 11 : (new RegExp(/o|6/)).test(chordQuality) ? 9 : 10;
+
+  return [
+    0,
+    thirdSemitones,
+    fifthSemitones,
+    seventhSemitones,
+  ];
+}
+
 export function arrayRotate<T>(arr: Array<T>, index: number): Array<T> {
   const emptyArray: Array<T> = [];
   const clone = emptyArray.concat(arr)

@@ -3,7 +3,7 @@ import { ChordRowObject } from './ChordRow';
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import './CustomPianoStyles.css'
-import { CHROMATIC_NOTES, toChromaticNote } from './ChordMapper';
+import { CHROMATIC_NOTES, lowerChordToneIntervalInSemitones, toChromaticNote } from './ChordMapper';
 
 const REACT_PIANO_PITCH_INDEXES: Record<string, any> = {
   'C': 0,
@@ -67,29 +67,31 @@ const keyboardConfigForScaleNotes = (scaleNotes: string[]): KeyboardConfigEntry[
   })
 }
 
+const lowerChordToneMidiNumbers = (chordNote: string, chordQuality: string, upperBound: number): number[] => {
+  const tonicMidiNumber = MidiNumbers.fromNote(`${toReactPianoPitchIndex(chordNote)}4`);
+  const intervals = lowerChordToneIntervalInSemitones(chordQuality);
+  return intervals.map((semitones) => {
+    let scaleNoteMidiNumber = tonicMidiNumber + semitones;
+    while (scaleNoteMidiNumber > upperBound) scaleNoteMidiNumber -= 12;
+    return scaleNoteMidiNumber;
+  })
+}
+
 const ChordPianoVisualization: React.FC<{
   chordRowObject: ChordRowObject,
 }> = ({
   chordRowObject,
 }) => {
-  const { selectedScaleObject } = chordRowObject;
+  const { selectedScaleObject, chordNote, chordQuality } = chordRowObject;
 
   const scaleNotes = selectedScaleObject?.scaleNotes || [];
-  const lowerChordTones = [
-    scaleNotes[0],
-    scaleNotes[2],
-    scaleNotes[4],
-    scaleNotes[6] || scaleNotes[scaleNotes.length - 1],
-  ].filter((element) => !!element) as string[];
 
   const firstNote = MidiNumbers.fromNote('c4');
   const lastNote = MidiNumbers.fromNote('b4');
 
   // customize indicators here
-  const pressedNotes: string[] = lowerChordTones;
   const labeledNotes: string[] = scaleNotes;
-
-  const activeNotes = pressedNotes.map(scaleNote => MidiNumbers.fromNote(`${toReactPianoPitchIndex(scaleNote)}4`));
+  const activeNotes = lowerChordToneMidiNumbers(chordNote, chordQuality, lastNote);
 
   const keyboardShortcuts = KeyboardShortcuts.create({
     firstNote: firstNote,
