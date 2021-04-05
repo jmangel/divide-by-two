@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { ChordRowObject } from './ChordRow';
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 import 'react-piano/dist/styles.css';
 import './CustomPianoStyles.css'
 import { CHROMATIC_NOTES, lowerChordToneIntervalInSemitones, lowerChordTones, toChromaticNote } from './ChordMapper';
+import { GrTarget } from 'react-icons/gr';
 
 const REACT_PIANO_PITCH_INDEXES: Record<string, any> = {
   'C': 0,
@@ -164,7 +165,7 @@ const ChordPianoVisualization: React.FC<{
 
         const className = classNames.join(' ');
 
-        return (
+        const content = (
           keyboardShortcut ? (
             <div
               className={className}
@@ -173,6 +174,13 @@ const ChordPianoVisualization: React.FC<{
             </div>
           ) : null
         );
+
+        return (
+          <Fragment>
+            {isTargetNote && (<GrTarget className="ReactPiano__NoteLabel w-100" />)}
+            {content}
+          </Fragment>
+        )
       }}
     />
   );
