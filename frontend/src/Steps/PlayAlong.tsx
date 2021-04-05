@@ -174,6 +174,7 @@ const PlayAlong: React.FC<{
                           >
                             <ChordPianoVisualization
                               chordRowObject={measureChord}
+                              nextChord={measureChords[index + 1] || copiedChordRows[0]}
                             />
                           </div>
                         )
