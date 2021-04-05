@@ -263,20 +263,18 @@ const App: React.FC = () => {
 
   const incrementMetronomeCount = () => {
     if (metronomeCountIn <= 1) {
-      setMetronomeBeatCount((beat: number) => {
-        const newBeat = (beat + 1) % totalSongBeatCount;
-        beatIsOnNewMeasure(measures, newBeat) ? playHighClick() : playLowClick();
-        return newBeat;
-      });
+      setMetronomeBeatCount((beat: number) =>  (beat + 1) % totalSongBeatCount);
     }
-    setMetronomeCountIn((oldCountIn: number) => {
-      if (oldCountIn > 1) {
-        playLowClick();
-        return (oldCountIn - 1);
-      }
-      return 0;
-    });
+    setMetronomeCountIn((oldCountIn: number) => Math.max(oldCountIn - 1, 0));
   }
+
+  useEffect(() => {
+    if (isPlaying && metronomeCountIn > 0) playLowClick();
+  }, [metronomeCountIn])
+
+  useEffect(() => {
+    if (isPlaying) beatIsOnNewMeasure(measures, metronomeBeatCount) ? playHighClick() : playLowClick();
+  }, [metronomeBeatCount])
 
   metronomeTicker.onmessage = () => {incrementMetronomeCount()};
 
@@ -305,7 +303,6 @@ const App: React.FC = () => {
       rotatedClickSubdivisions: rotatedClickSubdivisions(),
       countInClickSubdivisions: countInClickSubdivisionsArray
     });
-    playLowClick();
   }
   const pausePlayback = () => {
     metronomeTicker.postMessage({ message: 'stop' });
