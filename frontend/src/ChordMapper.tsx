@@ -854,7 +854,7 @@ const relativeNatural = (chordNote: string): string => {
 
 export const toChromaticNote = (note: string): string => {
   const relativeNaturalIndex = CHROMATIC_NOTES.findIndex(enharmonics => enharmonics.includes(relativeNatural(note)));
-  const chromaticNoteIndex = (relativeNaturalIndex + countSharpsAndFlats(note)) % 12;
+  const chromaticNoteIndex = (relativeNaturalIndex + countSharpsAndFlats(note) + 12) % 12;
   const chromaticNoteEnharmonics = CHROMATIC_NOTES[chromaticNoteIndex];
   return chromaticNoteEnharmonics[0];
 }
