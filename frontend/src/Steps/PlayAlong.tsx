@@ -164,9 +164,9 @@ const PlayAlong: React.FC<{
                       {measureChords.map((measureChord, index) => {
                         const maxHeightPercentage = 25 / measureChords.length;
                         const maxHeight = `${maxHeightPercentage}vh`;
-                        // const maxWidth = `${maxHeightPercentage * 2}vh`;
+                        // const maxWidth = `${maxHeightPercentage * 4}vh`;
 
-                        const defaultHeight = '50vw';
+                        const defaultHeight = '25vw';
                         const defaultWidth = '100vw';
                         return (
                           <div className="px-2"

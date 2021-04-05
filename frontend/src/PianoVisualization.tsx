@@ -44,7 +44,7 @@ const baseKeyboardConfig: KeyboardConfigEntry[] = [
   { natural: 'b', flat: 'bb', sharp: 'b#' },
 ]
 
-const keyboardConfigForScaleNotes = (scaleNotes: string[]): KeyboardConfigEntry[] => {
+const keyboardConfigForScaleNotes = (scaleNotes: string[], octaves: number): KeyboardConfigEntry[] => {
   const enharmonicScaleNotes: Record<string, string> = {};
 
   scaleNotes.forEach((value) => {
@@ -55,7 +55,7 @@ const keyboardConfigForScaleNotes = (scaleNotes: string[]): KeyboardConfigEntry[
     );
   })
 
-  return baseKeyboardConfig.map((entry) => {
+  const keyboardConfig = baseKeyboardConfig.map((entry) => {
     const entryClone: KeyboardConfigEntry = Object.assign({}, entry);
     Object.entries(entry).forEach((keyEntry) => {
       const key = keyEntry[0] as keyof KeyboardConfigEntry;
@@ -64,7 +64,15 @@ const keyboardConfigForScaleNotes = (scaleNotes: string[]): KeyboardConfigEntry[
       entryClone[key] = enharmonicScaleNotes[value] || ''
     })
     return entryClone;
-  })
+  });
+
+  const result = [];
+
+  for (let i = 0; i < octaves; i++) {
+    result.push(...keyboardConfig);
+  }
+
+  return result;
 }
 
 const lowerChordToneMidiNumbers = (chordNote: string, chordQuality: string, upperBound: number): number[] => {
@@ -83,13 +91,14 @@ const ChordPianoVisualization: React.FC<{
   chordRowObject,
 }) => {
   const { selectedScaleObject, chordNote, chordQuality, bassNote } = chordRowObject;
+  const numOctaves = 2;
 
   // const readableBassNote = bassNote.replace(/\//g, '');
 
   const scaleNotes = selectedScaleObject?.scaleNotes || []; // TODO: include chord tones and bass note if no scale selected
 
   const firstNote = MidiNumbers.fromNote('c4');
-  const lastNote = MidiNumbers.fromNote('b4');
+  const lastNote = MidiNumbers.fromNote(`b${4 + numOctaves - 1}`);
 
   // customize indicators here
   const labeledNotes: string[] = scaleNotes;
@@ -99,7 +108,7 @@ const ChordPianoVisualization: React.FC<{
   const keyboardShortcuts = KeyboardShortcuts.create({
     firstNote: firstNote,
     lastNote: lastNote,
-    keyboardConfig: keyboardConfigForScaleNotes(labeledNotes),
+    keyboardConfig: keyboardConfigForScaleNotes(labeledNotes, numOctaves),
   });
 
   return (
