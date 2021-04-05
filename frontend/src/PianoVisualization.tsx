@@ -113,6 +113,13 @@ const ChordPianoVisualization: React.FC<{
     keyboardConfig: keyboardConfigForScaleNotes(labeledNotes, numOctaves),
   });
 
+  interface NoteLabelProps {
+    keyboardShortcut: string;
+    midiNumber: number;
+    isActive: boolean;
+    isAccidental: boolean;
+  }
+
   return (
     <Piano
       noteRange={{ first: firstNote, last: lastNote }}
@@ -120,6 +127,24 @@ const ChordPianoVisualization: React.FC<{
       stopNote={() => {}}
       keyboardShortcuts={keyboardShortcuts}
       activeNotes={activeNotes}
+      renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }: NoteLabelProps) => {
+        const classNames = ['ReactPiano__NoteLabel']
+        if (isActive) classNames.push('ReactPiano__NoteLabel--active');
+        if (isAccidental) classNames.push('ReactPiano__NoteLabel--accidental');
+        if (!isAccidental) classNames.push('ReactPiano__NoteLabel--natural');
+
+        const className = classNames.join(' ');
+
+        return (
+          keyboardShortcut ? (
+            <div
+              className={className}
+            >
+              {keyboardShortcut}
+            </div>
+          ) : null
+        );
+      }}
     />
   );
 
