@@ -125,6 +125,7 @@ const ChordPianoVisualization: React.FC<{
       noteRange={{ first: firstNote, last: lastNote }}
       playNote={() => {}}
       stopNote={() => {}}
+      className="pe-none"
       keyboardShortcuts={keyboardShortcuts}
       activeNotes={activeNotes}
       renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }: NoteLabelProps) => {

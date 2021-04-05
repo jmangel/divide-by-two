@@ -113,6 +113,10 @@ hr {
   background-color: #355C68;
 }
 
+.pe-none {
+  pointer-events: none;
+}
+
 .playback-controls--row {
   padding-bottom: 1.5rem;
   justify-content: space-evenly;
