@@ -82,15 +82,18 @@ const ChordPianoVisualization: React.FC<{
 }> = ({
   chordRowObject,
 }) => {
-  const { selectedScaleObject, chordNote, chordQuality } = chordRowObject;
+  const { selectedScaleObject, chordNote, chordQuality, bassNote } = chordRowObject;
 
-  const scaleNotes = selectedScaleObject?.scaleNotes || [];
+  // const readableBassNote = bassNote.replace(/\//g, '');
+
+  const scaleNotes = selectedScaleObject?.scaleNotes || []; // TODO: include chord tones and bass note if no scale selected
 
   const firstNote = MidiNumbers.fromNote('c4');
   const lastNote = MidiNumbers.fromNote('b4');
 
   // customize indicators here
   const labeledNotes: string[] = scaleNotes;
+  // TODO: include bass note as root, but what about widespread chords? 3 octaves?
   const activeNotes = lowerChordToneMidiNumbers(chordNote, chordQuality, lastNote);
 
   const keyboardShortcuts = KeyboardShortcuts.create({
