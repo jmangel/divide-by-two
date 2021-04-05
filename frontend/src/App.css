@@ -123,6 +123,10 @@ hr {
   align-items: center;
 }
 
+.ReactPiano__Key--active.ReactPiano__Key--accidental {
+  border: none !important;
+}
+
 .recharts-pie text {
   stroke: black;
   stroke-width: 0.1em;

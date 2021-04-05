@@ -162,25 +162,21 @@ const ChordPianoVisualization: React.FC<{
         if (isActive) classNames.push('ReactPiano__NoteLabel--active');
         if (isAccidental) classNames.push('ReactPiano__NoteLabel--accidental');
         if (!isAccidental) classNames.push('ReactPiano__NoteLabel--natural');
+        if (isTargetNote) classNames.push('bg-success')
 
         const className = classNames.join(' ');
 
-        const content = (
-          keyboardShortcut ? (
-            <div
-              className={className}
-            >
-              {keyboardShortcut}
-            </div>
-          ) : null
-        );
+        const elements = [];
+        if (keyboardShortcut) elements.push(keyboardShortcut);
+        else if (isTargetNote) elements.push(<GrTarget className="ReactPiano__NoteLabel w-100" />);
 
-        return (
-          <Fragment>
-            {isTargetNote && (<GrTarget className="ReactPiano__NoteLabel w-100" />)}
-            {content}
-          </Fragment>
-        )
+        return (elements.length > 0) && (
+          <div
+            className={className}
+          >
+            {elements}
+          </div>
+        );
       }}
     />
   );
