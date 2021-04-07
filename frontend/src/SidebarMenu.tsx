@@ -66,6 +66,13 @@ async function storeSong(songTitle: string) {
   await db.put(storeName, window.location.href, songTitle);
 }
 
+async function loadSong(songTitle: IDBValidKey) {
+  const db = await openDB(dbName);
+
+  const value = await db.get(storeName, songTitle);
+  if (value) window.location.href = value;
+}
+
 const SidebarMenu: React.FC<{
   goHome: () => void,
   songTitle: string,
@@ -122,6 +129,12 @@ const SidebarMenu: React.FC<{
       >
         Copy current song link to share
       </a>
+      { songTitles.map(savedSongTitle => (
+        <a
+          className="menu-item"
+          onClick={() => loadSong(savedSongTitle)}
+        >{savedSongTitle}</a>
+      )) }
       <a id="feedback" className="menu-item" href="mailto:songscaler+feedback@gmail.com">Send Feedback</a>
       <Toast
         style={{ bottom: '1rem', position: 'fixed', backgroundColor: 'var(--secondary-bg-color)' }}
