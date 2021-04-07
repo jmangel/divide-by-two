@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
@@ -75,6 +75,18 @@ const SidebarMenu: React.FC<{
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [showCopyToast, setShowCopyToast] = useState(false);
+
+  const [songTitles, setSongTitles] = useState([] as IDBValidKey[]);
+
+  async function loadSongTitles() {
+    const db = await openDB(dbName);
+
+    const keys = await db.getAllKeys(storeName);
+    console.warn(keys);
+    setSongTitles(keys);
+  }
+
+  useEffect(() => { loadSongTitles() }, []);
 
   return (
     <Menu
