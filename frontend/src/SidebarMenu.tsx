@@ -56,16 +56,6 @@ const styles = {
 const dbName = 'song-scaler'
 const storeName = 'songs';
 
-async function storeSong(songTitle: string) {
-  const db = await openDB(dbName, 2, {
-    upgrade(db, _oldVersion, _newVersion, _transaction) {
-      db.createObjectStore(storeName);
-    }
-  });
-
-  await db.put(storeName, window.location.href, songTitle);
-}
-
 async function loadSong(songTitle: IDBValidKey) {
   const db = await openDB(dbName);
 
@@ -95,6 +85,17 @@ const SidebarMenu: React.FC<{
   }
 
   useEffect(() => { loadSongTitles() }, []);
+
+  async function storeSong(songTitle: string) {
+    const db = await openDB(dbName, 2, {
+      upgrade(db, _oldVersion, _newVersion, _transaction) {
+        db.createObjectStore(storeName);
+      }
+    });
+
+    await db.put(storeName, window.location.href, songTitle);
+    loadSongTitles();
+  }
 
   const toggleShowSavedSongs = () => {
     setShowSavedSongs(showingSavedSongs => !showingSavedSongs);
