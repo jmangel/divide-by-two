@@ -3,6 +3,7 @@ import { slide as Menu } from 'react-burger-menu'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
 import { Button, Toast, ToastBody } from 'reactstrap';
+import { openDB } from 'idb';
 
 const styles = {
   bmBurgerButton: {
@@ -52,10 +53,25 @@ const styles = {
   }
 }
 
+const dbName = 'song-scaler'
+const storeName = 'songs';
+
+async function storeSong(songTitle: string) {
+  const db = await openDB(dbName, 2, {
+    upgrade(db, _oldVersion, _newVersion, _transaction) {
+      db.createObjectStore(storeName);
+    }
+  });
+
+  await db.put(storeName, window.location.href, songTitle);
+}
+
 const SidebarMenu: React.FC<{
   goHome: () => void,
+  songTitle: string,
 }> = ({
   goHome,
+  songTitle,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [showCopyToast, setShowCopyToast] = useState(false);
@@ -73,6 +89,12 @@ const SidebarMenu: React.FC<{
       itemClassName="py-1 px-3"
     >
       <a id="home" className="menu-item" onClick={() => { goHome(); setIsOpen(false); } }>Home</a>
+      <a
+        className="menu-item"
+        onClick={() => storeSong(songTitle)}
+      >
+        Save Current Song
+      </a>
       <a
         className="menu-item"
         onClick={() => {
