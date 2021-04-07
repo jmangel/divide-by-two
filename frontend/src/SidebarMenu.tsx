@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
-import { Button, Toast, ToastBody } from 'reactstrap';
+import { Button, DropdownItem, DropdownMenu, DropdownToggle, Toast, ToastBody, UncontrolledDropdown } from 'reactstrap';
 import { openDB } from 'idb';
 
 const styles = {
@@ -129,12 +129,19 @@ const SidebarMenu: React.FC<{
       >
         Copy current song link to share
       </a>
-      { songTitles.map(savedSongTitle => (
-        <a
-          className="menu-item"
-          onClick={() => loadSong(savedSongTitle)}
-        >{savedSongTitle}</a>
-      )) }
+      <UncontrolledDropdown>
+        <DropdownToggle caret tag="a" className="menu-item">
+          Saved Songs
+        </DropdownToggle>
+        <DropdownMenu right>
+          { songTitles.map(savedSongTitle => (
+            <DropdownItem
+              className="menu-item"
+              onClick={() => loadSong(savedSongTitle)}
+            >{savedSongTitle}</DropdownItem>
+          )) }
+        </DropdownMenu>
+      </UncontrolledDropdown>
       <a id="feedback" className="menu-item" href="mailto:songscaler+feedback@gmail.com">Send Feedback</a>
       <Toast
         style={{ bottom: '1rem', position: 'fixed', backgroundColor: 'var(--secondary-bg-color)' }}
