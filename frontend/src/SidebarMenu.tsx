@@ -148,7 +148,7 @@ const SidebarMenu: React.FC<{
           setTimeout(() => {setShowCopyToast(false)}, 3000);
         }}
       >
-        Copy current song link to share
+        Copy Link to Share Song
       </a>
       <UncontrolledDropdown toggle={() => toggleShowSavedSongs()}>
         <DropdownToggle caret tag="a" className="menu-item">
