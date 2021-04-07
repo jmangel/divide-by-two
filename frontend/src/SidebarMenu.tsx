@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
-import { Button, DropdownItem, DropdownMenu, DropdownToggle, Toast, ToastBody, UncontrolledDropdown } from 'reactstrap';
+import { Button, DropdownToggle, Toast, ToastBody, UncontrolledDropdown } from 'reactstrap';
 import { openDB } from 'idb';
 
 const styles = {
@@ -84,6 +84,7 @@ const SidebarMenu: React.FC<{
   const [showCopyToast, setShowCopyToast] = useState(false);
 
   const [songTitles, setSongTitles] = useState([] as IDBValidKey[]);
+  const [showSavedSongs, setShowSavedSongs] = useState(false);
 
   async function loadSongTitles() {
     const db = await openDB(dbName);
@@ -94,6 +95,10 @@ const SidebarMenu: React.FC<{
   }
 
   useEffect(() => { loadSongTitles() }, []);
+
+  const toggleShowSavedSongs = () => {
+    setShowSavedSongs(showingSavedSongs => !showingSavedSongs);
+  }
 
   return (
     <Menu
@@ -129,19 +134,17 @@ const SidebarMenu: React.FC<{
       >
         Copy current song link to share
       </a>
-      <UncontrolledDropdown>
+      <UncontrolledDropdown toggle={() => toggleShowSavedSongs()}>
         <DropdownToggle caret tag="a" className="menu-item">
           Saved Songs
         </DropdownToggle>
-        <DropdownMenu right>
-          { songTitles.map(savedSongTitle => (
-            <DropdownItem
-              className="menu-item"
-              onClick={() => loadSong(savedSongTitle)}
-            >{savedSongTitle}</DropdownItem>
-          )) }
-        </DropdownMenu>
       </UncontrolledDropdown>
+      { showSavedSongs && songTitles.map(savedSongTitle => (
+        <a
+          className="menu-item pl-5"
+          onClick={() => loadSong(savedSongTitle)}
+        >     {savedSongTitle}</a>
+      )) }
       <a id="feedback" className="menu-item" href="mailto:songscaler+feedback@gmail.com">Send Feedback</a>
       <Toast
         style={{ bottom: '1rem', position: 'fixed', backgroundColor: 'var(--secondary-bg-color)' }}
