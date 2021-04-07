@@ -97,6 +97,13 @@ const SidebarMenu: React.FC<{
     loadSongTitles();
   }
 
+  async function deleteStoredSong(songTitle: IDBValidKey) {
+    const db = await openDB(dbName);
+
+    await db.delete(storeName, songTitle);
+    loadSongTitles();
+  }
+
   const toggleShowSavedSongs = () => {
     setShowSavedSongs(showingSavedSongs => !showingSavedSongs);
   }
@@ -120,6 +127,14 @@ const SidebarMenu: React.FC<{
       >
         Save Current Song
       </a>
+      { songTitles.includes(songTitle) && (
+        <a
+          className="menu-item"
+          onClick={() => deleteStoredSong(songTitle)}
+        >
+          Delete Current Saved Song
+        </a>
+      )}
       <a
         className="menu-item"
         onClick={() => {
