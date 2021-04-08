@@ -14,6 +14,7 @@ import {
 } from 'use-query-params';
 // import { SketchPicker } from 'react-color';
 import { MdCheck, MdHome, MdKeyboardArrowLeft } from 'react-icons/md';
+
 import useSound from 'use-sound';
 
 import './App.css';

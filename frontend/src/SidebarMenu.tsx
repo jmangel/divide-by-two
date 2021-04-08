@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { slide as Menu } from 'react-burger-menu'
+import { BsToggleOff, BsToggleOn } from 'react-icons/bs';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
-import { Button, DropdownToggle, Input, Label, Toast, ToastBody, UncontrolledDropdown } from 'reactstrap';
+import { Button, DropdownToggle, Toast, ToastBody, UncontrolledDropdown } from 'reactstrap';
 import { parseUrl, stringify } from 'query-string';
 import { openDb } from './indexedDb';
 
@@ -164,10 +165,14 @@ const SidebarMenu: React.FC<{
           onClick={() => loadSong(savedSongTitle)}
         >     {savedSongTitle}</a>
       )) }
-      <Label check>
-        <Input type="checkbox" checked={showTargetNotes} onChange={() => toggleShowTargetNotes()} />{' '}
+      <a className="menu-item" onClick={() => toggleShowTargetNotes()}>
         Show Target Notes
-      </Label>
+        { showTargetNotes ? (
+          <BsToggleOn className="float-right" size='1.5em' />
+        ) : (
+          <BsToggleOff className="float-right" size='1.5em' />
+        ) }
+      </a>
       <a id="feedback" className="menu-item" href="mailto:songscaler+feedback@gmail.com">Send Feedback</a>
       <Toast
         style={{ bottom: '1rem', position: 'fixed', backgroundColor: 'var(--secondary-bg-color)' }}
