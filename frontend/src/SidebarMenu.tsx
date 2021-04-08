@@ -60,7 +60,7 @@ const storeName = 'songs';
 async function openDb() {
   return await openDB(dbName, 3, {
     upgrade(db, _oldVersion, _newVersion, _transaction) {
-      db.createObjectStore(storeName);
+      if (!db.objectStoreNames.contains(storeName)) db.createObjectStore(storeName);
     }
   });
 }
