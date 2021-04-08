@@ -16,6 +16,7 @@ const PlayAlong: React.FC<{
   metronomeCountIn: number,
   isPlaying: boolean,
   pause: () => void,
+  showTargetNotes: boolean,
 }> = ({
   chordRowObjects,
   measureInfos,
@@ -24,6 +25,7 @@ const PlayAlong: React.FC<{
   metronomeCountIn,
   isPlaying,
   pause,
+  showTargetNotes,
 }) => {
   let copiedChordRows = chordRowObjects.slice();
 
@@ -174,7 +176,7 @@ const PlayAlong: React.FC<{
                           >
                             <ChordPianoVisualization
                               chordRowObject={measureChord}
-                              nextChord={measureChords[index + 1] || copiedChordRows[0]}
+                              nextChord={showTargetNotes ? (measureChords[index + 1] || copiedChordRows[0]) : undefined}
                             />
                           </div>
                         )

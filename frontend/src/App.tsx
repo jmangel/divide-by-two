@@ -547,6 +547,7 @@ const App: React.FC = () => {
             metronomeCountIn={metronomeCountIn}
             isPlaying={isPlaying}
             pause={() => pausePlayback()}
+            showTargetNotes={showTargetNotes}
           />
         );
       default:
