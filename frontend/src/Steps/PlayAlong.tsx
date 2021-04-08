@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Col, Modal, ModalBody, Popover, PopoverBody, Row } from "reactstrap";
 import { MeasureInfo } from '../App';
 import { NamedScale } from '../ChordMapper';
@@ -28,6 +28,20 @@ const PlayAlong: React.FC<{
   showTargetNotes,
 }) => {
   let copiedChordRows = chordRowObjects.slice();
+
+  useEffect(() => {
+    const activeMeasure = document.getElementById(`measure-${measurePlaybackIndex}`);
+
+    if (activeMeasure) {
+      const activeMeasureBoundingRect = activeMeasure.getBoundingClientRect();
+      const playAlongGridBoundingRect = document.getElementById('play-along-grid')?.getBoundingClientRect();
+
+      if (!playAlongGridBoundingRect ||
+        activeMeasureBoundingRect.bottom > playAlongGridBoundingRect.bottom ||
+        activeMeasureBoundingRect.top < playAlongGridBoundingRect.top
+      ) activeMeasure.scrollIntoView();
+    };
+  }, [measurePlaybackIndex])
 
   return (
     <Row
