@@ -152,6 +152,10 @@ hr {
   border-left: 1px solid white;
 }
 
+#play-along-grid {
+  overflow-y: scroll;
+}
+
 #react-burger-menu-btn {
   display: none;
 }
