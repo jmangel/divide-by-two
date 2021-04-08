@@ -35,6 +35,7 @@ import { myRealReader } from './RawParser';
 import Worker from "worker-loader!./MetronomeWebWorker.js";
 import { csvifyMeasureInfos, parseCsvifiedMeasureInfos, createMeasureInfo } from './MeasureCondenser';
 import SidebarMenu from './SidebarMenu';
+import { openDb } from './indexedDb';
 
 const metronomeTicker = new Worker();
 
@@ -103,6 +104,9 @@ const selectedScaleObject = (chordRowObject: ChordRowObject) => {
     namedScale.scaleNotes[0] === (chordRowObject.selectedScaleRoot || chordRowObject.chordNote)
   ));
 }
+
+const settingsStoreName = 'settings';
+const showTargetNotesSettingName = 'showTargetNotes';
 
 const App: React.FC = () => {
   if ('serviceWorker' in navigator) {
@@ -356,6 +360,17 @@ const App: React.FC = () => {
 
     if (newChordRows) setChordRowObjects(newChordRows);
   }
+
+  const [showTargetNotes, setShowTargetNotes] = useState(false);
+
+  async function loadShowTargetNotes() {
+    const db = await openDb();
+
+    const shouldShowTargetNotes = await db.get(settingsStoreName, showTargetNotesSettingName);
+    setShowTargetNotes(shouldShowTargetNotes || false);
+  }
+
+  useEffect(() => { loadShowTargetNotes() }, []);
 
   useEffect(() => {
     setMonochromaticSchemes(regenerateMonochromaticSchemes(redRgbValue, greenRgbValue, blueRgbValue));
