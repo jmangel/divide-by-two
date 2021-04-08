@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
-import { Button, DropdownToggle, Toast, ToastBody, UncontrolledDropdown } from 'reactstrap';
+import { Button, DropdownToggle, Input, Label, Toast, ToastBody, UncontrolledDropdown } from 'reactstrap';
 import { parseUrl, stringify } from 'query-string';
 import { openDb } from './indexedDb';
 
@@ -66,9 +66,13 @@ async function loadSong(songTitle: IDBValidKey) {
 const SidebarMenu: React.FC<{
   goHome: () => void,
   songTitle: string,
+  showTargetNotes: boolean,
+  toggleShowTargetNotes: () => void,
 }> = ({
   goHome,
   songTitle,
+  showTargetNotes,
+  toggleShowTargetNotes
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [showCopyToast, setShowCopyToast] = useState(false);
@@ -160,6 +164,10 @@ const SidebarMenu: React.FC<{
           onClick={() => loadSong(savedSongTitle)}
         >     {savedSongTitle}</a>
       )) }
+      <Label check>
+        <Input type="checkbox" checked={showTargetNotes} onChange={() => toggleShowTargetNotes()} />{' '}
+        Show Target Notes
+      </Label>
       <a id="feedback" className="menu-item" href="mailto:songscaler+feedback@gmail.com">Send Feedback</a>
       <Toast
         style={{ bottom: '1rem', position: 'fixed', backgroundColor: 'var(--secondary-bg-color)' }}

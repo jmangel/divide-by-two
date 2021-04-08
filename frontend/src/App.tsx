@@ -606,6 +606,8 @@ const App: React.FC = () => {
           <SidebarMenu
             goHome={navigateToFirstStep}
             songTitle={song.title}
+            showTargetNotes={showTargetNotes}
+            toggleShowTargetNotes={() => setShowTargetNotes(oldValue => !oldValue)}
           />
         </header>
         {
