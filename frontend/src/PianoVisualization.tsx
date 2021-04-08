@@ -162,7 +162,7 @@ const ChordPianoVisualization: React.FC<{
         if (isActive) classNames.push('ReactPiano__NoteLabel--active');
         if (isAccidental) classNames.push('ReactPiano__NoteLabel--accidental');
         if (!isAccidental) classNames.push('ReactPiano__NoteLabel--natural');
-        if (isTargetNote) classNames.push('bg-success')
+        if (isTargetNote) classNames.push('bg-success', 'text-white');
 
         const className = classNames.join(' ');
 
