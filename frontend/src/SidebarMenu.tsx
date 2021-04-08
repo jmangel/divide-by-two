@@ -57,8 +57,16 @@ const styles = {
 const dbName = 'song-scaler'
 const storeName = 'songs';
 
+async function openDb() {
+  return await openDB(dbName, 3, {
+    upgrade(db, _oldVersion, _newVersion, _transaction) {
+      db.createObjectStore(storeName);
+    }
+  });
+}
+
 async function loadSong(songTitle: IDBValidKey) {
-  const db = await openDB(dbName);
+  const db = await openDb();
 
   const value = await db.get(storeName, songTitle);
   if (value) window.location.href = value;
@@ -78,7 +86,7 @@ const SidebarMenu: React.FC<{
   const [showSavedSongs, setShowSavedSongs] = useState(false);
 
   async function loadSongTitles() {
-    const db = await openDB(dbName);
+    const db = await openDb();
 
     const keys = await db.getAllKeys(storeName);
     console.warn(keys);
@@ -88,11 +96,7 @@ const SidebarMenu: React.FC<{
   useEffect(() => { loadSongTitles() }, []);
 
   async function storeSong(songTitle: string) {
-    const db = await openDB(dbName, 2, {
-      upgrade(db, _oldVersion, _newVersion, _transaction) {
-        db.createObjectStore(storeName);
-      }
-    });
+    const db = await openDb();
 
     const { query } = parseUrl(window.location.href);
     const stringifiedQuery = `?${stringify(query)}`;
@@ -102,7 +106,7 @@ const SidebarMenu: React.FC<{
   }
 
   async function deleteStoredSong(songTitle: IDBValidKey) {
-    const db = await openDB(dbName);
+    const db = await openDb();
 
     await db.delete(storeName, songTitle);
     loadSongTitles();
