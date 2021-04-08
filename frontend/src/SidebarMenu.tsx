@@ -172,7 +172,7 @@ const SidebarMenu: React.FC<{
         >     {savedSongTitle}</a>
       )) }
       <a className="menu-item" onClick={() => toggleShowTargetNotes()}>
-        Show Target Notes <BiHelpCircle size='1.5em' id="target-notes-tooltip" className="d-inline" onClick={(e) => e.stopPropagation()} />
+        Highlight Target Notes <BiHelpCircle size='1.5em' id="target-notes-tooltip" className="d-inline" onClick={(e) => e.stopPropagation()} />
         <Tooltip
           container="sidebar-menu"
           placement="bottom"
@@ -181,7 +181,7 @@ const SidebarMenu: React.FC<{
           target="target-notes-tooltip"
           toggle={() => toggleTargetNotesTooltip()}
         >
-          On the piano visualization, highlight the notes from the upcoming chord that are the same as ("common tones") or a semitone away from ("leading tones") notes in the current chord.
+          On the piano visualization, highlight the notes from the upcoming chord that are the same as ("common tones") or a semitone away from (have a "leading tone") notes in the current chord.
         </Tooltip>
         { showTargetNotes ? (
           <BsToggleOn className="float-right" size='1.5em' />
