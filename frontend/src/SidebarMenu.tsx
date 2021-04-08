@@ -4,6 +4,7 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
 import { Button, DropdownToggle, Toast, ToastBody, UncontrolledDropdown } from 'reactstrap';
 import { openDB } from 'idb';
+import { parseUrl, stringify } from 'query-string';
 
 const styles = {
   bmBurgerButton: {
@@ -93,7 +94,10 @@ const SidebarMenu: React.FC<{
       }
     });
 
-    await db.put(storeName, window.location.href, songTitle);
+    const { query } = parseUrl(window.location.href);
+    const stringifiedQuery = `?${stringify(query)}`;
+
+    await db.put(storeName, stringifiedQuery, songTitle);
     loadSongTitles();
   }
 
