@@ -3,8 +3,8 @@ import { slide as Menu } from 'react-burger-menu'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
 import { Button, DropdownToggle, Toast, ToastBody, UncontrolledDropdown } from 'reactstrap';
-import { openDB } from 'idb';
 import { parseUrl, stringify } from 'query-string';
+import { openDb } from './indexedDb';
 
 const styles = {
   bmBurgerButton: {
@@ -54,16 +54,7 @@ const styles = {
   }
 }
 
-const dbName = 'song-scaler'
 const storeName = 'songs';
-
-async function openDb() {
-  return await openDB(dbName, 3, {
-    upgrade(db, _oldVersion, _newVersion, _transaction) {
-      if (!db.objectStoreNames.contains(storeName)) db.createObjectStore(storeName);
-    }
-  });
-}
 
 async function loadSong(songTitle: IDBValidKey) {
   const db = await openDb();
