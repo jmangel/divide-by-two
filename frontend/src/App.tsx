@@ -370,7 +370,13 @@ const App: React.FC = () => {
     setShowTargetNotes(shouldShowTargetNotes || false);
   }
 
+  async function storeShowTargetNotes() {
+    const db = await openDb();
+    await db.put(settingsStoreName, showTargetNotes, showTargetNotesSettingName);
+  }
+
   useEffect(() => { loadShowTargetNotes() }, []);
+  useEffect(() => { storeShowTargetNotes() }, [showTargetNotes]);
 
   useEffect(() => {
     setMonochromaticSchemes(regenerateMonochromaticSchemes(redRgbValue, greenRgbValue, blueRgbValue));
