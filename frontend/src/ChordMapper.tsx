@@ -700,7 +700,15 @@ const CHORD_MAPPINGS = [
     possibleModes: MAJOR_SHARP_FIVE_MODES
   },
   {
+    quality: '^+',
+    possibleModes: MAJOR_SHARP_FIVE_MODES
+  },
+  {
     quality: '^7#5',
+    possibleModes: MAJOR_SHARP_FIVE_MODES
+  },
+  {
+    quality: '^7+',
     possibleModes: MAJOR_SHARP_FIVE_MODES
   },
   {
@@ -788,6 +796,10 @@ const CHORD_MAPPINGS = [
   },
   {
     quality: '7#5',
+    possibleModes: AUGMENTED_MODES
+  },
+  {
+    quality: '7+',
     possibleModes: AUGMENTED_MODES
   },
   {
