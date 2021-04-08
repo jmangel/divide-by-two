@@ -3,9 +3,10 @@ import { slide as Menu } from 'react-burger-menu'
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
-import { Button, DropdownToggle, Toast, ToastBody, UncontrolledDropdown } from 'reactstrap';
+import { Button, DropdownToggle, Toast, ToastBody, Tooltip, UncontrolledDropdown } from 'reactstrap';
 import { parseUrl, stringify } from 'query-string';
 import { openDb } from './indexedDb';
+import { BiHelpCircle } from 'react-icons/bi';
 
 const styles = {
   bmBurgerButton: {
@@ -81,6 +82,10 @@ const SidebarMenu: React.FC<{
   const [songTitles, setSongTitles] = useState([] as IDBValidKey[]);
   const [showSavedSongs, setShowSavedSongs] = useState(false);
 
+  const [targetNotesTooltipOpen, setTargetNotesTooltip] = useState(false);
+
+  const toggleTargetNotesTooltip = () => setTargetNotesTooltip(!targetNotesTooltipOpen);
+
   async function loadSongTitles() {
     const db = await openDb();
 
@@ -123,6 +128,7 @@ const SidebarMenu: React.FC<{
       menuClassName="px-3"
       itemListClassName="px-1"
       itemClassName="py-1 px-3"
+      id="sidebar-menu"
     >
       <a id="home" className="menu-item" onClick={() => { goHome(); setIsOpen(false); } }>Home</a>
       <a
@@ -166,7 +172,17 @@ const SidebarMenu: React.FC<{
         >     {savedSongTitle}</a>
       )) }
       <a className="menu-item" onClick={() => toggleShowTargetNotes()}>
-        Show Target Notes
+        Show Target Notes <BiHelpCircle size='1.5em' id="target-notes-tooltip" className="d-inline" onClick={(e) => e.stopPropagation()} />
+        <Tooltip
+          container="sidebar-menu"
+          placement="bottom"
+          trigger="click hover"
+          isOpen={targetNotesTooltipOpen}
+          target="target-notes-tooltip"
+          toggle={() => toggleTargetNotesTooltip()}
+        >
+          On the piano visualization, highlight the notes from the upcoming chord that are the same as ("common tones") or a semitone away from ("leading tones") notes in the current chord.
+        </Tooltip>
         { showTargetNotes ? (
           <BsToggleOn className="float-right" size='1.5em' />
         ) : (
