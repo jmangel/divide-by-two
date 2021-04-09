@@ -39,6 +39,7 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
+    "@slnsw/react-sheet-music": "^0.0.5",
     "@types/recharts": "^1.8.19",
     "bootstrap": "^4.5.0",
     "idb": "^6.0.0",
