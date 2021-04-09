@@ -37,6 +37,7 @@ import Worker from "worker-loader!./MetronomeWebWorker.js";
 import { csvifyMeasureInfos, parseCsvifiedMeasureInfos, createMeasureInfo } from './MeasureCondenser';
 import SidebarMenu from './SidebarMenu';
 import { openDb } from './indexedDb';
+import { paramConfigMap } from './SongStateManager';
 
 const metronomeTicker = new Worker();
 
@@ -118,14 +119,14 @@ const App: React.FC = () => {
   }
 
   const [query, setQuery] = useQueryParams({
-    a: withDefault(ArrayParam, undefined),
-    c: withDefault(StringParam, csvifyChordRowObjects([createChordRowObject()])),
-    t: withDefault(StringParam, ''),
-    i: withDefault(NumberParam, -1),
-    s: withDefault(NumberParam, 0),
-    m: withDefault(StringParam, csvifyMeasureInfos([createMeasureInfo()])),
-    k: withDefault(StringParam, '0'),
-    b: withDefault(NumberParam, defaultBpm),
+    a: withDefault(paramConfigMap['a'], undefined),
+    c: withDefault(paramConfigMap['c'], csvifyChordRowObjects([createChordRowObject()])),
+    t: withDefault(paramConfigMap['t'], ''),
+    i: withDefault(paramConfigMap['i'], -1),
+    s: withDefault(paramConfigMap['s'], 0),
+    m: withDefault(paramConfigMap['m'], csvifyMeasureInfos([createMeasureInfo()])),
+    k: withDefault(paramConfigMap['k'], '0'),
+    b: withDefault(paramConfigMap['b'], defaultBpm),
   });
   const { a, c, t, i, s, m, k, b } = query;
 
