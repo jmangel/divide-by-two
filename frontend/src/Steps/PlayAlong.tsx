@@ -5,6 +5,7 @@ import { NamedScale } from '../ChordMapper';
 import { ChordRowObject, scalesForChordRowObject } from '../ChordRow';
 import ChordPianoVisualization from '../PianoVisualization';
 import scaleToHexColor, { MonochromaticPossibleRootScale } from '../ScaleColorer';
+import SheetMusicVisualization from '../SheetMusicVisualization';
 
 const approximateFontHeightToWidthRatio = 3 / 2;
 
@@ -177,7 +178,16 @@ const PlayAlong: React.FC<{
                     className="d-flex border-0 bg-light justify-content-center"
                   >
                     <div>
-                      {measureChords.map((measureChord, index) => {
+                      {true ? (
+                        <div className="px-2"
+                          style={{ width: '100vw' }}
+                        >
+                          <SheetMusicVisualization
+                            chordRowObjects={measureChords}
+                            measureInfo={memoizedMeasure}
+                          />
+                        </div>
+                      ) : measureChords.map((measureChord, index) => {
                         const maxHeightPercentage = 25 / measureChords.length;
                         const maxHeight = `${maxHeightPercentage}vh`;
                         // const maxWidth = `${maxHeightPercentage * 4}vh`;
