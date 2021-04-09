@@ -87,8 +87,10 @@ const SidebarMenu: React.FC<{
   const [showSavedSongs, setShowSavedSongs] = useState(false);
 
   const [targetNotesTooltipOpen, setTargetNotesTooltip] = useState(false);
-
   const toggleTargetNotesTooltip = () => setTargetNotesTooltip(!targetNotesTooltipOpen);
+
+  const [showSheetMusicTooltipOpen, setShowSheetMusicTooltip] = useState(false);
+  const toggleShowSheetMusicTooltip = () => setShowSheetMusicTooltip(!showSheetMusicTooltipOpen);
 
   async function loadSongTitles() {
     const db = await openDb();
@@ -194,7 +196,17 @@ const SidebarMenu: React.FC<{
         ) }
       </a>
       <a className="menu-item" onClick={() => toggleShowSheetMusic()}>
-        Show Sheet Music instead of Piano
+        Show Sheet Music Scales <BiHelpCircle size='1.5em' id="show-sheet-music-tooltip" className="d-inline" onClick={(e) => e.stopPropagation()} />
+        <Tooltip
+          container="sidebar-menu"
+          placement="bottom"
+          trigger="click hover"
+          isOpen={showSheetMusicTooltipOpen}
+          target="show-sheet-music-tooltip"
+          toggle={() => toggleShowSheetMusicTooltip()}
+        >
+          Instead of a piano visualization, show the scale in sheet music notation.
+        </Tooltip>
         { showSheetMusic ? (
           <BsToggleOn className="float-right" size='1.5em' />
         ) : (
