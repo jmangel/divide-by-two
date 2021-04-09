@@ -867,7 +867,7 @@ const flatten = (arr: Array<any>): Array<any> => {
   }, []);
 }
 
-const countSharpsAndFlats = (chordNote: string): number => {
+export const countSharpsAndFlats = (chordNote: string): number => {
   return chordNote.split('#').length - chordNote.split('b').length;
 }
 
