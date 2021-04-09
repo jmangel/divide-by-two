@@ -298,6 +298,16 @@ const App: React.FC = () => {
     }
   }, [bpm]);
 
+  const getStringifiedSongState = () => stringifySongStateObject({
+    measures,
+    chordRowObjects,
+    song,
+    expandedRowIndex,
+    stepIndex,
+    transposingKey,
+    bpm,
+  });
+
   const processGlobalKey = (keyNote: string, keyScale: string, chordRows: ChordRowObject[]) => {
     keyNote = keyNote.charAt(0).toUpperCase() + keyNote.slice(1).toLowerCase();
 
@@ -368,15 +378,7 @@ const App: React.FC = () => {
       const urlQuery = parseUrl(window.location.href).query;
       const stringifiedUrlQuery = stringify(urlQuery);
 
-      const stringifiedStateQuery = stringifySongStateObject({
-        measures,
-        chordRowObjects,
-        song,
-        expandedRowIndex,
-        stepIndex,
-        transposingKey,
-        bpm,
-      })
+      const stringifiedStateQuery = getStringifiedSongState();
 
       // don't prevent reload if state is unchanged from url
       if (stringifiedUrlQuery === stringifiedStateQuery) delete e['returnValue'];
@@ -622,6 +624,7 @@ const App: React.FC = () => {
             toggleShowTargetNotes={() => setShowTargetNotes(oldValue => !oldValue)}
             showSheetMusic={showSheetMusic}
             toggleShowSheetMusic={() => setShowSheetMusic(oldValue => !oldValue)}
+            getStringifiedSongState={getStringifiedSongState}
           />
         </header>
         {
