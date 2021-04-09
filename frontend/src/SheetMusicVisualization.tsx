@@ -14,7 +14,7 @@ const SheetMusicVisualization: React.FC<{
   const { beatsPerMeasure, subdivisions } = measureInfo;
 
   const scales = chordRowObjects.map(({ selectedScaleObject }) => selectedScaleObject);
-  const scalesNotes = scales.map(scale => scale?.scaleNotes || []);
+  const scalesNotes = scales.map(scale => scale?.scaleNotes);
 
   const globalHeaders = {
     X: 1,
@@ -29,6 +29,8 @@ const SheetMusicVisualization: React.FC<{
   const repeatedHeadersArray = Object.entries(repeatedHeaders).map(([key, value]) => `${key}:${value}`);
 
   const notatedScales = scalesNotes.map((scaleNotes) => {
+    if (!scaleNotes) return '|';
+
     const abcNotationScaleNotes = scaleNotes.map((scaleNote) => {
       const sharpsAndFlats = countSharpsAndFlats(scaleNote);
       const sharpsAndFlatsNotation = sharpsAndFlats > 0 ? '^'.repeat(sharpsAndFlats) : '_'.repeat(-sharpsAndFlats);
