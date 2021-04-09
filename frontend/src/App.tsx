@@ -217,12 +217,12 @@ const App: React.FC = () => {
   useEffect(() => {
     const tranpositionChange = parseInt(transposingKey) - parseInt(k);
 
-    if (tranpositionChange == 0) return;
-
     setQuery(
       { k: transposingKey },
       'pushIn'
     );
+
+    if (tranpositionChange == 0) return;
 
     let newChordRows = chordRowObjects.slice();
 
