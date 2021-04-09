@@ -4,7 +4,7 @@ import { BsToggleOff, BsToggleOn } from 'react-icons/bs';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
 import { Button, DropdownToggle, Toast, ToastBody, Tooltip, UncontrolledDropdown } from 'reactstrap';
-import { parseUrl, stringify } from 'query-string';
+import { parse, parseUrl, stringifyUrl } from 'query-string';
 import { openDb } from './indexedDb';
 import { BiHelpCircle } from 'react-icons/bi';
 
@@ -72,6 +72,7 @@ const SidebarMenu: React.FC<{
   toggleShowTargetNotes: () => void,
   showSheetMusic: boolean,
   toggleShowSheetMusic: () => void,
+  getStringifiedSongState: () => string,
 }> = ({
   goHome,
   songTitle,
@@ -79,6 +80,7 @@ const SidebarMenu: React.FC<{
   toggleShowTargetNotes,
   showSheetMusic,
   toggleShowSheetMusic,
+  getStringifiedSongState,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [showCopyToast, setShowCopyToast] = useState(false);
@@ -172,7 +174,9 @@ const SidebarMenu: React.FC<{
         className="menu-item"
         onClick={() => {
           const el = document.createElement('textarea');
-          el.value = window.location.href;
+          const { url } = parseUrl(window.location.href);
+          const parsedQuery = parse(getStringifiedSongState());
+          el.value = stringifyUrl({ url, query: parsedQuery });
           document.body.appendChild(el);
           el.select();
           document.execCommand('copy');
