@@ -180,7 +180,9 @@ const App: React.FC = () => {
       'pushIn'
     )
 
-    document.title = `Song Scaler - ${song.title}`
+    const titleParts = ['SongScaler'];
+    if (song.title) titleParts.push(song.title);
+    document.title = titleParts.join(' - ');
 
   }, [song]);
 
