@@ -4,6 +4,22 @@ import { countSharpsAndFlats } from './ChordMapper';
 import { ChordRowObject } from './ChordRow';
 import { MeasureInfo } from './App';
 
+const orderedOctaveNotes = [
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'A',
+  'B',
+]
+
+const octavize = (note: string, startingNote: string) => {
+  return (orderedOctaveNotes.indexOf(note) < orderedOctaveNotes.indexOf(startingNote)) ? note.toLowerCase() : note;
+}
+
+const naturalize = (note: string) => note.replace(/b/g, '').replace(/#/g, '');
+
 const SheetMusicVisualization: React.FC<{
   chordRowObjects: ChordRowObject[],
   measureInfo: MeasureInfo,
@@ -31,13 +47,17 @@ const SheetMusicVisualization: React.FC<{
   const notatedScales = scalesNotes.map((scaleNotes) => {
     if (!scaleNotes) return '|';
 
+    const naturalizedStartingNote = naturalize(scaleNotes[0]);
+
     const abcNotationScaleNotes = scaleNotes.map((scaleNote) => {
       const sharpsAndFlats = countSharpsAndFlats(scaleNote);
       const sharpsAndFlatsNotation = sharpsAndFlats > 0 ? '^'.repeat(sharpsAndFlats) : '_'.repeat(-sharpsAndFlats);
-      return `${sharpsAndFlatsNotation}${scaleNote.replace(/b/g, '').replace(/#/g, '')}`;
+      const naturalizedNote = naturalize(scaleNote);
+      const octavizedNaturalizedNote = octavize(naturalizedNote, naturalizedStartingNote);
+      return `${sharpsAndFlatsNotation}${octavizedNaturalizedNote}`;
     })
 
-    return `${abcNotationScaleNotes.join(',')}|`;
+    return `${abcNotationScaleNotes.join('')}|`;
   })
 
   const lines = notatedScales.map((notatedScale) => {
