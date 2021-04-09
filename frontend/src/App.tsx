@@ -37,7 +37,8 @@ import Worker from "worker-loader!./MetronomeWebWorker.js";
 import { csvifyMeasureInfos, parseCsvifiedMeasureInfos, createMeasureInfo } from './MeasureCondenser';
 import SidebarMenu from './SidebarMenu';
 import { openDb } from './indexedDb';
-import { paramConfigMap } from './SongStateManager';
+import { parseUrl, stringify } from 'query-string';
+import { paramConfigMap, stringifySongStateObject } from './SongStateManager';
 
 const metronomeTicker = new Worker();
 
@@ -50,7 +51,7 @@ const createChordRowObject = (): ChordRowObject => {
   return { chordQuality: '' } as ChordRowObject;
 }
 
-interface Song {
+export interface Song {
   title: string;
   key?: string;
   bpm?: number;
@@ -137,8 +138,6 @@ const App: React.FC = () => {
   })
 
   const [chordRowObjects, setChordRowObjects] = useState(processedChordRowObjects);
-  if (a) setQuery({ a: undefined }, 'pushIn');
-  if (c === '') setQuery({ c: csvifyChordRowObjects(chordRowObjects) }, 'pushIn');
 
   const [measures, setMeasures] = useState(parseCsvifiedMeasureInfos(m));
   let runningSum = 0;
@@ -152,19 +151,10 @@ const App: React.FC = () => {
       runningSum += beatsConsumedByMeasure(measureInfo);
     })
     setTotalSongBeatCount(runningSum);
-    setQuery(
-      { m: csvifyMeasureInfos(measures) },
-      'pushIn'
-    )
   }, [measures]);
 
   const prevChordRowObjectsCountRef: React.MutableRefObject<number> = useRef(chordRowObjects.length);
   useEffect(() => {
-    setQuery(
-      { c: csvifyChordRowObjects(chordRowObjects) },
-      'pushIn'
-    )
-
     if (chordRowObjects.length > prevChordRowObjectsCountRef.current) {
       const chordRowHeight = document.querySelector('.chord-row')?.clientHeight;
       chordRowHeight && window.scrollBy(0, chordRowHeight * (chordRowObjects.length - prevChordRowObjectsCountRef.current));
@@ -176,11 +166,6 @@ const App: React.FC = () => {
   const [song, setSong] = useState(createSongObject(t));
 
   useEffect(() => {
-    setQuery(
-      { t: song.title },
-      'pushIn'
-    )
-
     const titleParts = ['SongScaler'];
     if (song.title) titleParts.push(song.title);
     document.title = titleParts.join(' - ');
@@ -193,13 +178,6 @@ const App: React.FC = () => {
     else setExpandedRowIndex(rowIndex);
   }
 
-  useEffect(() => {
-    setQuery(
-      { i: expandedRowIndex },
-      'pushIn'
-    )
-  }, [expandedRowIndex]);
-
   const expandedChordRow = (expandedRowIndex > -1) && chordRowObjects[expandedRowIndex];
 
   const [stepIndex, setStepIndex] = useState(s);
@@ -207,21 +185,12 @@ const App: React.FC = () => {
   useEffect(() => {
     pausePlayback();
     setMetronomeBeatCount(startingMetronomeBeat);
-    setQuery(
-      { s: stepIndex },
-      'pushIn'
-    )
   }, [stepIndex]);
 
   const [transposingKey, setTranposingKey] = useState<TransposingKeys>(k as TransposingKeys);
 
   useEffect(() => {
     const tranpositionChange = parseInt(transposingKey) - parseInt(k);
-
-    setQuery(
-      { k: transposingKey },
-      'pushIn'
-    );
 
     if (tranpositionChange == 0) return;
 
@@ -327,9 +296,6 @@ const App: React.FC = () => {
         bpm
       });
     }
-    setQuery({
-      b: bpm
-    }, 'pushIn');
   }, [bpm]);
 
   const processGlobalKey = (keyNote: string, keyScale: string, chordRows: ChordRowObject[]) => {
@@ -396,6 +362,27 @@ const App: React.FC = () => {
     const db = await openDb();
     await db.put(settingsStoreName, showSheetMusic, showSheetMusicSettingName);
   }
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', function (e) {
+      const urlQuery = parseUrl(window.location.href).query;
+      const stringifiedUrlQuery = stringify(urlQuery);
+
+      const stringifiedStateQuery = stringifySongStateObject({
+        measures,
+        chordRowObjects,
+        song,
+        expandedRowIndex,
+        stepIndex,
+        transposingKey,
+        bpm,
+      })
+
+      // don't prevent reload if state is unchanged from url
+      if (stringifiedUrlQuery === stringifiedStateQuery) delete e['returnValue'];
+      else e['returnValue'] = true;
+    });
+  }, []);
 
   useEffect(() => { loadShowSheetMusic() }, []);
   useEffect(() => { storeShowSheetMusic() }, [showSheetMusic]);
