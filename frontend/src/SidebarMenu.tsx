@@ -123,6 +123,23 @@ const SidebarMenu: React.FC<{
     setShowSavedSongs(showingSavedSongs => !showingSavedSongs);
   }
 
+  const open = () => {
+    setIsOpen(true);
+    window.history.pushState({}, '');
+  }
+
+  const handlePopState = () => {
+    setIsOpen(false);
+  };
+
+  React.useEffect(() => {
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
   const isAndroid = () => {
     return (/android/i.test(navigator.userAgent));
   }
@@ -139,7 +156,7 @@ const SidebarMenu: React.FC<{
   return (
     <Menu
       styles={styles}
-      customBurgerIcon={<GiHamburgerMenu onClick={() => setIsOpen(true)} />}
+      customBurgerIcon={<GiHamburgerMenu onClick={() => open()} />}
       customCrossIcon={<MdClose style={{backgroundColor: 'transparent'}} />}
       right
       isOpen={isOpen}
