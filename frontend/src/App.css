@@ -113,6 +113,10 @@ hr {
   background-color: #355C68;
 }
 
+.menu-item:focus {
+  outline-width: 0;
+}
+
 .pe-none {
   pointer-events: none;
 }
