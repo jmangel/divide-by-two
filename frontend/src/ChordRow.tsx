@@ -31,7 +31,7 @@ export const QUERY_STRING_KEY_MAPPINGS: { [key in keyof ChordRowObject]: string 
 
 export const scalesForChordRowObject = (chordRowObject: ChordRowObject): Array<NamedScale> => {
   const { chordNote, chordQuality, bassNote, availableTensions } = chordRowObject;
-  return (chordNote && scalesForChord(chordNote, chordQuality, bassNote.replace(/\//g,''), availableTensions)) || [];
+  return (chordNote && scalesForChord(chordNote, chordQuality, bassNote?.replace(/\//g,'') || '', availableTensions)) || [];
 }
 
 const ChordRow: React.FC<{
