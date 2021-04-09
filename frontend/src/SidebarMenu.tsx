@@ -107,8 +107,9 @@ const SidebarMenu: React.FC<{
   async function storeSong(songTitle: string) {
     const db = await openDb();
 
-    const { query } = parseUrl(window.location.href);
-    const stringifiedQuery = `?${stringify(query)}`;
+    const stringifiedQuery = `?${getStringifiedSongState()}`;
+
+    // TODO: update current url to savedSongTitle?
 
     await db.put(storeName, stringifiedQuery, songTitle);
     loadSongTitles();
