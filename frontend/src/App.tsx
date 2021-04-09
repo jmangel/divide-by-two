@@ -108,6 +108,7 @@ const selectedScaleObject = (chordRowObject: ChordRowObject) => {
 
 const settingsStoreName = 'settings';
 const showTargetNotesSettingName = 'showTargetNotes';
+const showSheetMusicSettingName = 'showSheetMusic';
 
 const App: React.FC = () => {
   if ('serviceWorker' in navigator) {
@@ -379,6 +380,24 @@ const App: React.FC = () => {
   useEffect(() => { loadShowTargetNotes() }, []);
   useEffect(() => { storeShowTargetNotes() }, [showTargetNotes]);
 
+  const [showSheetMusic, setShowSheetMusic] = useState(false);
+
+  async function loadShowSheetMusic() {
+    const db = await openDb();
+
+    const shouldShowSheetMusic = await db.get(settingsStoreName, showSheetMusicSettingName);
+    setShowSheetMusic(shouldShowSheetMusic || false);
+  }
+
+  async function storeShowSheetMusic() {
+    const db = await openDb();
+    await db.put(settingsStoreName, showSheetMusic, showSheetMusicSettingName);
+  }
+
+  useEffect(() => { loadShowSheetMusic() }, []);
+  useEffect(() => { storeShowSheetMusic() }, [showSheetMusic]);
+
+
   useEffect(() => {
     setMonochromaticSchemes(regenerateMonochromaticSchemes(redRgbValue, greenRgbValue, blueRgbValue));
   }, rgbValues);
@@ -549,6 +568,7 @@ const App: React.FC = () => {
             isPlaying={isPlaying}
             pause={() => pausePlayback()}
             showTargetNotes={showTargetNotes}
+            showSheetMusic={showSheetMusic}
           />
         );
       default:
@@ -610,6 +630,8 @@ const App: React.FC = () => {
             songTitle={song.title}
             showTargetNotes={showTargetNotes}
             toggleShowTargetNotes={() => setShowTargetNotes(oldValue => !oldValue)}
+            showSheetMusic={showSheetMusic}
+            toggleShowSheetMusic={() => setShowSheetMusic(oldValue => !oldValue)}
           />
         </header>
         {

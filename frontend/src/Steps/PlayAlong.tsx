@@ -18,6 +18,7 @@ const PlayAlong: React.FC<{
   isPlaying: boolean,
   pause: () => void,
   showTargetNotes: boolean,
+  showSheetMusic: boolean,
 }> = ({
   chordRowObjects,
   measureInfos,
@@ -27,6 +28,7 @@ const PlayAlong: React.FC<{
   isPlaying,
   pause,
   showTargetNotes,
+  showSheetMusic,
 }) => {
   let copiedChordRows = chordRowObjects.slice();
 
@@ -178,7 +180,7 @@ const PlayAlong: React.FC<{
                     className="d-flex border-0 bg-light justify-content-center"
                   >
                     <div>
-                      {true ? (
+                      {showSheetMusic ? (
                         <div className="px-2"
                           style={{ width: '100vw' }}
                         >

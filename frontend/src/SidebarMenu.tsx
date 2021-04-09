@@ -70,11 +70,15 @@ const SidebarMenu: React.FC<{
   songTitle: string,
   showTargetNotes: boolean,
   toggleShowTargetNotes: () => void,
+  showSheetMusic: boolean,
+  toggleShowSheetMusic: () => void,
 }> = ({
   goHome,
   songTitle,
   showTargetNotes,
-  toggleShowTargetNotes
+  toggleShowTargetNotes,
+  showSheetMusic,
+  toggleShowSheetMusic,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [showCopyToast, setShowCopyToast] = useState(false);
@@ -184,6 +188,14 @@ const SidebarMenu: React.FC<{
           On the piano visualization, highlight the notes from the upcoming chord that are the same as ("common tones") or a semitone away from (have a "leading tone") notes in the current chord.
         </Tooltip>
         { showTargetNotes ? (
+          <BsToggleOn className="float-right" size='1.5em' />
+        ) : (
+          <BsToggleOff className="float-right" size='1.5em' />
+        ) }
+      </a>
+      <a className="menu-item" onClick={() => toggleShowSheetMusic()}>
+        Show Sheet Music instead of Piano
+        { showSheetMusic ? (
           <BsToggleOn className="float-right" size='1.5em' />
         ) : (
           <BsToggleOff className="float-right" size='1.5em' />
