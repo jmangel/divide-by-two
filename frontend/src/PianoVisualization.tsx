@@ -89,7 +89,7 @@ const lowerChordToneMidiNumbers = (chordNote: string, chordQuality: string, uppe
 const chordTones = (chordRowObject: ChordRowObject) => {
   const { chordNote, chordQuality, bassNote } = chordRowObject;
 
-  const readableBassNote = bassNote.replace(/\//g, '');
+  const readableBassNote = bassNote?.replace(/\//g, '');
 
   let chordTones = lowerChordTones(chordNote, chordQuality);
   if (readableBassNote) chordTones = [toReactPianoPitchIndex(readableBassNote), ...chordTones];
