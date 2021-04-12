@@ -1,7 +1,8 @@
-import { stringify } from "query-string";
-import { ArrayParam, encodeQueryParams, NumberParam, StringParam } from "serialize-query-params";
+import { parse, stringify } from "query-string";
+import { ArrayParam, decodeQueryParams, encodeQueryParams, NumberParam, StringParam } from "serialize-query-params";
 import { MeasureInfo, Song } from "./App";
 import { ChordRowObject } from "./ChordRow";
+import { openDb } from "./indexedDb";
 import { csvifyChordRowObjects } from "./JsonCondenser";
 import { csvifyMeasureInfos } from "./MeasureCondenser";
 import { TransposingKeys } from "./Steps/ChooseKey";
@@ -56,6 +57,16 @@ const songStateObjectToUrlSongStateObject = (object: SongStateObject): UrlSongSt
     k: transposingKey,
     b: bpm,
   };
+}
+
+const songStoreName = 'songs';
+
+export const savedSongTitleToDecodedQueryObject = async (savedSongTitle: string) => {
+  const db = await openDb();
+
+  const value = await db.get(songStoreName, savedSongTitle);
+
+  return value ? decodeQueryParams(paramConfigMap, parse(value)) : null;
 }
 
 export const stringifySongStateObject = (object: SongStateObject) => {
