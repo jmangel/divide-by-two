@@ -39,6 +39,7 @@ import SidebarMenu from './SidebarMenu';
 import { openDb } from './indexedDb';
 import { parseUrl, stringify } from 'query-string';
 import { paramConfigMap, stringifySongStateObject } from './SongStateManager';
+import usePrevious from './UsePrevious';
 
 const metronomeTicker = new Worker();
 
@@ -188,9 +189,10 @@ const App: React.FC = () => {
   }, [stepIndex]);
 
   const [transposingKey, setTranposingKey] = useState<TransposingKeys>(k as TransposingKeys);
+  const prevTransposingKey = usePrevious(transposingKey);
 
   useEffect(() => {
-    const tranpositionChange = parseInt(transposingKey) - parseInt(k);
+    const tranpositionChange = parseInt(transposingKey) - parseInt(prevTransposingKey || '0');
 
     if (tranpositionChange == 0) return;
 
