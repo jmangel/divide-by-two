@@ -11,6 +11,7 @@ import {
   NumberParam,
   StringParam,
   withDefault,
+  DecodedValueMap,
 } from 'use-query-params';
 // import { SketchPicker } from 'react-color';
 import { MdCheck, MdHome, MdKeyboardArrowLeft } from 'react-icons/md';
@@ -109,6 +110,36 @@ const selectedScaleObject = (chordRowObject: ChordRowObject) => {
   ));
 }
 
+const queryToStateObject = (({ a, c, t, i, s, m, k, b }: DecodedValueMap<typeof paramConfigMap>) => {
+  const startingChordRowObjects = (c) ? parseCsvifiedChordRowObjects(c) : (a as Array<string> || []).map(parseStringifiedChordRowObject);
+  const processedChordRowObjects = startingChordRowObjects.map((chordRowObject) => {
+    chordRowObject.selectedScaleObject = selectedScaleObject(chordRowObject);
+    return chordRowObject;
+  });
+
+  return {
+    chordRowObjects: processedChordRowObjects,
+    measures: parseCsvifiedMeasureInfos(m as string),
+    song: createSongObject(t as string),
+    expandedRowIndex: i as number,
+    stepIndex: s as number,
+    transposingKey: k as TransposingKeys,
+    bpm: b as number,
+  }
+});
+
+const createDefaultStateObject = () => {
+  return {
+    chordRowObjects: [createChordRowObject()],
+    measures: [createMeasureInfo()],
+    song: createSongObject(''),
+    expandedRowIndex: -1,
+    stepIndex: 0,
+    transposingKey: '0' as TransposingKeys,
+    bpm: defaultBpm,
+  };
+}
+
 const settingsStoreName = 'settings';
 const showTargetNotesSettingName = 'showTargetNotes';
 const showSheetMusicSettingName = 'showSheetMusic';
@@ -130,17 +161,34 @@ const App: React.FC = () => {
     k: withDefault(paramConfigMap['k'], '0'),
     b: withDefault(paramConfigMap['b'], defaultBpm),
   });
-  const { a, c, t, i, s, m, k, b } = query;
 
-  const startingChordRowObjects = (c) ? parseCsvifiedChordRowObjects(c) : (a as Array<string> || []).map(parseStringifiedChordRowObject);
-  const processedChordRowObjects = startingChordRowObjects.map((chordRowObject) => {
-    chordRowObject.selectedScaleObject = selectedScaleObject(chordRowObject);
-    return chordRowObject;
-  })
+  const defaultStateObject = createDefaultStateObject();
 
-  const [chordRowObjects, setChordRowObjects] = useState(processedChordRowObjects);
+  const [chordRowObjects, setChordRowObjects] = useState(defaultStateObject.chordRowObjects);
+  const [measures, setMeasures] = useState(defaultStateObject.measures);
+  const [song, setSong] = useState(defaultStateObject.song);
+  const [expandedRowIndex, setExpandedRowIndex] = useState(defaultStateObject.expandedRowIndex);
+  const [stepIndex, setStepIndex] = useState(defaultStateObject.stepIndex);
+  const [transposingKey, setTranposingKey] = useState(defaultStateObject.transposingKey);
+  const [bpm, setBpm] = useState(defaultStateObject.bpm);
 
-  const [measures, setMeasures] = useState(parseCsvifiedMeasureInfos(m));
+  const setStateFromQuery = ((encodedQuery: DecodedValueMap<typeof paramConfigMap>) => {
+    const stateObject = queryToStateObject(encodedQuery);
+
+    setChordRowObjects(stateObject.chordRowObjects);
+    setMeasures(stateObject.measures);
+    setSong(stateObject.song);
+    setExpandedRowIndex(stateObject.expandedRowIndex);
+    setStepIndex(stateObject.stepIndex);
+    setTranposingKey(stateObject.transposingKey);
+    setBpm(stateObject.bpm);
+  });
+
+
+  useEffect(() => {
+    setStateFromQuery(query);
+  }, [])
+
   let runningSum = 0;
   measures.forEach((measureInfo) => {
     runningSum += measureInfo.beatsPerMeasure;
@@ -164,7 +212,6 @@ const App: React.FC = () => {
     prevChordRowObjectsCountRef.current = chordRowObjects.length;
   }, [chordRowObjects]);
 
-  const [song, setSong] = useState(createSongObject(t));
 
   useEffect(() => {
     const titleParts = ['SongScaler'];
@@ -173,7 +220,6 @@ const App: React.FC = () => {
 
   }, [song]);
 
-  const [expandedRowIndex, setExpandedRowIndex] = useState(i);
   const toggle = (rowIndex: number) => {
     if (expandedRowIndex > -1) setExpandedRowIndex(-1);
     else setExpandedRowIndex(rowIndex);
@@ -181,14 +227,11 @@ const App: React.FC = () => {
 
   const expandedChordRow = (expandedRowIndex > -1) && chordRowObjects[expandedRowIndex];
 
-  const [stepIndex, setStepIndex] = useState(s);
-
   useEffect(() => {
     pausePlayback();
     setMetronomeBeatCount(startingMetronomeBeat);
   }, [stepIndex]);
 
-  const [transposingKey, setTranposingKey] = useState<TransposingKeys>(k as TransposingKeys);
   const prevTransposingKey = usePrevious(transposingKey);
 
   useEffect(() => {
@@ -223,8 +266,6 @@ const App: React.FC = () => {
   );
 
   const beatsPerMeasure = 4 // TODO: get from import
-
-  const [bpm, setBpm] = useState(b);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [metronomeInterval, setMetronomeInterval] = useState<NodeJS.Timeout | undefined>(undefined);
