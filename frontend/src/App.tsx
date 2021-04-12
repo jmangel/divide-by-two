@@ -192,7 +192,7 @@ const App: React.FC = () => {
   const prevTransposingKey = usePrevious(transposingKey);
 
   useEffect(() => {
-    const tranpositionChange = parseInt(transposingKey) - parseInt(prevTransposingKey || '0');
+    const tranpositionChange = parseInt(transposingKey || '0') - parseInt(prevTransposingKey || '0');
 
     if (tranpositionChange == 0) return;
 
