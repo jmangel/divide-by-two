@@ -39,7 +39,7 @@ import { csvifyMeasureInfos, parseCsvifiedMeasureInfos, createMeasureInfo } from
 import SidebarMenu from './SidebarMenu';
 import { openDb } from './indexedDb';
 import { parseUrl, stringify } from 'query-string';
-import { paramConfigMap, stringifySongStateObject } from './SongStateManager';
+import { paramConfigMap, savedSongTitleToDecodedQueryObject, stringifySongStateObject } from './SongStateManager';
 import usePrevious from './UsePrevious';
 
 const metronomeTicker = new Worker();
@@ -160,6 +160,7 @@ const App: React.FC = () => {
     m: withDefault(paramConfigMap['m'], csvifyMeasureInfos([createMeasureInfo()])),
     k: withDefault(paramConfigMap['k'], '0'),
     b: withDefault(paramConfigMap['b'], defaultBpm),
+    sst: withDefault(paramConfigMap['sst'], ''),
   });
 
   const defaultStateObject = createDefaultStateObject();
@@ -184,9 +185,14 @@ const App: React.FC = () => {
     setBpm(stateObject.bpm);
   });
 
+  const loadSavedSong = async (savedSongTitle: string) => {
+    const urlSongStateObject = await savedSongTitleToDecodedQueryObject(savedSongTitle);
+    if (urlSongStateObject) setStateFromQuery(urlSongStateObject as DecodedValueMap<typeof paramConfigMap>);
+  }
 
   useEffect(() => {
-    setStateFromQuery(query);
+    if (query.sst) loadSavedSong(query.sst);
+    else setStateFromQuery(query);
   }, [])
 
   let runningSum = 0;

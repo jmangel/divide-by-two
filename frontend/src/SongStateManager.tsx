@@ -37,6 +37,7 @@ export const paramConfigMap = {
   m: StringParam,
   k: StringParam,
   b: NumberParam,
+  sst: StringParam,
 };
 
 
