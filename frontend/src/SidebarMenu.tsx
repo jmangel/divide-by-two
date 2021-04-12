@@ -58,13 +58,6 @@ const styles = {
 
 const storeName = 'songs';
 
-async function loadSong(songTitle: IDBValidKey) {
-  const db = await openDb();
-
-  const value = await db.get(storeName, songTitle);
-  if (value) window.location.href = value;
-}
-
 const SidebarMenu: React.FC<{
   goHome: () => void,
   songTitle: string,
@@ -209,8 +202,8 @@ const SidebarMenu: React.FC<{
       { showSavedSongs && songTitles.map(savedSongTitle => (
         <a
           className="menu-item pl-5"
-          onClick={() => loadSong(savedSongTitle)}
-        >     {savedSongTitle}</a>
+          href={`?sst=${savedSongTitle}`}
+        >{savedSongTitle}</a>
       )) }
       <a className="menu-item" onClick={() => toggleShowTargetNotes()}>
         Highlight Target Notes <BiHelpCircle size='1.5em' id="target-notes-tooltip" className="d-inline" onClick={(e) => e.stopPropagation()} />
