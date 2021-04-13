@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useRef, useState, Fragment } from 'react';
 import {
+  Alert,
   Button,
   Col,
   Container,
@@ -187,13 +188,16 @@ const App: React.FC = () => {
     setBpm(stateObject.bpm);
   });
 
+  const [loadSavedSongError, setLoadSavedSongError] = useState(false);
+
   const loadSavedSong = async (savedSongTitle: string) => {
     const urlSongStateObject = await savedSongTitleToDecodedQueryObject(savedSongTitle);
     if (urlSongStateObject) {
       setStateFromQuery(urlSongStateObject as DecodedValueMap<typeof paramConfigMap>);
       setSavedSongDecodedQueryObject(urlSongStateObject as DecodedValueMap<typeof paramConfigMap>);
     } else {
-      // TODO: flash message, navigate to new page
+      setLoadSavedSongError(true);
+      setTimeout(() => setLoadSavedSongError(false), 5000);
     }
   }
 
@@ -755,7 +759,17 @@ const App: React.FC = () => {
               toggle={toggle}
               fillWithKey={fillWithKey}
             />
-          ) : renderStep(stepIndex)
+          ) : (
+            <Fragment>
+              <Alert isOpen={loadSavedSongError} toggle={() => setLoadSavedSongError(false)}
+                style={{ position: 'fixed', top: '4rem', left: 0, right: 0, zIndex: 1000 }}
+                className="mx-5"
+              >
+                Song not found
+              </Alert>
+              {renderStep(stepIndex)}
+            </Fragment>
+          )
         }
         <Row className="App-footer flex-row justify-content-center">
           {renderFooter(stepIndex)}
