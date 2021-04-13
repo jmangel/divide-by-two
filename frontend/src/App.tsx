@@ -610,6 +610,8 @@ const App: React.FC = () => {
     setChordRowObjects(newChordRows);
     setSong(createSongObject(''));
     navigateToNextStep();
+    setQuery({ }, 'push');
+    setSavedSongDecodedQueryObject(undefined);
   }
 
   const addRows = (numNewChordRows: number) => {
