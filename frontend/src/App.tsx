@@ -39,7 +39,7 @@ import { csvifyMeasureInfos, parseCsvifiedMeasureInfos, createMeasureInfo } from
 import SidebarMenu from './SidebarMenu';
 import { openDb } from './indexedDb';
 import { parseUrl, stringify } from 'query-string';
-import { paramConfigMap, decodeParsedQuery, savedSongTitleToDecodedQueryObject, songStateObjectToUrlSongStateObject, stringifySongStateObject } from './SongStateManager';
+import { paramConfigMap, decodeParsedQuery, savedSongTitleToDecodedQueryObject, songStateObjectToUrlSongStateObject, stringifySongStateObject, decodeStringifiedQuery } from './SongStateManager';
 import usePrevious from './UsePrevious';
 
 const metronomeTicker = new Worker();
@@ -464,6 +464,12 @@ const App: React.FC = () => {
       else e['returnValue'] = true;
   }
 
+  const pushSavedSong = (stringifiedQuery: string) => {
+    const decodedQuery = decodeStringifiedQuery(stringifiedQuery) as DecodedValueMap<typeof paramConfigMap>
+    setSavedSongDecodedQueryObject(decodedQuery)
+    setQuery({ sst: decodedQuery.t || '' }, 'push');
+  }
+
   useEffect(() => {
     window.addEventListener('beforeunload', beforeUnloadEventListener);
     return () => window.removeEventListener('beforeunload', beforeUnloadEventListener);
@@ -715,6 +721,7 @@ const App: React.FC = () => {
             showSheetMusic={showSheetMusic}
             toggleShowSheetMusic={() => setShowSheetMusic(oldValue => !oldValue)}
             getStringifiedSongState={getStringifiedSongState}
+            pushSavedSong={pushSavedSong}
           />
         </header>
         {

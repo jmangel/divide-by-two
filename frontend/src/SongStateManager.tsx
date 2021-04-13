@@ -70,6 +70,10 @@ export const savedSongTitleToDecodedQueryObject = async (savedSongTitle: string)
   return value ? decodeQueryParams(paramConfigMap, parse(value)) : null;
 }
 
+export const decodeStringifiedQuery = (stringifiedQuery: string) => {
+  return decodeQueryParams(paramConfigMap, parse(stringifiedQuery))
+}
+
 export const decodeParsedQuery = (parsedQuery: ParsedQuery) => {
   return decodeQueryParams(paramConfigMap, parsedQuery);
 }
