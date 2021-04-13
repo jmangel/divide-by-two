@@ -470,6 +470,19 @@ const App: React.FC = () => {
     setQuery({ sst: decodedQuery.t || '' }, 'push');
   }
 
+  const pushDeletedSong = () => {
+    setSavedSongDecodedQueryObject(undefined)
+    setQuery(songStateObjectToUrlSongStateObject({
+      measures,
+      chordRowObjects,
+      song,
+      expandedRowIndex,
+      stepIndex,
+      transposingKey,
+      bpm,
+    }), 'push');
+  }
+
   useEffect(() => {
     window.addEventListener('beforeunload', beforeUnloadEventListener);
     return () => window.removeEventListener('beforeunload', beforeUnloadEventListener);
@@ -722,6 +735,7 @@ const App: React.FC = () => {
             toggleShowSheetMusic={() => setShowSheetMusic(oldValue => !oldValue)}
             getStringifiedSongState={getStringifiedSongState}
             pushSavedSong={pushSavedSong}
+            pushDeletedSong={pushDeletedSong}
           />
         </header>
         {

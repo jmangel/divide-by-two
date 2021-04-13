@@ -67,6 +67,7 @@ const SidebarMenu: React.FC<{
   toggleShowSheetMusic: () => void,
   getStringifiedSongState: () => string,
   pushSavedSong: (stringifiedQuery: string) => void,
+  pushDeletedSong: () => void,
 }> = ({
   goHome,
   songTitle,
@@ -76,6 +77,7 @@ const SidebarMenu: React.FC<{
   toggleShowSheetMusic,
   getStringifiedSongState,
   pushSavedSong,
+  pushDeletedSong,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [showCopyToast, setShowCopyToast] = useState(false);
@@ -115,6 +117,8 @@ const SidebarMenu: React.FC<{
 
     await db.delete(storeName, songTitle);
     loadSongTitles();
+
+    pushDeletedSong();
   }
 
   const toggleShowSavedSongs = () => {
