@@ -66,6 +66,7 @@ const SidebarMenu: React.FC<{
   showSheetMusic: boolean,
   toggleShowSheetMusic: () => void,
   getStringifiedSongState: () => string,
+  pushSavedSong: (stringifiedQuery: string) => void,
 }> = ({
   goHome,
   songTitle,
@@ -74,6 +75,7 @@ const SidebarMenu: React.FC<{
   showSheetMusic,
   toggleShowSheetMusic,
   getStringifiedSongState,
+  pushSavedSong,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [showCopyToast, setShowCopyToast] = useState(false);
@@ -102,9 +104,9 @@ const SidebarMenu: React.FC<{
 
     const stringifiedQuery = `?${getStringifiedSongState()}`;
 
-    // TODO: update current url to savedSongTitle?
-
     await db.put(storeName, stringifiedQuery, songTitle);
+
+    pushSavedSong(stringifiedQuery);
     loadSongTitles();
   }
 
