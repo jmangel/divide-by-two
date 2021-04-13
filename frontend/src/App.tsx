@@ -38,7 +38,7 @@ import Worker from "worker-loader!./MetronomeWebWorker.js";
 import { csvifyMeasureInfos, parseCsvifiedMeasureInfos, createMeasureInfo } from './MeasureCondenser';
 import SidebarMenu from './SidebarMenu';
 import { openDb } from './indexedDb';
-import { parseUrl, stringify } from 'query-string';
+import { ParsedQuery, parseUrl, stringify } from 'query-string';
 import { paramConfigMap, decodeParsedQuery, savedSongTitleToDecodedQueryObject, songStateObjectToUrlSongStateObject, stringifySongStateObject, decodeStringifiedQuery } from './SongStateManager';
 import usePrevious from './UsePrevious';
 
@@ -446,8 +446,12 @@ const App: React.FC = () => {
     );
   }
 
+  const decodeParsedQueryWithDefaults = () => {
+    return { ...songStateObjectToUrlSongStateObject(createDefaultStateObject()), ...decodeParsedQuery(parseUrl(window.location.href).query) };
+  }
+
   const beforeUnloadEventListener = (e: BeforeUnloadEvent) => {
-      const decodedSavedQuery = savedSongDecodedQueryObject || decodeParsedQuery(parseUrl(window.location.href).query)
+      const decodedSavedQuery = savedSongDecodedQueryObject || decodeParsedQueryWithDefaults();
 
       const decodedSongState = songStateObjectToUrlSongStateObject({
         measures,
