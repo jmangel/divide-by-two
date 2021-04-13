@@ -127,6 +127,11 @@ const SidebarMenu: React.FC<{
     return (/android/i.test(navigator.userAgent));
   }
 
+  const venmoWithFallback = () => {
+    setTimeout(function () { window.location.href = "https://www.venmo.com/u/JohnMangel"; }, 20);
+    window.location.href = "venmo://paycharge?txn=pay&recipients=JohnMangel&note=SongScaler!";
+  }
+
   return (
     <Menu
       styles={styles}
@@ -221,7 +226,7 @@ const SidebarMenu: React.FC<{
         isAndroid() ? (
           <a id="venmo" className="menu-item" href="intent://paycharge?txn=pay&recipients=JohnMangel&note=SongScaler!#Intent;package=com.venmo;scheme=venmo;end">Donate</a>
           ) : (
-          <a id="venmo" className="menu-item" href="https://venmo.com/JohnMangel">Donate</a>
+          <a id="venmo" className="menu-item" onClick={() => venmoWithFallback()}>Donate</a>
         )
       }
       <a id="feedback" className="menu-item" href="mailto:songscaler+feedback@gmail.com">Send Feedback</a>
