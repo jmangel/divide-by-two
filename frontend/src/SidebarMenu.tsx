@@ -123,6 +123,10 @@ const SidebarMenu: React.FC<{
     setShowSavedSongs(showingSavedSongs => !showingSavedSongs);
   }
 
+  const isAndroid = () => {
+    return (/android/i.test(navigator.userAgent));
+  }
+
   return (
     <Menu
       styles={styles}
@@ -213,8 +217,13 @@ const SidebarMenu: React.FC<{
           <BsToggleOff className="float-right" size='1.5em' />
         ) }
       </a>
-      <a id="venmo" className="menu-item" href="venmo://paycharge?txn=pay&recipients=JohnMangel&note=SongScaler!">Donate (opens in venmo)</a>
-      {/* <a id="venmo" className="menu-item" href="venmo://paycharge?txn=pay&recipients=JohnMangel&amount=5&note=SongScaler!">Buy Me A Coffee</a> */}
+      {
+        isAndroid() ? (
+          <a id="venmo" className="menu-item" href="intent://paycharge?txn=pay&recipients=JohnMangel&note=SongScaler!#Intent;package=com.venmo;scheme=venmo;end">Donate</a>
+          ) : (
+          <a id="venmo" className="menu-item" href="https://venmo.com/JohnMangel">Donate</a>
+        )
+      }
       <a id="feedback" className="menu-item" href="mailto:songscaler+feedback@gmail.com">Send Feedback</a>
       <Toast
         style={{ bottom: '1rem', position: 'fixed', backgroundColor: 'var(--secondary-bg-color)' }}
