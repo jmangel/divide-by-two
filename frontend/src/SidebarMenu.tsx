@@ -68,6 +68,9 @@ const SidebarMenu: React.FC<{
   getStringifiedSongState: () => string,
   pushSavedSong: (stringifiedQuery: string) => void,
   pushDeletedSong: () => void,
+  goBack: () => void,
+  maybeHijackBackButton: () => void,
+  maybeDehijackBackButton: () => void,
 }> = ({
   goHome,
   songTitle,
@@ -78,8 +81,12 @@ const SidebarMenu: React.FC<{
   getStringifiedSongState,
   pushSavedSong,
   pushDeletedSong,
+  goBack,
+  maybeHijackBackButton,
+  maybeDehijackBackButton,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+
   const [showCopyToast, setShowCopyToast] = useState(false);
 
   const [songTitles, setSongTitles] = useState([] as IDBValidKey[]);
@@ -125,22 +132,24 @@ const SidebarMenu: React.FC<{
     setShowSavedSongs(showingSavedSongs => !showingSavedSongs);
   }
 
-  const open = () => {
-    setIsOpen(true);
-    window.history.pushState({}, '');
-  }
-
   const handlePopState = () => {
+    if (!isOpen) goBack();
     setIsOpen(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('popstate', handlePopState);
+    if (isOpen) maybeHijackBackButton();
+    else maybeDehijackBackButton();
+    // we need to dehijack if not open, because when we close the menu on step 0,
+    // the app rerenders, triggering this effect because of change to goBack,
+    // but while isOpen is still true, which causes and extra hijacking, which
+    // needs to be undone once isOpen becomes false
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
-  }, []);
+  }, [isOpen, goBack]);
 
   const isAndroid = () => {
     return (/android/i.test(navigator.userAgent));
@@ -158,7 +167,7 @@ const SidebarMenu: React.FC<{
   return (
     <Menu
       styles={styles}
-      customBurgerIcon={<GiHamburgerMenu onClick={() => open()} />}
+      customBurgerIcon={<GiHamburgerMenu onClick={() => setIsOpen(true)} />}
       customCrossIcon={<MdClose style={{backgroundColor: 'transparent'}} />}
       right
       isOpen={isOpen}

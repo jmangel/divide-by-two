@@ -244,9 +244,19 @@ const App: React.FC = () => {
 
   const expandedChordRow = (expandedRowIndex > -1) && chordRowObjects[expandedRowIndex];
 
+  const maybeHijackBackButton = () => {
+    if (window.history.state === null) window.history.pushState({ songScalerState: true }, '');
+  }
+
+  const maybeDehijackBackButton = () => {
+    if (stepIndex === 0 && window.history.state !== null) window.history.back();;
+  }
+
   useEffect(() => {
     pausePlayback();
     setMetronomeBeatCount(startingMetronomeBeat);
+
+    if (stepIndex > 0) maybeHijackBackButton()
   }, [stepIndex]);
 
   const prevTransposingKey = usePrevious(transposingKey);
@@ -528,7 +538,7 @@ const App: React.FC = () => {
   }
 
   const navigateToPreviousStep = () => {
-    setStepIndex(stepIndex - 1);
+    setStepIndex(Math.max(stepIndex - 1, 0));
   }
 
   const handleFiles = (event: ChangeEvent<HTMLInputElement>) => {
@@ -746,6 +756,9 @@ const App: React.FC = () => {
             getStringifiedSongState={getStringifiedSongState}
             pushSavedSong={pushSavedSong}
             pushDeletedSong={pushDeletedSong}
+            goBack={navigateToPreviousStep}
+            maybeHijackBackButton={maybeHijackBackButton}
+            maybeDehijackBackButton={maybeDehijackBackButton}
           />
         </header>
         {
