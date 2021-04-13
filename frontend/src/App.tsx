@@ -39,7 +39,7 @@ import { csvifyMeasureInfos, parseCsvifiedMeasureInfos, createMeasureInfo } from
 import SidebarMenu from './SidebarMenu';
 import { openDb } from './indexedDb';
 import { parseUrl, stringify } from 'query-string';
-import { paramConfigMap, savedSongTitleToDecodedQueryObject, stringifySongStateObject } from './SongStateManager';
+import { paramConfigMap, decodeParsedQuery, savedSongTitleToDecodedQueryObject, songStateObjectToUrlSongStateObject, stringifySongStateObject } from './SongStateManager';
 import usePrevious from './UsePrevious';
 
 const metronomeTicker = new Worker();
@@ -165,6 +165,8 @@ const App: React.FC = () => {
 
   const defaultStateObject = createDefaultStateObject();
 
+  const [savedSongDecodedQueryObject, setSavedSongDecodedQueryObject] = useState<DecodedValueMap<typeof paramConfigMap> | undefined>();
+
   const [chordRowObjects, setChordRowObjects] = useState(defaultStateObject.chordRowObjects);
   const [measures, setMeasures] = useState(defaultStateObject.measures);
   const [song, setSong] = useState(defaultStateObject.song);
@@ -187,7 +189,12 @@ const App: React.FC = () => {
 
   const loadSavedSong = async (savedSongTitle: string) => {
     const urlSongStateObject = await savedSongTitleToDecodedQueryObject(savedSongTitle);
-    if (urlSongStateObject) setStateFromQuery(urlSongStateObject as DecodedValueMap<typeof paramConfigMap>);
+    if (urlSongStateObject) {
+      setStateFromQuery(urlSongStateObject as DecodedValueMap<typeof paramConfigMap>);
+      setSavedSongDecodedQueryObject(urlSongStateObject as DecodedValueMap<typeof paramConfigMap>);
+    } else {
+      // TODO: flash message, navigate to new page
+    }
   }
 
   useEffect(() => {
@@ -422,18 +429,52 @@ const App: React.FC = () => {
     await db.put(settingsStoreName, showSheetMusic, showSheetMusicSettingName);
   }
 
-  useEffect(() => {
-    window.addEventListener('beforeunload', function (e) {
-      const urlQuery = parseUrl(window.location.href).query;
-      const stringifiedUrlQuery = stringify(urlQuery);
+  const transposingKeysAreEqual = (savedTransposingKey: TransposingKeys | undefined, currentTransposingKey: TransposingKeys | undefined) => {
+    if (savedTransposingKey === currentTransposingKey) return true;
 
-      const stringifiedStateQuery = getStringifiedSongState();
+    const neutralTranposingKeyValues = ['0', undefined];
+    return (neutralTranposingKeyValues.includes(savedTransposingKey) && neutralTranposingKeyValues.includes(currentTransposingKey));
+  }
 
-      // don't prevent reload if state is unchanged from url
-      if (stringifiedUrlQuery === stringifiedStateQuery) delete e['returnValue'];
+  const urlSongStateObjectsAreEqual = (savedState: Partial<DecodedValueMap<typeof paramConfigMap>>, currentState: Partial<DecodedValueMap<typeof paramConfigMap>>) => {
+    return (
+      savedState.c === currentState.c &&
+      savedState.m === currentState.m &&
+      savedState.t === currentState.t &&
+      transposingKeysAreEqual(savedState.k as TransposingKeys | undefined, currentState.k as TransposingKeys | undefined) &&
+      savedState.b === currentState.b
+    );
+  }
+
+  const beforeUnloadEventListener = (e: BeforeUnloadEvent) => {
+      const decodedSavedQuery = savedSongDecodedQueryObject || decodeParsedQuery(parseUrl(window.location.href).query)
+
+      const decodedSongState = songStateObjectToUrlSongStateObject({
+        measures,
+        chordRowObjects,
+        song,
+        expandedRowIndex,
+        stepIndex,
+        transposingKey,
+        bpm,
+      })
+
+      // don't prevent reload if state is unchanged
+      if (urlSongStateObjectsAreEqual(decodedSavedQuery, decodedSongState)) delete e['returnValue'];
       else e['returnValue'] = true;
-    });
-  }, []);
+  }
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', beforeUnloadEventListener);
+    return () => window.removeEventListener('beforeunload', beforeUnloadEventListener);
+  }, [
+    savedSongDecodedQueryObject,
+    measures,
+    chordRowObjects,
+    song,
+    transposingKey,
+    bpm,
+  ]);
 
   useEffect(() => { loadShowSheetMusic() }, []);
   useEffect(() => { storeShowSheetMusic() }, [showSheetMusic]);

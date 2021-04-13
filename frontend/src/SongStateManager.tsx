@@ -1,5 +1,5 @@
-import { parse, stringify } from "query-string";
-import { ArrayParam, decodeQueryParams, encodeQueryParams, NumberParam, StringParam } from "serialize-query-params";
+import { parse, ParsedQuery, stringify } from "query-string";
+import { ArrayParam, DecodedValueMap, decodeQueryParams, encodeQueryParams, NumberParam, StringParam } from "serialize-query-params";
 import { MeasureInfo, Song } from "./App";
 import { ChordRowObject } from "./ChordRow";
 import { openDb } from "./indexedDb";
@@ -41,12 +41,12 @@ export const paramConfigMap = {
 };
 
 
-const stringifyUrlSongStateObject = (songStateObject: UrlSongStateObject) => {
+export const stringifyUrlSongStateObject = (songStateObject: UrlSongStateObject | DecodedValueMap<typeof paramConfigMap>) => {
   const encodedStateQuery = encodeQueryParams(paramConfigMap, songStateObject);
   return stringify(encodedStateQuery);
 }
 
-const songStateObjectToUrlSongStateObject = (object: SongStateObject): UrlSongStateObject => {
+export const songStateObjectToUrlSongStateObject = (object: SongStateObject): UrlSongStateObject => {
   const { measures, chordRowObjects, song, expandedRowIndex, stepIndex, transposingKey, bpm } = object;
 
   return {
@@ -68,6 +68,10 @@ export const savedSongTitleToDecodedQueryObject = async (savedSongTitle: string)
   const value = await db.get(songStoreName, savedSongTitle);
 
   return value ? decodeQueryParams(paramConfigMap, parse(value)) : null;
+}
+
+export const decodeParsedQuery = (parsedQuery: ParsedQuery) => {
+  return decodeQueryParams(paramConfigMap, parsedQuery);
 }
 
 export const stringifySongStateObject = (object: SongStateObject) => {
