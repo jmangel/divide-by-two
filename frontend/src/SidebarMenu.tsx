@@ -132,8 +132,8 @@ const SidebarMenu: React.FC<{
   }
 
   const bufferHistoryState = () => {
-    if ((isOpen || (stepIndex > 0)) && !window.history.state?.songScalerState) {
-      window.history.pushState({ songScalerState: true }, '');
+    if ((isOpen || (stepIndex > 0)) && !window.history.state?.songScalerBufferedHistory) {
+      window.history.pushState({ songScalerBufferedHistory: true }, '');
     }
   }
 
