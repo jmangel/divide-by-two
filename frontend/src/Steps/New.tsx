@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChangeEvent } from 'react';
-import { Button, Col, FormText, Input, Modal, ModalBody, ModalFooter, Row } from "reactstrap";
+import { Button, Col, FormText, Input, Row } from "reactstrap";
+import TitleModal from '../TitleModal';
 import SaxophonistLogo from '../SaxophonistLogo';
 import ContinueButton from './ContinueButton';
 
@@ -17,7 +18,6 @@ const New: React.FC<{
   navigateToNextStep,
 }) => {
   const [enteringTitle, setEnteringTitle] = useState(false);
-  const [songTitle, setSongTitle] = useState('');
   const toggleTitleModal = () => setEnteringTitle(!enteringTitle);
 
   return (
@@ -35,14 +35,11 @@ const New: React.FC<{
           New
         </Button>
       </Row>
-      <Modal isOpen={enteringTitle} toggle={toggleTitleModal}>
-        <ModalBody>
-          <Input placeholder="Song Title" value={songTitle} onChange={(e) => setSongTitle(e.target.value)}></Input>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={() => startNewSong(songTitle)}>Confirm</Button>
-        </ModalFooter>
-      </Modal>
+      <TitleModal
+          isOpen={enteringTitle}
+          toggle={toggleTitleModal}
+          onSet={startNewSong}
+      />
       <Row className='py-2'>
         <Input
           type="file"
