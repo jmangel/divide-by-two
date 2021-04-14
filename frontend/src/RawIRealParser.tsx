@@ -12,15 +12,6 @@ interface ParsedMeasure {
 const basicMeasureSplitter = String.raw ` ?L?Z|[\|\]\}]`;
 const measureSplitterRegexWithXyQ = new RegExp(`(?<=XyQ(?!${basicMeasureSplitter})|${basicMeasureSplitter})`);
 
-const noteRegex = /([ABCDEFG][#b]?)/;
-const degreeRegex = /[56791113]/;
-const qualityRegex = new RegExp(`()|((([-+^ho]|add)*${degreeRegex}?([#b]?${degreeRegex})*sus?)alt?)`)
-// const quality =  ('*' [^*]* '*' ) / (( ( [-+^ho] / 'add')* <degree>? ( [#b]? <degree> )*  'sus'? )  'alt'?)
-// const rootnote = '/' <note>
-
-const chordSplitter = /[ ,]/;
-const chordMatcher = /[A-Gb#-^h/]*/;
-
 export const rawToMeasures = (raw: string): ParsedMeasure[] => {
   raw = raw.trim();
 
