@@ -528,7 +528,6 @@ const App: React.FC = () => {
   }
 
   const navigateToPreviousStep = () => {
-    console.warn('navigating to previous step or beyond');
     if (stepIndex === 0) window.history.back();
     else setStepIndex(stepIndex - 1);
   }
