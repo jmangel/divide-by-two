@@ -248,10 +248,6 @@ const App: React.FC = () => {
     if (window.history.state === null) window.history.pushState({ songScalerState: true }, '');
   }
 
-  const maybeDehijackBackButton = () => {
-    if (stepIndex === 0 && window.history.state !== null) window.history.back();;
-  }
-
   useEffect(() => {
     pausePlayback();
     setMetronomeBeatCount(startingMetronomeBeat);
@@ -538,7 +534,8 @@ const App: React.FC = () => {
   }
 
   const navigateToPreviousStep = () => {
-    setStepIndex(Math.max(stepIndex - 1, 0));
+    if (stepIndex === 0) window.history.back();
+    else setStepIndex(stepIndex - 1);
   }
 
   const handleFiles = (event: ChangeEvent<HTMLInputElement>) => {
@@ -758,7 +755,7 @@ const App: React.FC = () => {
             pushDeletedSong={pushDeletedSong}
             goBack={navigateToPreviousStep}
             maybeHijackBackButton={maybeHijackBackButton}
-            maybeDehijackBackButton={maybeDehijackBackButton}
+            stepIndex={stepIndex}
           />
         </header>
         {
