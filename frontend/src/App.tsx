@@ -158,6 +158,10 @@ const App: React.FC = () => {
     sst: withDefault(paramConfigMap['sst'], ''),
   });
 
+  useEffect(() => {
+    console.warn('changed query', query);
+  }, [query])
+
   const defaultStateObject = createDefaultStateObject();
 
   const [savedSongDecodedQueryObject, setSavedSongDecodedQueryObject] = useState<DecodedValueMap<typeof paramConfigMap> | undefined>();
@@ -167,6 +171,9 @@ const App: React.FC = () => {
   const [song, setSong] = useState(defaultStateObject.song);
   const [expandedRowIndex, setExpandedRowIndex] = useState(defaultStateObject.expandedRowIndex);
   const [stepIndex, setStepIndex] = useState(defaultStateObject.stepIndex);
+  useEffect(() => {
+    console.warn('changed stepIndex', stepIndex);
+  }, [stepIndex])
   const [transposingKey, setTranposingKey] = useState(defaultStateObject.transposingKey);
   const [bpm, setBpm] = useState(defaultStateObject.bpm);
 
@@ -177,6 +184,7 @@ const App: React.FC = () => {
     setMeasures(stateObject.measures);
     setSong(stateObject.song);
     setExpandedRowIndex(stateObject.expandedRowIndex);
+    console.warn('setting state from query');
     setStepIndex(stateObject.stepIndex);
     setTranposingKey(stateObject.transposingKey);
     setBpm(stateObject.bpm);
@@ -519,14 +527,18 @@ const App: React.FC = () => {
   }
 
   const navigateToNextStep = () => {
+    console.warn('navigateToNextStep');
     setStepIndex(stepIndex + 1);
   }
 
   const navigateToFirstStep = () => {
+    console.warn('navigateToFirstStep');
     setStepIndex(0);
   }
 
   const navigateToPreviousStep = () => {
+    console.warn('navigateToPreviousStep');
+    console.warn(stepIndex);
     if (stepIndex === 0) window.history.back();
     else setStepIndex(stepIndex - 1);
   }
