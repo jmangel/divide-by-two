@@ -606,13 +606,13 @@ const App: React.FC = () => {
     setTranposingKey(TransposingKeys.C);
   }
 
-  const startNewSong = () => {
+  const startNewSong = (songTitle?: string) => {
     const newChordRows = [createChordRowObject()];
     setMeasures([{ beatsPerMeasure: 4, subdivisions: 4, chordCount: 1 }]);
     clearTransposingKey();
     setBpm(defaultBpm);
     setChordRowObjects(newChordRows);
-    setSong(createSongObject(''));
+    setSong(createSongObject(songTitle || ''));
     navigateToNextStep();
     setQuery({ }, 'push');
     setSavedSongDecodedQueryObject(undefined);

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChangeEvent } from 'react';
-import { Button, Col, FormText, Input, Row } from "reactstrap";
+import { Button, Col, FormText, Input, Modal, ModalBody, ModalFooter, Row } from "reactstrap";
 import SaxophonistLogo from '../SaxophonistLogo';
 import ContinueButton from './ContinueButton';
 
@@ -8,7 +8,7 @@ import ContinueButton from './ContinueButton';
 const New: React.FC<{
   allowContinue: boolean,
   handleFiles: (event: ChangeEvent<HTMLInputElement>) => void,
-  startNewSong: () => void,
+  startNewSong: (songTitle?: string) => void,
   navigateToNextStep: () => void,
 }> = ({
   allowContinue,
@@ -16,6 +16,9 @@ const New: React.FC<{
   startNewSong,
   navigateToNextStep,
 }) => {
+  const [enteringTitle, setEnteringTitle] = useState(false);
+  const [songTitle, setSongTitle] = useState('');
+  const toggleTitleModal = () => setEnteringTitle(!enteringTitle);
 
   return (
     <Col className="flex-column d-flex">
@@ -27,11 +30,19 @@ const New: React.FC<{
         <Button
           color="light"
           className="w-75 ml-auto mr-auto"
-          onClick={() => startNewSong()}
+          onClick={() => setEnteringTitle(true)}
         >
           New
         </Button>
       </Row>
+      <Modal isOpen={enteringTitle} toggle={toggleTitleModal}>
+        <ModalBody>
+          <Input placeholder="Song Title" value={songTitle} onChange={(e) => setSongTitle(e.target.value)}></Input>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={() => startNewSong(songTitle)}>Confirm</Button>
+        </ModalFooter>
+      </Modal>
       <Row className='py-2'>
         <Input
           type="file"
