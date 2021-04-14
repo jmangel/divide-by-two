@@ -245,6 +245,8 @@ const App: React.FC = () => {
   const expandedChordRow = (expandedRowIndex > -1) && chordRowObjects[expandedRowIndex];
 
   const maybeHijackBackButton = (menuOpen: boolean) => {
+    console.warn('maybe hijacking', window.history.state);
+    console.warn(stepIndex);
     const appHasBackableState = menuOpen || (stepIndex > 0);
     if (appHasBackableState && window.history.state === null) window.history.pushState({ songScalerState: true }, '');
   }
@@ -253,6 +255,9 @@ const App: React.FC = () => {
     pausePlayback();
     setMetronomeBeatCount(startingMetronomeBeat);
 
+    console.warn('hijacking in stepIndex effect')
+    console.warn(stepIndex);
+    console.warn(maybeHijackBackButton)
     maybeHijackBackButton(false)
   }, [stepIndex]);
 
@@ -535,6 +540,7 @@ const App: React.FC = () => {
   }
 
   const navigateToPreviousStep = () => {
+    console.warn('navigating to previous step or beyond');
     if (stepIndex === 0) window.history.back();
     else setStepIndex(stepIndex - 1);
   }

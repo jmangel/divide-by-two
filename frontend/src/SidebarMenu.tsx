@@ -133,15 +133,18 @@ const SidebarMenu: React.FC<{
   }
 
   const handlePopState = () => {
+    console.warn('handling popstate', isOpen);
     if (!isOpen) goBack();
     setIsOpen(false);
   };
 
   useEffect(() => {
+    console.warn('adding event listener')
     window.addEventListener('popstate', handlePopState);
     maybeHijackBackButton(isOpen);
 
     return () => {
+      console.warn('removing event listener')
       window.removeEventListener('popstate', handlePopState);
     };
   }, [isOpen, stepIndex]);
