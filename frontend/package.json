@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --mode production",
-    "deploy": "webpack --mode production && gh-pages -d dist && git add -A && (git diff-index --quiet HEAD || git commit -m 'uncommitted changes') && (! git show-ref --verify --quiet refs/heads/gh-pages-deployed || git branch -D gh-pages-deployed) && git checkout -b gh-pages-deployed && git push -f origin gh-pages-deployed && git checkout -",
+    "deploy": "webpack --mode production && gh-pages -d dist && (! git show-ref --verify --quiet refs/heads/gh-pages-deployed || git branch -D gh-pages-deployed) && git checkout -b gh-pages-deployed && git add -A && (git diff-index --quiet HEAD || git commit -m 'uncommitted changes') && git push -f origin gh-pages-deployed && git checkout -",
     "dev": "webpack-dev-server",
     "test": "jest",
     "typecheck": "tsc -p . --noEmit"
