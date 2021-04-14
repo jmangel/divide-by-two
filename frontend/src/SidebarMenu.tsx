@@ -70,6 +70,7 @@ const SidebarMenu: React.FC<{
   pushDeletedSong: () => void,
   goBack: () => void,
   stepIndex: number,
+  loadSong: (savedSongTitle: string) => void,
 }> = ({
   goHome,
   songTitle,
@@ -82,6 +83,7 @@ const SidebarMenu: React.FC<{
   pushDeletedSong,
   goBack,
   stepIndex,
+  loadSong,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -130,7 +132,7 @@ const SidebarMenu: React.FC<{
   }
 
   const bufferHistoryState = () => {
-    if ((isOpen || (stepIndex > 0)) && window.history.state === null) {
+    if ((isOpen || (stepIndex > 0)) && !window.history.state?.songScalerState) {
       window.history.pushState({ songScalerState: true }, '');
     }
   }
@@ -216,7 +218,10 @@ const SidebarMenu: React.FC<{
       { showSavedSongs && songTitles.map(savedSongTitle => (
         <a
           className="menu-item pl-5"
-          href={`?sst=${savedSongTitle}`}
+          onClick={() => {
+            loadSong(savedSongTitle as string);
+            setIsOpen(false);
+          }}
         >{savedSongTitle}</a>
       )) }
       <a className="menu-item" onClick={() => toggleShowTargetNotes()}>

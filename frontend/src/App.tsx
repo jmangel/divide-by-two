@@ -200,6 +200,11 @@ const App: React.FC = () => {
     else setStateFromQuery(query);
   }, [])
 
+  const navigateToSavedSong = (savedSongTitle: string) => {
+    setQuery({ sst: savedSongTitle }, 'replace');
+    loadSavedSong(savedSongTitle);
+  }
+
   let runningSum = 0;
   measures.forEach((measureInfo) => {
     runningSum += measureInfo.beatsPerMeasure;
@@ -739,6 +744,7 @@ const App: React.FC = () => {
             showSheetMusic={showSheetMusic}
             toggleShowSheetMusic={() => setShowSheetMusic(oldValue => !oldValue)}
             getStringifiedSongState={getStringifiedSongState}
+            loadSong={navigateToSavedSong}
             pushSavedSong={pushSavedSong}
             pushDeletedSong={pushDeletedSong}
             goBack={navigateToPreviousStep}
