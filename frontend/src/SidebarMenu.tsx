@@ -69,7 +69,6 @@ const SidebarMenu: React.FC<{
   pushSavedSong: (stringifiedQuery: string) => void,
   pushDeletedSong: () => void,
   goBack: () => void,
-  maybeHijackBackButton: (isOpen: boolean) => void,
   stepIndex: number,
 }> = ({
   goHome,
@@ -82,7 +81,6 @@ const SidebarMenu: React.FC<{
   pushSavedSong,
   pushDeletedSong,
   goBack,
-  maybeHijackBackButton,
   stepIndex,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -132,22 +130,29 @@ const SidebarMenu: React.FC<{
     setShowSavedSongs(showingSavedSongs => !showingSavedSongs);
   }
 
+  const bufferHistoryState = () => {
+    if ((isOpen || (stepIndex > 0)) && window.history.state === null) {
+      window.history.pushState({ songScalerState: true }, '');
+    }
+  }
+
   const handlePopState = () => {
     console.warn('handling popstate', isOpen);
     if (!isOpen) goBack();
-    setIsOpen(false);
+    else setIsOpen(false);
+    bufferHistoryState();
   };
 
   useEffect(() => {
     console.warn('adding event listener')
+    bufferHistoryState();
     window.addEventListener('popstate', handlePopState);
-    maybeHijackBackButton(isOpen);
 
     return () => {
       console.warn('removing event listener')
       window.removeEventListener('popstate', handlePopState);
     };
-  }, [isOpen, stepIndex]);
+  }, [isOpen, stepIndex]); // we have to listen to stepIndex in order to give goBack the right scope in the listener
 
   const isAndroid = () => {
     return (/android/i.test(navigator.userAgent));
