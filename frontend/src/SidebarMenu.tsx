@@ -138,7 +138,6 @@ const SidebarMenu: React.FC<{
   }
 
   const handlePopState = () => {
-    console.warn('pop pop!')
     if (!isOpen) goBack();
     else setIsOpen(false);
     bufferHistoryState();
@@ -146,11 +145,9 @@ const SidebarMenu: React.FC<{
 
   useEffect(() => {
     bufferHistoryState();
-    console.warn('addEventListener');
     window.addEventListener('popstate', handlePopState);
 
     return () => {
-      console.warn('removeEventListener');
       window.removeEventListener('popstate', handlePopState);
     };
   }, [isOpen, stepIndex]); // we have to listen to stepIndex in order to give goBack the right scope in the listener
