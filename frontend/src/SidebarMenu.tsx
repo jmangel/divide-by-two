@@ -100,7 +100,6 @@ const SidebarMenu: React.FC<{
     const db = await openDb();
 
     const keys = await db.getAllKeys(storeName);
-    console.warn(keys);
     setSongTitles(keys);
   }
 
