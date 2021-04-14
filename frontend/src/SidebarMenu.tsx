@@ -144,9 +144,10 @@ const SidebarMenu: React.FC<{
   };
 
   useEffect(() => {
-    console.warn('adding event listener')
+    console.warn('adding event listener', handlePopState)
     bufferHistoryState();
     window.addEventListener('popstate', handlePopState);
+    console.warn(window.history.state, isOpen, stepIndex);
 
     return () => {
       console.warn('removing event listener')
