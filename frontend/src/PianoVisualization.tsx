@@ -101,11 +101,10 @@ const chordTonePitchIndexes = (chordRowObject: ChordRowObject) => {
   return chordTones(chordRowObject).map(chordTone => REACT_PIANO_PITCH_INDEXES[chordTone]);
 }
 
-const isLeadingOrStandingTone = (currentChordPitchIndexes: number[], pitchIndex: number) => {
-  return currentChordPitchIndexes.some((currentPitchIndex) => {
-    const oneWayDistance = Math.abs(currentPitchIndex - pitchIndex);
-    const minDistance = Math.min(oneWayDistance, 12 - oneWayDistance);
-    return minDistance <= 1;
+const isLeadingOrStandingTone = (currentChordMidiNumbers: number[], midiNumber: number) => {
+  return currentChordMidiNumbers.some((currentMidiNumber) => {
+    const oneWayDistance = Math.abs(currentMidiNumber - midiNumber);
+    return oneWayDistance <= 1;
   })
 }
 
@@ -129,9 +128,7 @@ const ChordPianoVisualization: React.FC<{
   // TODO: include bass note as root, but what about widespread chords? 3 octaves?
   const activeNotes = lowerChordToneMidiNumbers(chordNote, chordQuality, lastNote);
 
-  const currentChordPitchIndexes = chordTonePitchIndexes(chordRowObject);
   const nextChordPitchIndexes = nextChord ? chordTonePitchIndexes(nextChord) : [];
-  const leadingOrStandingTonePitchIndexes = nextChordPitchIndexes.filter(nextPitchIndex => isLeadingOrStandingTone(currentChordPitchIndexes, nextPitchIndex))
 
   const keyboardShortcuts = KeyboardShortcuts.create({
     firstNote: firstNote,
@@ -156,7 +153,7 @@ const ChordPianoVisualization: React.FC<{
       activeNotes={activeNotes}
       renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }: NoteLabelProps) => {
         const pitchIndex = REACT_PIANO_PITCH_INDEXES[MidiNumbers.getAttributes(midiNumber).pitchName];
-        const isTargetNote = leadingOrStandingTonePitchIndexes.includes(pitchIndex);
+        const isTargetNote = nextChordPitchIndexes.includes(pitchIndex) && isLeadingOrStandingTone(activeNotes, midiNumber);
 
         const classNames = ['ReactPiano__NoteLabel']
         if (isActive) classNames.push('ReactPiano__NoteLabel--active');
