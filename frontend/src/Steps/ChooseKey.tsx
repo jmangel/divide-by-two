@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Input, Row } from "reactstrap";
+import { Col, Input, Row } from "reactstrap";
 import ContinueButton from './ContinueButton';
 
 export enum TransposingKeys {

@@ -3,7 +3,7 @@ import { slide as Menu } from 'react-burger-menu'
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
-import { Button, DropdownToggle, Toast, ToastBody, Tooltip, UncontrolledDropdown } from 'reactstrap';
+import { DropdownToggle, Toast, ToastBody, Tooltip, UncontrolledDropdown } from 'reactstrap';
 import { parse, parseUrl, stringifyUrl } from 'query-string';
 import { openDb } from './indexedDb';
 import { BiHelpCircle } from 'react-icons/bi';

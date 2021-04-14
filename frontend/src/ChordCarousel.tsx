@@ -6,7 +6,6 @@ import {
   CarouselIndicators,
   CarouselItem,
   Container,
-  Row,
 } from 'reactstrap';
 import ChordRow, { ChordRowObject, ChordRowObjectRequiredKeys } from './ChordRow'
 import { MonochromaticPossibleRootScale } from './ScaleColorer';

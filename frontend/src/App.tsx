@@ -1,21 +1,15 @@
 import React, { ChangeEvent, useEffect, useRef, useState, Fragment } from 'react';
 import {
   Alert,
-  Button,
-  Col,
   Container,
   Row,
 } from 'reactstrap';
 import {
   useQueryParams,
-  ArrayParam,
-  NumberParam,
-  StringParam,
   withDefault,
   DecodedValueMap,
 } from 'use-query-params';
-// import { SketchPicker } from 'react-color';
-import { MdCheck, MdHome, MdKeyboardArrowLeft } from 'react-icons/md';
+import { MdCheck, MdKeyboardArrowLeft } from 'react-icons/md';
 
 import useSound from 'use-sound';
 

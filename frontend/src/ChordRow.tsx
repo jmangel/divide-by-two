@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Button, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Button, Col, Input, Row } from 'reactstrap';
 import scalesForChord, { NamedScale, ROOT_SCALE_READABLE_SHORTENINGS } from './ChordMapper'
 import parseChordString from './ChordParser'
 import scaleToHexColor, { MonochromaticPossibleRootScale } from './ScaleColorer';
