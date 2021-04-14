@@ -244,15 +244,16 @@ const App: React.FC = () => {
 
   const expandedChordRow = (expandedRowIndex > -1) && chordRowObjects[expandedRowIndex];
 
-  const maybeHijackBackButton = () => {
-    if (window.history.state === null) window.history.pushState({ songScalerState: true }, '');
+  const maybeHijackBackButton = (menuOpen: boolean) => {
+    const appHasBackableState = menuOpen || (stepIndex > 0);
+    if (appHasBackableState && window.history.state === null) window.history.pushState({ songScalerState: true }, '');
   }
 
   useEffect(() => {
     pausePlayback();
     setMetronomeBeatCount(startingMetronomeBeat);
 
-    if (stepIndex > 0) maybeHijackBackButton()
+    maybeHijackBackButton(false)
   }, [stepIndex]);
 
   const prevTransposingKey = usePrevious(transposingKey);

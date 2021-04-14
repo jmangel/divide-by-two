@@ -69,7 +69,7 @@ const SidebarMenu: React.FC<{
   pushSavedSong: (stringifiedQuery: string) => void,
   pushDeletedSong: () => void,
   goBack: () => void,
-  maybeHijackBackButton: () => void,
+  maybeHijackBackButton: (isOpen: boolean) => void,
   stepIndex: number,
 }> = ({
   goHome,
@@ -139,7 +139,7 @@ const SidebarMenu: React.FC<{
 
   useEffect(() => {
     window.addEventListener('popstate', handlePopState);
-    if (isOpen) maybeHijackBackButton();
+    maybeHijackBackButton(isOpen);
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
