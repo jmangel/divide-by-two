@@ -208,7 +208,7 @@ const SidebarMenu: React.FC<{
       >
         Copy Link to Share Song
       </a>
-      <UncontrolledDropdown toggle={() => toggleShowSavedSongs()}>
+      <UncontrolledDropdown onClick={() => toggleShowSavedSongs()}>
         <DropdownToggle caret tag="a" className="menu-item">
           Saved Songs
         </DropdownToggle>
