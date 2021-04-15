@@ -33,7 +33,13 @@ const TitleModal: React.FC<{
       centered
     >
       <ModalBody>
-        <Input type="textarea" className="title-modal--textarea" placeholder="Song Title" value={songTitle} onChange={(e) => setSongTitle(e.target.value)}></Input>
+        <Input
+          type="textarea"
+          className="title-modal--textarea"
+          placeholder="Song Title"
+          value={songTitle}
+          onChange={(e) => setSongTitle(e.target.value)}
+        />
         <Button color="primary" className="w-100 mt-1" onClick={onConfirm}>Confirm</Button>
       </ModalBody>
     </Modal>

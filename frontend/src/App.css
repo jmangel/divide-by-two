@@ -164,16 +164,36 @@ hr {
   display: none;
 }
 
-.title-modal--textarea {
-  --title-modal--textarea--height: 100px;
+:root {
+  --title-modal--textarea--height: 110px;
   /* font-size variable for calculations cannot be em, otherwise calculations become doubly-dependent on font-size */
   --title-modal--textarea--font-size: 1rem;
   --title-modal--textarea--line-height: 1.5;
+}
 
+.title-modal--textarea {
   height: var(--title-modal--textarea--height) !important;
+  text-align: center;
+  padding-top: 0;
+}
+
+::-webkit-input-placeholder {
   font-size: var(--title-modal--textarea--font-size);
   line-height: var(--title-modal--textarea--line-height);
   padding-top: calc((var(--title-modal--textarea--height) - (var(--title-modal--textarea--line-height) * var(--title-modal--textarea--font-size)))/2);
-  border-bottom: 0;
-  border-top: 0;
+}
+:-moz-placeholder { /* Firefox 18- */
+  font-size: var(--title-modal--textarea--font-size);
+  line-height: var(--title-modal--textarea--line-height);
+  padding-top: calc((var(--title-modal--textarea--height) - (var(--title-modal--textarea--line-height) * var(--title-modal--textarea--font-size)))/2);
+}
+::-moz-placeholder {  /* Firefox 19+ */
+  font-size: var(--title-modal--textarea--font-size);
+  line-height: var(--title-modal--textarea--line-height);
+  padding-top: calc((var(--title-modal--textarea--height) - (var(--title-modal--textarea--line-height) * var(--title-modal--textarea--font-size)))/2);
+}
+:-ms-input-placeholder {
+  font-size: var(--title-modal--textarea--font-size);
+  line-height: var(--title-modal--textarea--line-height);
+  padding-top: calc((var(--title-modal--textarea--height) - (var(--title-modal--textarea--line-height) * var(--title-modal--textarea--font-size)))/2);
 }
