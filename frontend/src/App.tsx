@@ -530,9 +530,18 @@ const App: React.FC = () => {
 
   const [enteringTitle, setEnteringTitle, enteringTitleRef] = useStateRef(false);
 
+  const [_, setAppCanGoBack, appCanGoBackRef] = useStateRef(false);
+  useEffect(() => {
+    setAppCanGoBack(enteringTitle || (stepIndex > 0));
+  }, [enteringTitle || (stepIndex > 0)]);
+
+
   const navigateToPreviousStep = () => {
-    if (stepIndexRef.current === 0) window.history.back();
-    else setStepIndex(stepIndexRef.current - 1);
+    if (!appCanGoBackRef.current) return window.history.back();
+
+    if (enteringTitleRef.current) return setEnteringTitle(false);
+
+    setStepIndex(stepIndexRef.current - 1);
   }
 
   const handleFiles = (event: ChangeEvent<HTMLInputElement>) => {
@@ -754,7 +763,7 @@ const App: React.FC = () => {
             pushSavedSong={pushSavedSong}
             pushDeletedSong={pushDeletedSong}
             goBack={navigateToPreviousStep}
-            stepIndexRef={stepIndexRef}
+            appCanGoBackRef={appCanGoBackRef}
             saveSongTitle={title => setSong(song => { return { ...song, title: title }; })}
           />
         </header>

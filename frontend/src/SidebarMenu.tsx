@@ -71,7 +71,7 @@ const SidebarMenu: React.FC<{
   pushSavedSong: (stringifiedQuery: string) => void,
   pushDeletedSong: () => void,
   goBack: () => void,
-  stepIndexRef: React.MutableRefObject<number>,
+  appCanGoBackRef: React.MutableRefObject<boolean>,
   loadSong: (savedSongTitle: string) => void,
   saveSongTitle: (songTitle: string) => void,
 }> = ({
@@ -85,7 +85,7 @@ const SidebarMenu: React.FC<{
   pushSavedSong,
   pushDeletedSong,
   goBack,
-  stepIndexRef,
+  appCanGoBackRef,
   loadSong,
   saveSongTitle,
 }) => {
@@ -139,7 +139,7 @@ const SidebarMenu: React.FC<{
   }
 
   const bufferHistoryState = () => {
-    if ((isOpenRef.current || (stepIndexRef.current > 0)) && !window.history.state?.songScalerBufferedHistory) {
+    if ((isOpenRef.current || appCanGoBackRef.current) && !window.history.state?.songScalerBufferedHistory) {
       window.history.pushState({ songScalerBufferedHistory: true }, '');
     }
   }
@@ -160,7 +160,7 @@ const SidebarMenu: React.FC<{
 
   useEffect(() => {
     bufferHistoryState();
-  }, [isOpen || (stepIndexRef.current > 0)]); // history does need to be rebuffered when the conditions for hijacking change value
+  }, [isOpen, appCanGoBackRef.current]); // history does need to be rebuffered when the conditions for hijacking change value
 
   const isAndroid = () => {
     return (/android/i.test(navigator.userAgent));
