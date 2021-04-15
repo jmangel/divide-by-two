@@ -749,6 +749,7 @@ const App: React.FC = () => {
             pushDeletedSong={pushDeletedSong}
             goBack={navigateToPreviousStep}
             stepIndex={stepIndex}
+            saveSongTitle={title => setSong(song => { return { ...song, title: title }; })}
           />
         </header>
         {

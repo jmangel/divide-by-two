@@ -7,6 +7,7 @@ import { DropdownToggle, Toast, ToastBody, Tooltip, UncontrolledDropdown } from 
 import { parse, parseUrl, stringifyUrl } from 'query-string';
 import { openDb } from './indexedDb';
 import { BiHelpCircle } from 'react-icons/bi';
+import TitleModal from './TitleModal';
 
 const styles = {
   bmBurgerButton: {
@@ -71,6 +72,7 @@ const SidebarMenu: React.FC<{
   goBack: () => void,
   stepIndex: number,
   loadSong: (savedSongTitle: string) => void,
+  saveSongTitle: (songTitle: string) => void,
 }> = ({
   goHome,
   songTitle,
@@ -84,6 +86,7 @@ const SidebarMenu: React.FC<{
   goBack,
   stepIndex,
   loadSong,
+  saveSongTitle,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -97,6 +100,9 @@ const SidebarMenu: React.FC<{
 
   const [showSheetMusicTooltipOpen, setShowSheetMusicTooltip] = useState(false);
   const toggleShowSheetMusicTooltip = () => setShowSheetMusicTooltip(!showSheetMusicTooltipOpen);
+
+  const [editingTitle, setEditingTitle] = useState(false);
+  const toggleTitleModal = () => setEditingTitle(!editingTitle);
 
   async function loadSongTitles() {
     const db = await openDb();
@@ -193,6 +199,19 @@ const SidebarMenu: React.FC<{
           Delete Current Saved Song
         </a>
       )}
+      <a
+        className="menu-item"
+        onClick={() => setEditingTitle(true)}
+      >
+        Edit Title
+      </a>
+      <TitleModal
+        isOpen={editingTitle}
+        toggle={toggleTitleModal}
+        onSet={songTitle => saveSongTitle(songTitle)}
+        startingValue={songTitle}
+        zIndex={1200}
+      />
       <a
         className="menu-item"
         onClick={() => {
