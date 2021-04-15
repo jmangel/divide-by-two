@@ -197,7 +197,7 @@ const PlayAlong: React.FC<{
                         const defaultHeight = '25vw';
                         const defaultWidth = '100vw';
                         return (
-                          <div className="px-2"
+                          <div className="px-2 pt-1"
                             style={{ width: defaultWidth, height: defaultHeight, maxHeight }}
                           >
                             <ChordPianoVisualization
