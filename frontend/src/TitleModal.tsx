@@ -28,8 +28,8 @@ const TitleModal: React.FC<{
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} zIndex={zIndex}
-      backdropClassName="play-along--count-in-modal--backdrop"
-      contentClassName="play-along--count-in-modal--content"
+      backdropClassName="title-modal--backdrop"
+      contentClassName="title-modal--content align-items-center"
       centered
     >
       <ModalBody>
