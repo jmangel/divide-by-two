@@ -72,6 +72,7 @@ const SidebarMenu: React.FC<{
   pushDeletedSong: () => void,
   goBack: () => void,
   stepIndex: number,
+  stepIndexRef: React.MutableRefObject<number>,
   loadSong: (savedSongTitle: string) => void,
   saveSongTitle: (songTitle: string) => void,
 }> = ({
@@ -86,6 +87,7 @@ const SidebarMenu: React.FC<{
   pushDeletedSong,
   goBack,
   stepIndex,
+  stepIndexRef,
   loadSong,
   saveSongTitle,
 }) => {
@@ -139,7 +141,7 @@ const SidebarMenu: React.FC<{
   }
 
   const bufferHistoryState = () => {
-    if ((isOpenRef.current || (stepIndex > 0)) && !window.history.state?.songScalerBufferedHistory) {
+    if ((isOpenRef.current || (stepIndexRef.current > 0)) && !window.history.state?.songScalerBufferedHistory) {
       window.history.pushState({ songScalerBufferedHistory: true }, '');
     }
   }

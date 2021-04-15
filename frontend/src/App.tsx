@@ -36,6 +36,7 @@ import { openDb } from './indexedDb';
 import { ParsedQuery, parseUrl, stringify } from 'query-string';
 import { paramConfigMap, decodeParsedQuery, savedSongTitleToDecodedQueryObject, songStateObjectToUrlSongStateObject, stringifySongStateObject, decodeStringifiedQuery } from './SongStateManager';
 import usePrevious from './UsePrevious';
+import useStateRef from './UseStateRef';
 
 const metronomeTicker = new Worker();
 
@@ -166,7 +167,8 @@ const App: React.FC = () => {
   const [measures, setMeasures] = useState(defaultStateObject.measures);
   const [song, setSong] = useState(defaultStateObject.song);
   const [expandedRowIndex, setExpandedRowIndex] = useState(defaultStateObject.expandedRowIndex);
-  const [stepIndex, setStepIndex] = useState(defaultStateObject.stepIndex);
+  const [stepIndex, setStepIndex, stepIndexRef] = useStateRef(defaultStateObject.stepIndex);
+
   const [transposingKey, setTranposingKey] = useState(defaultStateObject.transposingKey);
   const [bpm, setBpm] = useState(defaultStateObject.bpm);
 
@@ -527,8 +529,8 @@ const App: React.FC = () => {
   }
 
   const navigateToPreviousStep = () => {
-    if (stepIndex === 0) window.history.back();
-    else setStepIndex(stepIndex - 1);
+    if (stepIndexRef.current === 0) window.history.back();
+    else setStepIndex(stepIndexRef.current - 1);
   }
 
   const handleFiles = (event: ChangeEvent<HTMLInputElement>) => {
@@ -749,6 +751,7 @@ const App: React.FC = () => {
             pushDeletedSong={pushDeletedSong}
             goBack={navigateToPreviousStep}
             stepIndex={stepIndex}
+            stepIndexRef={stepIndexRef}
             saveSongTitle={title => setSong(song => { return { ...song, title: title }; })}
           />
         </header>
