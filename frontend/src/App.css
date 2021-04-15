@@ -149,7 +149,7 @@ hr {
 
 .title-modal--backdrop {
   background-color: var(--main-bg-color) !important;
-  opacity: 0.8;
+  opacity: 0.8 !important;
 }
 
 .play-along--count-in-modal--content, .title-modal--content {
