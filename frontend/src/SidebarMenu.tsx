@@ -71,7 +71,6 @@ const SidebarMenu: React.FC<{
   pushSavedSong: (stringifiedQuery: string) => void,
   pushDeletedSong: () => void,
   goBack: () => void,
-  stepIndex: number,
   stepIndexRef: React.MutableRefObject<number>,
   loadSong: (savedSongTitle: string) => void,
   saveSongTitle: (songTitle: string) => void,
@@ -86,7 +85,6 @@ const SidebarMenu: React.FC<{
   pushSavedSong,
   pushDeletedSong,
   goBack,
-  stepIndex,
   stepIndexRef,
   loadSong,
   saveSongTitle,
@@ -162,7 +160,7 @@ const SidebarMenu: React.FC<{
 
   useEffect(() => {
     bufferHistoryState();
-  }, [isOpen || (stepIndex > 0)]); // history does need to be rebuffered when the conditions for hijacking change value
+  }, [isOpen || (stepIndexRef.current > 0)]); // history does need to be rebuffered when the conditions for hijacking change value
 
   const isAndroid = () => {
     return (/android/i.test(navigator.userAgent));

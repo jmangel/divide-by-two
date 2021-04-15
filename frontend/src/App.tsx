@@ -750,7 +750,6 @@ const App: React.FC = () => {
             pushSavedSong={pushSavedSong}
             pushDeletedSong={pushDeletedSong}
             goBack={navigateToPreviousStep}
-            stepIndex={stepIndex}
             stepIndexRef={stepIndexRef}
             saveSongTitle={title => setSong(song => { return { ...song, title: title }; })}
           />
