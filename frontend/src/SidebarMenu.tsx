@@ -139,13 +139,13 @@ const SidebarMenu: React.FC<{
   }
 
   const bufferHistoryState = () => {
-    if ((isOpen || (stepIndex > 0)) && !window.history.state?.songScalerBufferedHistory) {
+    if ((isOpenRef.current || (stepIndex > 0)) && !window.history.state?.songScalerBufferedHistory) {
       window.history.pushState({ songScalerBufferedHistory: true }, '');
     }
   }
 
   const handlePopState = () => {
-    if (!isOpen) goBack();
+    if (!isOpenRef.current) goBack();
     else setIsOpen(false);
     bufferHistoryState();
   };
