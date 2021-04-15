@@ -162,7 +162,7 @@ const SidebarMenu: React.FC<{
 
   useEffect(() => {
     bufferHistoryState();
-  }, [isOpen, stepIndex]); // history does need to be rebuffered when the conditions for hijacking change value
+  }, [isOpen || (stepIndex > 0)]); // history does need to be rebuffered when the conditions for hijacking change value
 
   const isAndroid = () => {
     return (/android/i.test(navigator.userAgent));
