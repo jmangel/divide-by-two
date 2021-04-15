@@ -34,10 +34,8 @@ const TitleModal: React.FC<{
     >
       <ModalBody>
         <Input placeholder="Song Title" value={songTitle} onChange={(e) => setSongTitle(e.target.value)}></Input>
+        <Button color="primary" className="w-100 mt-1" onClick={onConfirm}>Confirm</Button>
       </ModalBody>
-      <ModalFooter>
-        <Button color="primary" className="w-100" onClick={onConfirm}>Confirm</Button>
-      </ModalFooter>
     </Modal>
   );
 }
