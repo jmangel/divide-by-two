@@ -35,7 +35,8 @@ const TitleModal: React.FC<{
       <ModalBody>
         <Input
           type="textarea"
-          className="title-modal--textarea"
+          className="text-center"
+          style={{ height: 110 }}
           placeholder="Song Title"
           value={songTitle}
           onChange={(e) => setSongTitle(e.target.value)}
