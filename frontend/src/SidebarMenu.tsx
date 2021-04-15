@@ -8,6 +8,7 @@ import { parse, parseUrl, stringifyUrl } from 'query-string';
 import { openDb } from './indexedDb';
 import { BiHelpCircle } from 'react-icons/bi';
 import TitleModal from './TitleModal';
+import useStateRef from './UseStateRef';
 
 const styles = {
   bmBurgerButton: {
@@ -88,7 +89,7 @@ const SidebarMenu: React.FC<{
   loadSong,
   saveSongTitle,
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen, isOpenRef] = useStateRef(false)
 
   const [showCopyToast, setShowCopyToast] = useState(false);
 
