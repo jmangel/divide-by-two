@@ -528,6 +528,8 @@ const App: React.FC = () => {
     setStepIndex(0);
   }
 
+  const [enteringTitle, setEnteringTitle, enteringTitleRef] = useStateRef(false);
+
   const navigateToPreviousStep = () => {
     if (stepIndexRef.current === 0) window.history.back();
     else setStepIndex(stepIndexRef.current - 1);
@@ -691,6 +693,8 @@ const App: React.FC = () => {
             handleFiles={handleFiles}
             startNewSong={startNewSong}
             navigateToNextStep={navigateToNextStep}
+            enteringTitle={enteringTitle}
+            setEnteringTitle={setEnteringTitle}
           />
         );
     }

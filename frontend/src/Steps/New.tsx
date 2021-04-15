@@ -11,13 +11,16 @@ const New: React.FC<{
   handleFiles: (event: ChangeEvent<HTMLInputElement>) => void,
   startNewSong: (songTitle?: string) => void,
   navigateToNextStep: () => void,
+  enteringTitle: boolean,
+  setEnteringTitle: (value: boolean) => void,
 }> = ({
   allowContinue,
   handleFiles,
   startNewSong,
   navigateToNextStep,
+  enteringTitle,
+  setEnteringTitle,
 }) => {
-  const [enteringTitle, setEnteringTitle] = useState(false);
   const toggleTitleModal = () => setEnteringTitle(!enteringTitle);
 
   return (
