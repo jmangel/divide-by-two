@@ -19,7 +19,7 @@ const TitleModal: React.FC<{
 
   useEffect(() => {
     if (startingValue) setSongTitle(startingValue);
-  }, [startingValue])
+  }, [startingValue, isOpen])
 
   const onConfirm = () => {
     onSet(songTitle);
