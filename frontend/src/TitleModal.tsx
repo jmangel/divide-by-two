@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Input, Modal, ModalBody, ModalFooter } from "reactstrap";
 
 
@@ -6,12 +6,20 @@ const TitleModal: React.FC<{
   isOpen: boolean,
   toggle: () => void,
   onSet: (songTitle: string) => void,
+  startingValue?: string,
+  zIndex?: number,
 }> = ({
   isOpen,
   toggle,
   onSet,
+  startingValue,
+  zIndex,
 }) => {
-  const [songTitle, setSongTitle] = useState('');
+  const [songTitle, setSongTitle] = useState(startingValue || '');
+
+  useEffect(() => {
+    if (startingValue) setSongTitle(startingValue);
+  }, [startingValue])
 
   const onConfirm = () => {
     onSet(songTitle);
@@ -19,7 +27,7 @@ const TitleModal: React.FC<{
   }
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle}>
+    <Modal isOpen={isOpen} toggle={toggle} zIndex={zIndex}>
       <ModalBody>
         <Input placeholder="Song Title" value={songTitle} onChange={(e) => setSongTitle(e.target.value)}></Input>
       </ModalBody>
