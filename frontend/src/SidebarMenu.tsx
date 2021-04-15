@@ -153,13 +153,16 @@ const SidebarMenu: React.FC<{
   };
 
   useEffect(() => {
-    bufferHistoryState();
     window.addEventListener('popstate', handlePopState);
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
-  }, [isOpen, stepIndex]); // we have to listen to stepIndex in order to give goBack the right scope in the listener
+  }, []); // event listener doesn't need to update closure because it has refs
+
+  useEffect(() => {
+    bufferHistoryState();
+  }, [isOpen, stepIndex]); // history does need to be rebuffered when the conditions for hijacking change value
 
   const isAndroid = () => {
     return (/android/i.test(navigator.userAgent));
