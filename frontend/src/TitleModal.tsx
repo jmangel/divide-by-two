@@ -13,13 +13,18 @@ const TitleModal: React.FC<{
 }) => {
   const [songTitle, setSongTitle] = useState('');
 
+  const onConfirm = () => {
+    onSet(songTitle);
+    toggle();
+  }
+
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
       <ModalBody>
         <Input placeholder="Song Title" value={songTitle} onChange={(e) => setSongTitle(e.target.value)}></Input>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={() => onSet(songTitle)}>Confirm</Button>
+        <Button color="primary" onClick={onConfirm}>Confirm</Button>
       </ModalFooter>
     </Modal>
   );
