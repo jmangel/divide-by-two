@@ -32,7 +32,7 @@ const TitleModal: React.FC<{
       contentClassName="title-modal--content align-items-center"
       centered
     >
-      <ModalBody>
+      <ModalBody className="w-75 px-2">
         <Input
           className="text-center"
           placeholder="Song Title"
