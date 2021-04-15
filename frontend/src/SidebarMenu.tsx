@@ -108,7 +108,7 @@ const SidebarMenu: React.FC<{
     const db = await openDb();
 
     const keys = await db.getAllKeys(storeName);
-    setSongTitles(keys);
+    setSongTitles(keys.filter((value) => !!value));
   }
 
   useEffect(() => { loadSongTitles() }, []);
