@@ -4,3 +4,20 @@
   background-color: var(--main-bg-color);
   border-color: var(--main-bg-color) !important;
 }
+
+.ReactPiano__Key--accidental {
+  border-color: transparent;
+}
+
+.ReactPiano__NoteLabel--target {
+  border-radius: 6px;
+
+  margin-right: -1px;
+  margin-left: -1px;
+  box-shadow: 0px 6px #2EAF59;
+}
+
+.ReactPiano__NoteLabelContainer {
+  max-width: 100%;
+  overflow-wrap: normal;
+}

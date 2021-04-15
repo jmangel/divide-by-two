@@ -159,13 +159,12 @@ const ChordPianoVisualization: React.FC<{
         if (isActive) classNames.push('ReactPiano__NoteLabel--active');
         if (isAccidental) classNames.push('ReactPiano__NoteLabel--accidental');
         if (!isAccidental) classNames.push('ReactPiano__NoteLabel--natural');
-        if (isTargetNote) classNames.push('bg-success', 'text-white');
+        if (isTargetNote) classNames.push('ReactPiano__NoteLabel--target');
 
         const className = classNames.join(' ');
 
         const elements = [];
         if (keyboardShortcut) elements.push(keyboardShortcut);
-        else if (isTargetNote) elements.push(<GrTarget className="ReactPiano__NoteLabel w-100" />);
 
         return (elements.length > 0) && (
           <div
