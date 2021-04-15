@@ -163,3 +163,17 @@ hr {
 #react-burger-menu-btn {
   display: none;
 }
+
+.title-modal--textarea {
+  --title-modal--textarea--height: 100px;
+  /* font-size variable for calculations cannot be em, otherwise calculations become doubly-dependent on font-size */
+  --title-modal--textarea--font-size: 1rem;
+  --title-modal--textarea--line-height: 1.5;
+
+  height: var(--title-modal--textarea--height) !important;
+  font-size: var(--title-modal--textarea--font-size);
+  line-height: var(--title-modal--textarea--line-height);
+  padding-top: calc((var(--title-modal--textarea--height) - (var(--title-modal--textarea--line-height) * var(--title-modal--textarea--font-size)))/2);
+  border-bottom: 0;
+  border-top: 0;
+}
