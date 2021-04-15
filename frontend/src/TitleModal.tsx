@@ -39,7 +39,7 @@ const TitleModal: React.FC<{
           value={songTitle}
           onChange={(e) => setSongTitle(e.target.value)}
         />
-        <Button color="primary" className="w-100 mt-1" onClick={onConfirm}>Confirm</Button>
+        <Button color="primary" className="w-100 mt-2" onClick={onConfirm}>Confirm</Button>
       </ModalBody>
     </Modal>
   );
