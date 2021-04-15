@@ -143,11 +143,11 @@ hr {
   max-width: 100vw;
 }
 
-.play-along--count-in-modal--backdrop {
+.play-along--count-in-modal--backdrop, .title-modal--backdrop {
   background-color: rgba(0, 0, 0 , 0.8)!important;
 }
 
-.play-along--count-in-modal--content {
+.play-along--count-in-modal--content, .title-modal--content {
   background-color: transparent;
   border: 0;
 }

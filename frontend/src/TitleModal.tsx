@@ -27,7 +27,11 @@ const TitleModal: React.FC<{
   }
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} zIndex={zIndex}>
+    <Modal isOpen={isOpen} toggle={toggle} zIndex={zIndex}
+      backdropClassName="play-along--count-in-modal--backdrop"
+      contentClassName="play-along--count-in-modal--content"
+      centered
+    >
       <ModalBody>
         <Input placeholder="Song Title" value={songTitle} onChange={(e) => setSongTitle(e.target.value)}></Input>
       </ModalBody>
