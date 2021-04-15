@@ -36,7 +36,7 @@ const TitleModal: React.FC<{
         <Input placeholder="Song Title" value={songTitle} onChange={(e) => setSongTitle(e.target.value)}></Input>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={onConfirm}>Confirm</Button>
+        <Button color="primary" className="w-100" onClick={onConfirm}>Confirm</Button>
       </ModalFooter>
     </Modal>
   );
