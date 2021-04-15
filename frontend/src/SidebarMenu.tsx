@@ -102,7 +102,7 @@ const SidebarMenu: React.FC<{
   const [showSheetMusicTooltipOpen, setShowSheetMusicTooltip] = useState(false);
   const toggleShowSheetMusicTooltip = () => setShowSheetMusicTooltip(!showSheetMusicTooltipOpen);
 
-  const [editingTitle, setEditingTitle] = useState(false);
+  const [editingTitle, setEditingTitle, editingTitleRef] = useStateRef(false);
   const toggleTitleModal = () => setEditingTitle(!editingTitle);
 
   async function loadSongTitles() {
@@ -139,14 +139,15 @@ const SidebarMenu: React.FC<{
   }
 
   const bufferHistoryState = () => {
-    if ((isOpenRef.current || appCanGoBackRef.current) && !window.history.state?.songScalerBufferedHistory) {
+    if ((isOpenRef.current || editingTitleRef.current || appCanGoBackRef.current) && !window.history.state?.songScalerBufferedHistory) {
       window.history.pushState({ songScalerBufferedHistory: true }, '');
     }
   }
 
   const handlePopState = () => {
-    if (!isOpenRef.current) goBack();
-    else setIsOpen(false);
+    if (editingTitleRef.current) setEditingTitle(false);
+    else if (isOpenRef.current) setIsOpen(false);
+    else goBack();
     bufferHistoryState();
   };
 
@@ -160,7 +161,7 @@ const SidebarMenu: React.FC<{
 
   useEffect(() => {
     bufferHistoryState();
-  }, [isOpen, appCanGoBackRef.current]); // history does need to be rebuffered when the conditions for hijacking change value
+  }, [isOpen || editingTitle || appCanGoBackRef.current]); // history does need to be rebuffered when the conditions for hijacking change value
 
   const isAndroid = () => {
     return (/android/i.test(navigator.userAgent));
