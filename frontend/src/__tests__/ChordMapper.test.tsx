@@ -288,10 +288,10 @@ describe('chords', () => {
       ])
     })
 
-    it('gives h/w diminished', () => {
+    it('gives dominant diminished (h/w diminished)', () => {
       const halfWholeDiminishedScale = dominantFlatNineScales[1]
 
-      expect(halfWholeDiminishedScale.scaleName).toEqual('h/w diminished')
+      expect(halfWholeDiminishedScale.scaleName).toEqual('dominant diminished (h/w diminished)')
       expect(halfWholeDiminishedScale.scaleNotes).toEqual([
         'G','Ab','A#','B','C#','D','E','F'
       ])

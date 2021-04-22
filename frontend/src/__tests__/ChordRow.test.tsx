@@ -46,9 +46,9 @@ describe('ChordRow', () => {
         />);
 
         const selectField = wrapper.find('Input[type="select"]');
-        selectField.simulate('change', { target: { value: 'A h/w diminished' } });
+        selectField.simulate('change', { target: { value: 'A dominant diminished (h/w diminished)' } });
 
-        expect(chordRowObject.selectedScale).toEqual('h/w diminished');
+        expect(chordRowObject.selectedScale).toEqual('dominant diminished (h/w diminished)');
         expect(chordRowObject.selectedScaleRoot).toEqual('A');
       })
     })

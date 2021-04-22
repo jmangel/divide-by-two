@@ -492,7 +492,7 @@ export const MODES: Array<Mode> = [
     },
   },
   {
-    name: 'h/w diminished',
+    name: 'dominant diminished (h/w diminished)',
     relatedScale: {
       name: PossibleRootScale.d,
       startingDegree: 6,
@@ -758,7 +758,7 @@ const CHORD_MAPPINGS = [
         offset: 0,
       },
       {
-        name: 'h/w diminished',
+        name: 'dominant diminished (h/w diminished)',
         offset: 0,
       }
     ]
@@ -767,7 +767,7 @@ const CHORD_MAPPINGS = [
     quality: '7#9',
     possibleModes: [
       {
-        name: 'h/w diminished',
+        name: 'dominant diminished (h/w diminished)',
         offset: 0,
       },
       {
