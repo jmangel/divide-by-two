@@ -205,6 +205,8 @@ const App: React.FC = () => {
         inline
       />
       <p>{numToDivide / 2}</p>
+      <p>{Math.ceil(100 * numToDivide / 2) / 100}</p>
+      <p>{Math.floor(100 * numToDivide / 2) / 100}</p>
       {/* {
         expandedChordRow ? (
           <ChordCarousel
