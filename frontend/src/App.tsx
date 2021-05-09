@@ -177,10 +177,10 @@ const App: React.FC = () => {
   //   })
   // }
 
-  const dividedNumbers = [
+  const dividedNumbers = [... new Set([
     Math.ceil(100 * numToDivide / 2) / 100,
     Math.floor(100 * numToDivide / 2) / 100
-  ]
+  ])]
 
   return (
     <div className="App">
