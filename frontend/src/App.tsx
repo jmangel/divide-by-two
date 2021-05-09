@@ -210,7 +210,6 @@ const App: React.FC = () => {
         className='w-25 mx-2'
         inline
       />
-      <p>{numToDivide / 2}</p>
       {
         dividedNumbers.map((dividedNumber) => (
           <p>{dividedNumber}</p>
