@@ -176,6 +176,12 @@ const App: React.FC = () => {
   //     }
   //   })
   // }
+
+  const dividedNumbers = [
+    Math.ceil(100 * numToDivide / 2) / 100,
+    Math.floor(100 * numToDivide / 2) / 100
+  ]
+
   return (
     <div className="App">
       <header className="App-header flex-row justify-content-between">
@@ -205,8 +211,11 @@ const App: React.FC = () => {
         inline
       />
       <p>{numToDivide / 2}</p>
-      <p>{Math.ceil(100 * numToDivide / 2) / 100}</p>
-      <p>{Math.floor(100 * numToDivide / 2) / 100}</p>
+      {
+        dividedNumbers.map((dividedNumber) => (
+          <p>{dividedNumber}</p>
+        ))
+      }
       {/* {
         expandedChordRow ? (
           <ChordCarousel
